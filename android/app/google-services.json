@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "609501405481",
+    "project_id": "ai-app-736e6",
+    "storage_bucket": "ai-app-736e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609501405481:android:9689ad6e89239fa4da5738",
+        "android_client_info": {
+          "package_name": "com.proman2702.ai_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSJ1xEgTowQIpRrKj4F6sgE8kNT5hSXDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
