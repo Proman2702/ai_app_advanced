@@ -1,3 +1,5 @@
+import 'package:ai_app/features/auth/create_profile/first_page.dart';
+import 'package:ai_app/features/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/features/auth/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,14 +18,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/auth',
-      routes: {'/auth': (context) => const AuthPage()},
+      routes: {
+        '/auth': (context) => const AuthPage(),
+        '/home': (context) => const HomePage(),
+        '/auth/create': (context) => const FirstPage()
+      },
       theme: ThemeData(fontFamily: "Jura"),
-      home: const AuthPage(),
     );
   }
 }

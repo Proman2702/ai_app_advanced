@@ -211,6 +211,7 @@ class _AuthPageState extends State<AuthPage> {
                                 AuthDenySheet(type: "length"));
                       } else {
                         log("Логин: $username, пароль: $password");
+                        Navigator.of(context).pushNamed("/");
                       }
                     },
                     child: Text(
@@ -228,6 +229,7 @@ class _AuthPageState extends State<AuthPage> {
                 GestureDetector(
                   onTap: () {
                     log("create an account");
+                    Navigator.of(context).pushNamed("/auth/create");
                   },
                   child: Text(
                     'Создать аккаунт',
