@@ -1,4 +1,4 @@
-import 'package:ai_app/features/auth/create_profile/first_page.dart';
+import 'package:ai_app/features/auth/sign_in_page.dart';
 import 'package:ai_app/features/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/features/auth/auth_page.dart';
