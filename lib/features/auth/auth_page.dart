@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:ai_app/features/auth/auth_error_hander.dart';
+import 'package:ai_app/repositories/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/colors.dart';
@@ -17,6 +18,16 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String? username;
   String? password;
+  final auth = AuthService();
+
+  void signIn(String em, String p) async {
+    final user = await auth.loginUserWithEmailAndPassword(em, p);
+
+    if (user != null) {
+      log("Успешный вход");
+      Navigator.of(context).pushNamed("/home", arguments: user);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +222,7 @@ class _AuthPageState extends State<AuthPage> {
                                 AuthDenySheet(type: "length"));
                       } else {
                         log("Логин: $username, пароль: $password");
-                        Navigator.of(context).pushNamed("/");
+                        signIn(username!, password!);
                       }
                     },
                     child: Text(

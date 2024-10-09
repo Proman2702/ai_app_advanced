@@ -21,7 +21,7 @@ class _FirstPageState extends State<FirstPage> {
   String? email;
   String? password;
 
-  signUp(String em, String p) async {
+  void signUp(String em, String p) async {
     final user = await auth.createUserWithEmailAndPassword(em, p);
 
     if (user != null) {

@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:ai_app/repositories/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final auth = AuthService();
   User? user;
 
   @override
@@ -33,12 +35,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.purple,
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.logout, color: Colors.white)),
+              onPressed: () async {
+                await auth.signOut();
+                Navigator.of(context).pop();
+              },
+              icon: Icon(Icons.logout, color: Colors.white)),
           IconButton(
               onPressed: () {}, icon: Icon(Icons.info, color: Colors.white)),
         ],
       ),
-      body: Text("Добро пожаловать, $user!"),
+      body: Center(child: Text("Добро пожаловать, ${user!.email}!")),
     );
   }
 }
