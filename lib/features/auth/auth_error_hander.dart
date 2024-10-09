@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:ai_app/etc/colors/colors.dart';
 
+// --------------------------
+// Файл обработки ошибок
+// Здесь реализовано всплывающее окно с уведомлением об ошибке
+// --------------------------
+
 class AuthDenySheet extends StatelessWidget {
   const AuthDenySheet({super.key, required this.type});
 
   final String type;
 
   String handler() {
-    if (type.compareTo("none") == 0) {
-      return 'Не все данные заполнены';
-    } else if (type.compareTo("length") == 0) {
-      return 'Логин и пароль должны состоять не менее чем из 3 символов';
+    switch (type) {
+      case 'none':
+        return 'Не все данные заполнены';
+      case 'length':
+        return 'Логин и пароль должны состоять не менее чем из 3 символов';
+      case 'exists':
+        return 'Пользователь с такими данными уже существует';
+      case 'format':
+        return 'Неверный формат почты';
+      case 'not_found':
+        return 'Неверный формат почты';
+      case 'wrong':
+        return 'Неверный пароль';
+      case 'weak':
+        return 'Вы ввели слишком слабый пароль';
     }
     return 'Что-то пошло не так';
   }

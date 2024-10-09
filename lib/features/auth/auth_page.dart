@@ -8,6 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/colors.dart';
 
+// --------------------------
+// Файл верстки окна входа
+// Здесь реализовано само окно, а также поля ввода данных и кнопки
+// --------------------------
+
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
@@ -18,14 +23,21 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String? username;
   String? password;
+  bool obscureBool = true;
   final auth = AuthService();
 
+  // Функция входа
   void signIn(String em, String p) async {
     final user = await auth.loginUserWithEmailAndPassword(em, p);
 
-    if (user != null) {
+    if (user[0] == 0) {
       log("Успешный вход");
-      Navigator.of(context).pushNamed("/home", arguments: user);
+      Navigator.of(context).pushNamed("/home", arguments: user[1]);
+    } else if (user[0] == 1) {
+      log("Ошибка ${user[1]}");
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) => AuthDenySheet(type: user[1]));
     }
   }
 
@@ -148,18 +160,19 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                           SizedBox(width: 8),
                           SizedBox(
-                            width: 250,
+                            width: 210,
                             height: 40,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: ConstrainedBox(
-                                constraints: BoxConstraints.expand(width: 450),
+                                constraints: BoxConstraints.expand(width: 300),
                                 child: TextField(
+                                  obscureText: obscureBool,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18,
                                       color: Colors.black87),
-                                  maxLength: 25,
+                                  maxLength: 20,
                                   onChanged: (value) => setState(() {
                                     password = value;
                                   }),
@@ -180,12 +193,22 @@ class _AuthPageState extends State<AuthPage> {
                               ),
                             ),
                           ),
+                          IconButton(
+                              iconSize: 20,
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () => setState(() {
+                                    obscureBool = !obscureBool;
+                                  }),
+                              icon: !obscureBool
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off))
                         ],
                       ),
                     ),
                     SizedBox(height: 8),
                     GestureDetector(
                       onTap: () {
+                        Navigator.of(context).pushNamed("/auth/forgot");
                         log("Forgot the password");
                       },
                       child: Text(

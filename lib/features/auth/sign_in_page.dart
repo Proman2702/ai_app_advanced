@@ -22,12 +22,19 @@ class _FirstPageState extends State<FirstPage> {
   String? email;
   String? password;
 
+  bool obscureBool = true;
+
   void signUp(String em, String p) async {
     final user = await auth.createUserWithEmailAndPassword(em, p);
 
-    if (user != null) {
+    if (user![0] == 0) {
       log("Пользователь создан");
-      Navigator.of(context).pushNamed("/home", arguments: user);
+      Navigator.of(context).pushNamed("/home", arguments: user[1]);
+    } else if (user[0] == 1) {
+      log("Ошибка ${user[1]}");
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) => AuthDenySheet(type: user[1]));
     }
   }
 
@@ -49,12 +56,12 @@ class _FirstPageState extends State<FirstPage> {
           //       alignment: Alignment.center),
           // ),
           Padding(
-              padding: EdgeInsets.only(top: height / 1.65, left: width / 2.5),
+              padding: EdgeInsets.only(top: height / 1.6, left: width / 2.3),
               child: Transform.rotate(
                 angle: 5 * math.pi / 12,
                 child: Image.asset("images/triangle.png",
                     scale: 1.2,
-                    opacity: const AlwaysStoppedAnimation(0.1),
+                    opacity: const AlwaysStoppedAnimation(0.15),
                     alignment: Alignment.center),
               )),
 
@@ -233,7 +240,7 @@ class _FirstPageState extends State<FirstPage> {
                               ),
                               SizedBox(width: 8),
                               SizedBox(
-                                width: 250,
+                                width: 210,
                                 height: 40,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
@@ -241,11 +248,12 @@ class _FirstPageState extends State<FirstPage> {
                                     constraints:
                                         BoxConstraints.expand(width: 450),
                                     child: TextField(
+                                      obscureText: obscureBool,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 18,
                                           color: Colors.black87),
-                                      maxLength: 25,
+                                      maxLength: 20,
                                       onChanged: (value) => setState(() {
                                         password = value;
                                       }),
@@ -261,6 +269,15 @@ class _FirstPageState extends State<FirstPage> {
                                   ),
                                 ),
                               ),
+                              IconButton(
+                                  iconSize: 20,
+                                  visualDensity: VisualDensity.compact,
+                                  onPressed: () => setState(() {
+                                        obscureBool = !obscureBool;
+                                      }),
+                                  icon: !obscureBool
+                                      ? Icon(Icons.visibility)
+                                      : Icon(Icons.visibility_off))
                             ],
                           ),
                         ),
@@ -289,7 +306,7 @@ class _FirstPageState extends State<FirstPage> {
                                     AuthDenySheet(type: "length"));
                           } else {
                             log("Логин: $username, пароль: $password");
-                            signUp(username!, password!);
+                            signUp(email!, password!);
                           }
                         },
                         child: Text(

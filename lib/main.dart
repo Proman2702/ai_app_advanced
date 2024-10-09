@@ -1,3 +1,4 @@
+import 'package:ai_app/features/auth/forgot_password_page.dart';
 import 'package:ai_app/features/auth/sign_in_page.dart';
 import 'package:ai_app/features/home/home_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (context) => const AuthPage(),
         '/home': (context) => const HomePage(),
-        '/auth/create': (context) => const FirstPage()
+        '/auth/create': (context) => const FirstPage(),
+        '/auth/forgot': (context) => const ForgotPasswordPage()
       },
       theme: ThemeData(fontFamily: "Jura"),
     );
