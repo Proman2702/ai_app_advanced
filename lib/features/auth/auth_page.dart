@@ -3,7 +3,9 @@
 import 'dart:developer';
 
 import 'package:ai_app/features/auth/auth_error_hander.dart';
-import 'package:ai_app/repositories/auth_service.dart';
+import 'package:ai_app/repositories/auth/auth_formats.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/colors.dart';
@@ -24,15 +26,35 @@ class _AuthPageState extends State<AuthPage> {
   String? username;
   String? password;
   bool obscureBool = true;
+
   final auth = AuthService();
 
   // Функция входа
   void signIn(String em, String p) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Color(CustomColors.mainLightX2)),
+            ),
+          );
+        });
+
     final user = await auth.loginUserWithEmailAndPassword(em, p);
+    Navigator.pop(context);
 
     if (user[0] == 0) {
-      log("Успешный вход");
-      Navigator.of(context).pushNamed("/home", arguments: user[1]);
+      if (user[1].emailVerified) {
+        log(user[1].emailVerified.toString());
+        log("Успешный вход");
+        Navigator.of(context).pushNamed("/home", arguments: user[1]);
+      } else {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) => AuthDenySheet(type: "verify"));
+      }
     } else if (user[0] == 1) {
       log("Ошибка ${user[1]}");
       showModalBottomSheet(
@@ -113,13 +135,15 @@ class _AuthPageState extends State<AuthPage> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: ConstrainedBox(
-                                constraints: BoxConstraints.expand(width: 450),
+                                constraints: BoxConstraints.expand(
+                                    width: AuthSettings().maxEmailLength *
+                                        18), // 18 - fontSize
                                 child: TextField(
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18,
                                       color: Colors.black87),
-                                  maxLength: 25,
+                                  maxLength: AuthSettings().maxEmailLength,
                                   onChanged: (value) => setState(() {
                                     username = value;
                                   }),
@@ -165,14 +189,16 @@ class _AuthPageState extends State<AuthPage> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: ConstrainedBox(
-                                constraints: BoxConstraints.expand(width: 300),
+                                constraints: BoxConstraints.expand(
+                                    width: AuthSettings().maxPasswordLength *
+                                        18), // 18 - fontSize
                                 child: TextField(
                                   obscureText: obscureBool,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18,
                                       color: Colors.black87),
-                                  maxLength: 20,
+                                  maxLength: AuthSettings().maxPasswordLength,
                                   onChanged: (value) => setState(() {
                                     password = value;
                                   }),

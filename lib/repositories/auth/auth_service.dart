@@ -57,6 +57,14 @@ class AuthService {
     }
   }
 
+  Future<void> sendVerification() async {
+    try {
+      await auth.currentUser?.sendEmailVerification();
+    } catch (e) {
+      log("Ошибка $e");
+    }
+  }
+
   Future<List> resetPassword(String email) async {
     try {
       await auth.sendPasswordResetEmail(email: email);

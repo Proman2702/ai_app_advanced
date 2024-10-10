@@ -5,7 +5,8 @@ import 'dart:math' as math;
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
-import 'package:ai_app/repositories/auth_service.dart';
+import 'package:ai_app/features/auth/email_notificator.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -162,38 +163,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     const AuthDenySheet(type: "none"));
                           } else {
                             log("Почта: $email");
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              Color(CustomColors.mainLightX2)),
+                                    ),
+                                  );
+                                });
                             final result = await auth.resetPassword(email!);
-
+                            Navigator.of(context).pop();
                             if (result[0] == 0) {
                               Navigator.of(context).pop();
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        title: Text(
-                                          "Ссылка для сброса пароля отправлена на почту!",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 13),
-                                        ),
-                                        actionsAlignment:
-                                            MainAxisAlignment.center,
-                                        actions: [
-                                          SizedBox(
-                                            height: 30,
-                                            width: 110,
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Color(
-                                                        CustomColors
-                                                            .mainLightX2)),
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: const Text("Закрыть",
-                                                    style: TextStyle(
-                                                        color: Colors.white))),
-                                          )
-                                        ],
-                                      ));
+                                      EmailNotificator(type: "sent"));
                             } else {
                               showModalBottomSheet(
                                   context: context,

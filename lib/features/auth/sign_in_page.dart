@@ -5,8 +5,10 @@ import 'dart:math' as math;
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
-import 'package:ai_app/repositories/auth_service.dart';
+import 'package:ai_app/features/auth/email_notificator.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_app/repositories/auth/auth_formats.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -25,11 +27,27 @@ class _FirstPageState extends State<FirstPage> {
   bool obscureBool = true;
 
   void signUp(String em, String p) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Color(CustomColors.mainLightX2)),
+            ),
+          );
+        });
+
     final user = await auth.createUserWithEmailAndPassword(em, p);
+    Navigator.pop(context);
 
     if (user![0] == 0) {
       log("Пользователь создан");
-      Navigator.of(context).pushNamed("/home", arguments: user[1]);
+      Navigator.of(context).pushNamed('/auth');
+      await auth.sendVerification();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => EmailNotificator(type: "verify"));
     } else if (user[0] == 1) {
       log("Ошибка ${user[1]}");
       showModalBottomSheet(
@@ -135,14 +153,17 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints:
-                                        BoxConstraints.expand(width: 450),
+                                    constraints: BoxConstraints.expand(
+                                        width:
+                                            AuthSettings().maxUsernameLength *
+                                                18),
                                     child: TextField(
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 18,
                                           color: Colors.black87),
-                                      maxLength: 25,
+                                      maxLength:
+                                          AuthSettings().maxUsernameLength,
                                       onChanged: (value) => setState(() {
                                         username = value;
                                       }),
@@ -190,14 +211,15 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints:
-                                        BoxConstraints.expand(width: 450),
+                                    constraints: BoxConstraints.expand(
+                                        width:
+                                            AuthSettings().maxEmailLength * 18),
                                     child: TextField(
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 18,
                                           color: Colors.black87),
-                                      maxLength: 25,
+                                      maxLength: AuthSettings().maxEmailLength,
                                       onChanged: (value) => setState(() {
                                         email = value;
                                       }),
@@ -245,15 +267,18 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints:
-                                        BoxConstraints.expand(width: 450),
+                                    constraints: BoxConstraints.expand(
+                                        width:
+                                            AuthSettings().maxPasswordLength *
+                                                18),
                                     child: TextField(
                                       obscureText: obscureBool,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 18,
                                           color: Colors.black87),
-                                      maxLength: 20,
+                                      maxLength:
+                                          AuthSettings().maxPasswordLength,
                                       onChanged: (value) => setState(() {
                                         password = value;
                                       }),

@@ -27,6 +27,8 @@ class AuthDenySheet extends StatelessWidget {
         return 'Неверный пароль';
       case 'weak':
         return 'Вы ввели слишком слабый пароль';
+      case 'verify':
+        return 'Подтвердите почту (ссылка в письме, отправленном на нее)';
     }
     return 'Что-то пошло не так';
   }

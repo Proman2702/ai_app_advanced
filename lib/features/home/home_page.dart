@@ -2,7 +2,7 @@
 
 import 'dart:developer';
 
-import 'package:ai_app/repositories/auth_service.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
