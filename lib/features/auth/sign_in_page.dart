@@ -6,7 +6,9 @@ import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
+import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/repositories/auth/auth_formats.dart';
 
@@ -19,6 +21,7 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   final auth = AuthService();
+  final database = DatabaseService();
 
   String? username;
   String? email;
@@ -43,6 +46,15 @@ class _FirstPageState extends State<FirstPage> {
 
     if (user![0] == 0) {
       log("Пользователь создан");
+
+      database.addUser(CustomUser(
+          username: username!,
+          email: em,
+          defect: [],
+          lessons: {},
+          lessons_correct: {},
+          time_plan: {}));
+
       Navigator.of(context).pushNamed('/auth');
       await auth.sendVerification();
       showDialog(
