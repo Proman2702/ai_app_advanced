@@ -31,6 +31,11 @@ class AuthDenySheet extends StatelessWidget {
         return 'Подтвердите почту (ссылка в письме, отправленном на нее)';
       case 'wrong_or_not_found':
         return 'Неверный пароль или такого пользователя нет';
+      case 'not_equal':
+        return 'Пароли не совпадают!';
+
+      case 'success':
+        return 'Успешно!';
     }
     return 'Что-то пошло не так';
   }
@@ -41,8 +46,7 @@ class AuthDenySheet extends StatelessWidget {
       height: 110,
       width: 200,
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,11 +68,9 @@ class AuthDenySheet extends StatelessWidget {
               height: 30,
               width: 110,
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(CustomColors.mainLightX2)),
+                  style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.mainLightX2)),
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Закрыть",
-                      style: TextStyle(color: Colors.white))),
+                  child: const Text("Закрыть", style: TextStyle(color: Colors.white))),
             )
           ],
         ),

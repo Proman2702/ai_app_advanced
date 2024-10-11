@@ -36,8 +36,7 @@ class _AuthPageState extends State<AuthPage> {
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                  Color(CustomColors.mainLightX2)),
+              valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
             ),
           );
         });
@@ -49,17 +48,13 @@ class _AuthPageState extends State<AuthPage> {
       if (user[1].emailVerified) {
         log(user[1].emailVerified.toString());
         log("Успешный вход");
-        Navigator.of(context).pushNamed("/home", arguments: user[1]);
+        //Navigator.of(context).pushNamed("/");
       } else {
-        showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) => AuthDenySheet(type: "verify"));
+        showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: "verify"));
       }
     } else if (user[0] == 1) {
       log("Ошибка ${user[1]}");
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) => AuthDenySheet(type: user[1]));
+      showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: user[1]));
     }
   }
 
@@ -79,8 +74,7 @@ class _AuthPageState extends State<AuthPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                    height: (height - width) > 0 ? height / 3 : height / 12),
+                SizedBox(height: (height - width) > 0 ? height / 3 : height / 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -100,34 +94,26 @@ class _AuthPageState extends State<AuthPage> {
                       child: Text(
                         "AI APP",
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24,
-                          color: Color(CustomColors.bright),
-                          letterSpacing: 2,
-                        ),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                            color: Color(CustomColors.bright),
+                            letterSpacing: 2),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                    height: (height - width) > 0 ? height / 6.5 : height / 10),
+                SizedBox(height: (height - width) > 0 ? height / 6.5 : height / 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
                       height: 40,
                       width: 295,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                       child: Row(
                         children: [
                           SizedBox(width: 8),
-                          Icon(
-                            Icons.account_circle_outlined,
-                            size: 24,
-                            color: Color(CustomColors.bright),
-                          ),
+                          Icon(Icons.account_circle_outlined, size: 24, color: Color(CustomColors.bright)),
                           SizedBox(width: 8),
                           SizedBox(
                             width: 250,
@@ -135,30 +121,23 @@ class _AuthPageState extends State<AuthPage> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: ConstrainedBox(
-                                constraints: BoxConstraints.expand(
-                                    width: AuthSettings().maxEmailLength *
-                                        18), // 18 - fontSize
+                                constraints:
+                                    BoxConstraints.expand(width: AuthSettings().maxEmailLength * 18), // 18 - fontSize
                                 child: TextField(
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      color: Colors.black87),
+                                  style:
+                                      const TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
                                   maxLength: AuthSettings().maxEmailLength,
                                   onChanged: (value) => setState(() {
                                     username = value;
                                   }),
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     contentPadding: EdgeInsets.only(bottom: 12),
                                     counterText: "",
                                     border: InputBorder.none,
                                     labelText: "Логин",
-                                    labelStyle: TextStyle(
-                                      color: Colors.black12,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                    labelStyle:
+                                        TextStyle(color: Colors.black12, fontSize: 20, fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
@@ -171,9 +150,7 @@ class _AuthPageState extends State<AuthPage> {
                     Container(
                       height: 40,
                       width: 295,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                       child: Row(
                         children: [
                           SizedBox(width: 8),
@@ -190,21 +167,17 @@ class _AuthPageState extends State<AuthPage> {
                               scrollDirection: Axis.horizontal,
                               child: ConstrainedBox(
                                 constraints: BoxConstraints.expand(
-                                    width: AuthSettings().maxPasswordLength *
-                                        18), // 18 - fontSize
+                                    width: AuthSettings().maxPasswordLength * 18), // 18 - fontSize
                                 child: TextField(
                                   obscureText: obscureBool,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      color: Colors.black87),
+                                  style:
+                                      const TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
                                   maxLength: AuthSettings().maxPasswordLength,
                                   onChanged: (value) => setState(() {
                                     password = value;
                                   }),
                                   decoration: InputDecoration(
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     contentPadding: EdgeInsets.only(bottom: 12),
                                     counterText: "",
                                     border: InputBorder.none,
@@ -225,9 +198,7 @@ class _AuthPageState extends State<AuthPage> {
                               onPressed: () => setState(() {
                                     obscureBool = !obscureBool;
                                   }),
-                              icon: !obscureBool
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off))
+                              icon: !obscureBool ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
                         ],
                       ),
                     ),
@@ -250,25 +221,19 @@ class _AuthPageState extends State<AuthPage> {
                     )
                   ],
                 ),
-                SizedBox(
-                    height: (height - width) > 0 ? height / 10 : height / 16),
+                SizedBox(height: (height - width) > 0 ? height / 10 : height / 16),
                 SizedBox(
                   height: 40,
                   width: 180,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(CustomColors.bright)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.bright)),
                     onPressed: () async {
                       if (username == null || password == null) {
                         showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                const AuthDenySheet(type: "none"));
+                            context: context, builder: (BuildContext context) => const AuthDenySheet(type: "none"));
                       } else if (username!.length < 4 || password!.length < 4) {
                         showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                AuthDenySheet(type: "length"));
+                            context: context, builder: (BuildContext context) => AuthDenySheet(type: "length"));
                       } else {
                         log("Логин: $username, пароль: $password");
                         signIn(username!, password!);
@@ -276,10 +241,7 @@ class _AuthPageState extends State<AuthPage> {
                     },
                     child: Text(
                       "Войти",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),

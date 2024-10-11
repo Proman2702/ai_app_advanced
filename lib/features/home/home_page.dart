@@ -23,14 +23,9 @@ class _HomePageState extends State<HomePage> {
   User? user;
 
   @override
-  void didChangeDependencies() {
-    final args = ModalRoute.of(context)?.settings.arguments;
-
-    if (args != null) {
-      user = args as User;
-    }
-
-    super.didChangeDependencies();
+  void initState() {
+    user = FirebaseAuth.instance.currentUser;
+    super.initState();
   }
 
   @override
@@ -44,22 +39,14 @@ class _HomePageState extends State<HomePage> {
           preferredSize: Size.fromHeight(65.0),
           child: AppBar(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30))),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))),
             backgroundColor: Colors.white,
             elevation: 5,
             shadowColor: Colors.black,
             leadingWidth: 60,
             leading: Padding(
               padding: const EdgeInsets.only(top: 5, left: 5),
-              child: IconButton(
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.menu,
-                    color: Color(CustomColors.main),
-                    size: 30,
-                  )),
+              child: IconButton(onPressed: null, icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
             ),
             title: Center(
               child: StreamBuilder(
@@ -71,16 +58,12 @@ class _HomePageState extends State<HomePage> {
                       if (i.id == user!.email) {
                         return Text(
                           "${i.data().username}",
-                          style: TextStyle(
-                              color: Color(CustomColors.main),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 25),
+                          style: TextStyle(color: Color(CustomColors.main), fontWeight: FontWeight.w700, fontSize: 25),
                         );
                       }
                     }
                     return CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(CustomColors.mainLightX2)),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
                     );
                   }),
             ),
@@ -90,14 +73,9 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                       onPressed: () async {
                         //await auth.signOut();
-                        Navigator.of(context)
-                            .pushNamed('/settings', arguments: user);
+                        Navigator.of(context).pushNamed('/settings', arguments: user);
                       },
-                      icon: Icon(
-                        Icons.settings,
-                        color: Color(CustomColors.main),
-                        size: 30,
-                      )),
+                      icon: Icon(Icons.settings, color: Color(CustomColors.main), size: 30)),
                   SizedBox(width: 10)
                 ],
               ),

@@ -22,6 +22,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   User? user;
   String? password;
+  String? newPassword;
+  String? newPassword2;
 
   @override
   void didChangeDependencies() {
@@ -39,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void signOut() async {
     await auth.signOut();
-    Navigator.of(context).pushReplacementNamed("/auth");
+    Navigator.of(context).pushReplacementNamed("/");
   }
 
   void deleteAccount(email, password) async {
@@ -48,7 +50,19 @@ class _SettingsPageState extends State<SettingsPage> {
     if (res[0] == 0) {
       await database.deleteUser(email);
 
-      Navigator.of(context).pushReplacementNamed("/auth");
+      Navigator.of(context).pushReplacementNamed("/");
+    } else {
+      showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: res[1]));
+    }
+  }
+
+  void changePassword(email, password, newPassword) async {
+    final res = await auth.changePassword(email, password, newPassword);
+
+    if (res[0] == 0) {
+      showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: "success"));
+    } else {
+      showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: res[1]));
     }
   }
 
@@ -63,9 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
           preferredSize: Size.fromHeight(65.0),
           child: AppBar(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30))),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))),
             backgroundColor: Colors.white,
             elevation: 5,
             shadowColor: Colors.black,
@@ -83,10 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Center(
                 child: Text(
               "Настройки",
-              style: TextStyle(
-                  color: Color(CustomColors.main),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 25),
+              style: TextStyle(color: Color(CustomColors.main), fontWeight: FontWeight.w700, fontSize: 25),
             )),
             actions: [SizedBox(width: 50)],
           ),
@@ -105,32 +114,221 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 40,
                       child: Text(
                         "Аккаунт",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
                       ),
                     ),
                     Container(height: 1, width: 330, color: Colors.black12),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Введите ваш текущий пароль и тот, на который хотите изменить его",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        height: 40,
+                                        width: 295,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(),
+                                            color: Colors.white),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 8),
+                                            Icon(Icons.remove, size: 24, color: Color(CustomColors.bright)),
+                                            SizedBox(width: 8),
+                                            SizedBox(
+                                              width: 210,
+                                              height: 40,
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints.expand(
+                                                      width: AuthSettings().maxPasswordLength * 18),
+                                                  child: TextField(
+                                                    obscureText: false,
+                                                    style: const TextStyle(
+                                                        fontWeight: FontWeight.w700,
+                                                        fontSize: 18,
+                                                        color: Colors.black87),
+                                                    maxLength: AuthSettings().maxPasswordLength,
+                                                    onChanged: (value) => setState(() {
+                                                      password = value;
+                                                    }),
+                                                    decoration: InputDecoration(
+                                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                                      contentPadding: EdgeInsets.only(bottom: 12),
+                                                      counterText: "",
+                                                      border: InputBorder.none,
+                                                      labelText: "Старый пароль",
+                                                      labelStyle: TextStyle(
+                                                          color: Colors.black12,
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        height: 40,
+                                        width: 295,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(),
+                                            color: Colors.white),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 8),
+                                            Icon(Icons.add, size: 24, color: Color(CustomColors.bright)),
+                                            SizedBox(width: 8),
+                                            SizedBox(
+                                              width: 210,
+                                              height: 40,
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints.expand(
+                                                      width: AuthSettings().maxPasswordLength * 18),
+                                                  child: TextField(
+                                                    obscureText: false,
+                                                    style: const TextStyle(
+                                                        fontWeight: FontWeight.w700,
+                                                        fontSize: 18,
+                                                        color: Colors.black87),
+                                                    maxLength: AuthSettings().maxPasswordLength,
+                                                    onChanged: (value) => setState(() {
+                                                      newPassword = value;
+                                                    }),
+                                                    decoration: InputDecoration(
+                                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                                      contentPadding: EdgeInsets.only(bottom: 12),
+                                                      counterText: "",
+                                                      border: InputBorder.none,
+                                                      labelText: "Новый пароль",
+                                                      labelStyle: TextStyle(
+                                                          color: Colors.black12,
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        height: 40,
+                                        width: 295,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(),
+                                            color: Colors.white),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 8),
+                                            Icon(Icons.add, size: 24, color: Color(CustomColors.bright)),
+                                            SizedBox(width: 8),
+                                            SizedBox(
+                                              width: 210,
+                                              height: 40,
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints.expand(
+                                                      width: AuthSettings().maxPasswordLength * 18),
+                                                  child: TextField(
+                                                    obscureText: false,
+                                                    style: const TextStyle(
+                                                        fontWeight: FontWeight.w700,
+                                                        fontSize: 18,
+                                                        color: Colors.black87),
+                                                    maxLength: AuthSettings().maxPasswordLength,
+                                                    onChanged: (value) => setState(() {
+                                                      newPassword2 = value;
+                                                    }),
+                                                    decoration: InputDecoration(
+                                                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                                                      contentPadding: EdgeInsets.only(bottom: 12),
+                                                      counterText: "",
+                                                      border: InputBorder.none,
+                                                      labelText: "Повторите пароль",
+                                                      labelStyle: TextStyle(
+                                                          color: Colors.black12,
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  actionsAlignment: MainAxisAlignment.center,
+                                  actionsPadding: EdgeInsets.only(bottom: 20),
+                                  actions: [
+                                    SizedBox(
+                                      height: 35,
+                                      width: 130,
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(CustomColors.main),
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                                          onPressed: () {
+                                            if (password == null) {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext context) => AuthDenySheet(
+                                                        type: "none",
+                                                      ));
+                                            } else if (newPassword != newPassword2) {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext context) => AuthDenySheet(
+                                                        type: "not_equal",
+                                                      ));
+                                            } else {
+                                              log("$user");
+                                              changePassword(user!.email, password!, newPassword!);
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: const Text("Сменить",
+                                              style: TextStyle(
+                                                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700))),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           child: Container(
                             height: 90,
                             width: 155,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(0, 3),
-                                      blurRadius: 5,
-                                      spreadRadius: 1,
-                                      color: Colors.black26)
+                                  BoxShadow(offset: Offset(0, 3), blurRadius: 5, spreadRadius: 1, color: Colors.black26)
                                 ],
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(
@@ -153,13 +351,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 0, left: 5),
-                                    child: Icon(
-                                      Icons.lock_open_outlined,
-                                      size: 45,
-                                      color: Color(CustomColors.main),
-                                    ),
+                                    padding: const EdgeInsets.only(bottom: 0, left: 5),
+                                    child: Icon(Icons.lock_open_outlined, size: 45, color: Color(CustomColors.main)),
                                   )
                                 ],
                               ),
@@ -171,8 +364,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onTap: () {
                             showDialog(
                               context: context,
-                              builder: (context) => ConfirmationDialog(
-                                  info: "exit", action: signOut),
+                              builder: (context) => ConfirmationDialog(info: "exit", action: signOut),
                             );
                           },
                           child: Container(
@@ -181,11 +373,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(0, 3),
-                                      blurRadius: 5,
-                                      spreadRadius: 1,
-                                      color: Colors.black26)
+                                  BoxShadow(offset: Offset(0, 3), blurRadius: 5, spreadRadius: 1, color: Colors.black26)
                                 ],
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(
@@ -208,13 +396,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 0, left: 5),
-                                    child: Icon(
-                                      Icons.meeting_room,
-                                      size: 50,
-                                      color: Color(CustomColors.main),
-                                    ),
+                                    padding: const EdgeInsets.only(bottom: 0, left: 5),
+                                    child: Icon(Icons.meeting_room, size: 50, color: Color(CustomColors.main)),
                                   )
                                 ],
                               ),
@@ -237,9 +420,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 title: Text(
                                   "Повторно введите пароль, чтобы подтвердить удаление",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700),
+                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                                 ),
                                 content: Container(
                                   height: 40,
@@ -251,11 +432,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(width: 8),
-                                      Icon(
-                                        Icons.key_outlined,
-                                        size: 24,
-                                        color: Color(CustomColors.bright),
-                                      ),
+                                      Icon(Icons.key_outlined, size: 24, color: Color(CustomColors.bright)),
                                       SizedBox(width: 8),
                                       SizedBox(
                                         width: 210,
@@ -263,26 +440,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: ConstrainedBox(
-                                            constraints: BoxConstraints.expand(
-                                                width: AuthSettings()
-                                                        .maxPasswordLength *
-                                                    18),
+                                            constraints:
+                                                BoxConstraints.expand(width: AuthSettings().maxPasswordLength * 18),
                                             child: TextField(
+                                              obscureText: false,
                                               style: const TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 18,
-                                                  color: Colors.black87),
-                                              maxLength: AuthSettings()
-                                                  .maxPasswordLength,
-                                              onChanged: (value) =>
-                                                  setState(() {
+                                                  fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
+                                              maxLength: AuthSettings().maxPasswordLength,
+                                              onChanged: (value) => setState(() {
                                                 password = value;
                                               }),
                                               decoration: InputDecoration(
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior.never,
-                                                contentPadding:
-                                                    EdgeInsets.only(bottom: 12),
+                                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                                contentPadding: EdgeInsets.only(bottom: 12),
                                                 counterText: "",
                                                 border: InputBorder.none,
                                               ),
@@ -301,32 +471,24 @@ class _SettingsPageState extends State<SettingsPage> {
                                     width: 130,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color(CustomColors.main),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15))),
+                                            backgroundColor: Color(CustomColors.main),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                                         onPressed: () {
                                           if (password == null) {
                                             showModalBottomSheet(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        AuthDenySheet(
-                                                          type: "none",
-                                                        ));
+                                                builder: (BuildContext context) => AuthDenySheet(
+                                                      type: "none",
+                                                    ));
                                           } else {
                                             log("$user");
-                                            deleteAccount(
-                                                user!.email, password!);
+                                            deleteAccount(user!.email, password!);
                                             Navigator.pop(context);
                                           }
                                         },
                                         child: const Text("Удалить",
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700))),
+                                                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700))),
                                   ),
                                 ],
                               );
@@ -338,11 +500,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(0, 3),
-                                      blurRadius: 5,
-                                      spreadRadius: 1,
-                                      color: Colors.black26)
+                                  BoxShadow(offset: Offset(0, 3), blurRadius: 5, spreadRadius: 1, color: Colors.black26)
                                 ],
                                 borderRadius: BorderRadius.circular(20)),
                             child: Padding(
@@ -365,13 +523,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 0, left: 5),
-                                    child: Icon(
-                                      Icons.delete_outlined,
-                                      size: 45,
-                                      color: Color(CustomColors.delete),
-                                    ),
+                                    padding: const EdgeInsets.only(bottom: 0, left: 5),
+                                    child: Icon(Icons.delete_outlined, size: 45, color: Color(CustomColors.delete)),
                                   )
                                 ],
                               ),
@@ -380,11 +533,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         SizedBox(width: 20),
                         Container(
-                          height: 90,
-                          width: 155,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
+                            height: 90, width: 155, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20))),
                       ],
                     ),
                   ],

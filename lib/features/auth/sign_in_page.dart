@@ -35,8 +35,7 @@ class _FirstPageState extends State<FirstPage> {
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                  Color(CustomColors.mainLightX2)),
+              valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
             ),
           );
         });
@@ -47,24 +46,15 @@ class _FirstPageState extends State<FirstPage> {
     if (user![0] == 0) {
       log("Пользователь создан");
 
-      await database.addUser(CustomUser(
-          username: username!,
-          email: em,
-          defect: [],
-          lessons: {},
-          lessons_correct: {},
-          time_plan: {}));
+      await database.addUser(
+          CustomUser(username: username!, email: em, defect: [], lessons: {}, lessons_correct: {}, time_plan: {}));
 
-      Navigator.of(context).pushNamed('/auth');
+      Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => EmailNotificator(type: "verify"));
+      showDialog(context: context, builder: (BuildContext context) => EmailNotificator(type: "verify"));
     } else if (user[0] == 1) {
       log("Ошибка ${user[1]}");
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) => AuthDenySheet(type: user[1]));
+      showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: user[1]));
     }
   }
 
@@ -88,13 +78,9 @@ class _FirstPageState extends State<FirstPage> {
           Padding(
               padding: EdgeInsets.only(top: height / 1.6, left: width / 2.3),
               child: Transform.rotate(
-                angle: 5 * math.pi / 12,
-                child: Image.asset("images/triangle.png",
-                    scale: 1.2,
-                    opacity: const AlwaysStoppedAnimation(0.15),
-                    alignment: Alignment.center),
-              )),
-
+                  angle: 5 * math.pi / 12,
+                  child: Image.asset("images/triangle.png",
+                      scale: 1.2, opacity: const AlwaysStoppedAnimation(0.15), alignment: Alignment.center))),
           Scaffold(
             resizeToAvoidBottomInset: true,
             backgroundColor: Colors.transparent,
@@ -102,62 +88,40 @@ class _FirstPageState extends State<FirstPage> {
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
+                          icon: Icon(Icons.arrow_back, color: Colors.white),
                         ),
                       ],
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 7 : height / 10),
+                    SizedBox(height: (height - width) > 0 ? height / 7 : height / 10),
                     SizedBox(
                       height: 50,
                       child: Text(
                         "Регистрация",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 40,
-                          color: Colors.white,
-                          letterSpacing: 2,
-                        ),
+                        style:
+                            TextStyle(fontWeight: FontWeight.w700, fontSize: 40, color: Colors.white, letterSpacing: 2),
                       ),
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 11 : height / 18),
+                    SizedBox(height: (height - width) > 0 ? height / 11 : height / 18),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Ваш никнейм:",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Container(
                           height: 40,
                           width: 295,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
                               SizedBox(width: 8),
-                              Icon(
-                                Icons.account_circle_outlined,
-                                size: 24,
-                                color: Color(CustomColors.bright),
-                              ),
+                              Icon(Icons.account_circle_outlined, size: 24, color: Color(CustomColors.bright)),
                               SizedBox(width: 8),
                               SizedBox(
                                 width: 250,
@@ -165,25 +129,17 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.expand(
-                                        width:
-                                            AuthSettings().maxUsernameLength *
-                                                18),
+                                    constraints: BoxConstraints.expand(width: AuthSettings().maxUsernameLength * 18),
                                     child: TextField(
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: Colors.black87),
-                                      maxLength:
-                                          AuthSettings().maxUsernameLength,
+                                          fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
+                                      maxLength: AuthSettings().maxUsernameLength,
                                       onChanged: (value) => setState(() {
                                         username = value;
                                       }),
                                       decoration: InputDecoration(
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        contentPadding:
-                                            EdgeInsets.only(bottom: 8),
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        contentPadding: EdgeInsets.only(bottom: 8),
                                         counterText: "",
                                         border: InputBorder.none,
                                       ),
@@ -197,25 +153,16 @@ class _FirstPageState extends State<FirstPage> {
                         SizedBox(height: 10),
                         Text(
                           "Почта:",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Container(
                           height: 40,
                           width: 295,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
                               SizedBox(width: 8),
-                              Icon(
-                                Icons.mail_outline,
-                                size: 24,
-                                color: Color(CustomColors.bright),
-                              ),
+                              Icon(Icons.mail_outline, size: 24, color: Color(CustomColors.bright)),
                               SizedBox(width: 8),
                               SizedBox(
                                 width: 250,
@@ -223,23 +170,17 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.expand(
-                                        width:
-                                            AuthSettings().maxEmailLength * 18),
+                                    constraints: BoxConstraints.expand(width: AuthSettings().maxEmailLength * 18),
                                     child: TextField(
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: Colors.black87),
+                                          fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
                                       maxLength: AuthSettings().maxEmailLength,
                                       onChanged: (value) => setState(() {
                                         email = value;
                                       }),
                                       decoration: InputDecoration(
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        contentPadding:
-                                            EdgeInsets.only(bottom: 12),
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        contentPadding: EdgeInsets.only(bottom: 12),
                                         counterText: "",
                                         border: InputBorder.none,
                                       ),
@@ -253,25 +194,16 @@ class _FirstPageState extends State<FirstPage> {
                         SizedBox(height: 10),
                         Text(
                           "Пароль:",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Container(
                           height: 40,
                           width: 295,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
                               SizedBox(width: 8),
-                              Icon(
-                                Icons.key_outlined,
-                                size: 24,
-                                color: Color(CustomColors.bright),
-                              ),
+                              Icon(Icons.key_outlined, size: 24, color: Color(CustomColors.bright)),
                               SizedBox(width: 8),
                               SizedBox(
                                 width: 210,
@@ -279,26 +211,18 @@ class _FirstPageState extends State<FirstPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.expand(
-                                        width:
-                                            AuthSettings().maxPasswordLength *
-                                                18),
+                                    constraints: BoxConstraints.expand(width: AuthSettings().maxPasswordLength * 18),
                                     child: TextField(
                                       obscureText: obscureBool,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: Colors.black87),
-                                      maxLength:
-                                          AuthSettings().maxPasswordLength,
+                                          fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
+                                      maxLength: AuthSettings().maxPasswordLength,
                                       onChanged: (value) => setState(() {
                                         password = value;
                                       }),
                                       decoration: InputDecoration(
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        contentPadding:
-                                            EdgeInsets.only(bottom: 12),
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        contentPadding: EdgeInsets.only(bottom: 12),
                                         counterText: "",
                                         border: InputBorder.none,
                                       ),
@@ -312,35 +236,25 @@ class _FirstPageState extends State<FirstPage> {
                                   onPressed: () => setState(() {
                                         obscureBool = !obscureBool;
                                       }),
-                                  icon: !obscureBool
-                                      ? Icon(Icons.visibility)
-                                      : Icon(Icons.visibility_off))
+                                  icon: !obscureBool ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
                             ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 11 : height / 18),
+                    SizedBox(height: (height - width) > 0 ? height / 11 : height / 18),
                     SizedBox(
                       height: 40,
                       width: 180,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(CustomColors.bright)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.bright)),
                         onPressed: () async {
                           if (username == null || password == null) {
                             showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    const AuthDenySheet(type: "none"));
-                          } else if (username!.length < 4 ||
-                              password!.length < 4) {
+                                context: context, builder: (BuildContext context) => const AuthDenySheet(type: "none"));
+                          } else if (username!.length < 4 || password!.length < 4) {
                             showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    AuthDenySheet(type: "length"));
+                                context: context, builder: (BuildContext context) => AuthDenySheet(type: "length"));
                           } else {
                             log("Логин: $username, пароль: $password");
                             signUp(email!, password!);
@@ -348,10 +262,7 @@ class _FirstPageState extends State<FirstPage> {
                         },
                         child: Text(
                           "Создать",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),

@@ -11,11 +11,9 @@ class AuthService {
   final auth = FirebaseAuth.instance;
 
   // Регистрация (е-маил, пароль)
-  Future<List?> createUserWithEmailAndPassword(
-      String email, String password) async {
+  Future<List?> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      final cred = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      final cred = await auth.createUserWithEmailAndPassword(email: email, password: password);
       return [0, cred.user];
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -30,11 +28,9 @@ class AuthService {
   }
 
   // Логин (е-маил и пароль)
-  Future<List> loginUserWithEmailAndPassword(
-      String email, String password) async {
+  Future<List> loginUserWithEmailAndPassword(String email, String password) async {
     try {
-      final cred = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      final cred = await auth.signInWithEmailAndPassword(email: email, password: password);
       return [0, cred.user];
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -68,13 +64,25 @@ class AuthService {
     }
   }
 
+  Future<List> changePassword(String email, String currentPassword, String newPassword) async {
+    try {
+      User user = auth.currentUser!;
+      AuthCredential cred = EmailAuthProvider.credential(email: email, password: currentPassword);
+      final result = await user.reauthenticateWithCredential(cred);
+      result.user!.updatePassword(newPassword);
+      return [0];
+    } on FirebaseAuthException catch (e) {
+      log("Ошибка $e");
+    }
+    return [1, 'unknown'];
+  }
+
   // Удалить аккаунт (подтверждение паролем)
   Future<List> deleteAccount(String email, String password) async {
     try {
       User user = auth.currentUser!;
-      AuthCredential credentials =
-          EmailAuthProvider.credential(email: email, password: password);
-      final result = await user.reauthenticateWithCredential(credentials);
+      AuthCredential cred = EmailAuthProvider.credential(email: email, password: password);
+      final result = await user.reauthenticateWithCredential(cred);
       await result.user!.delete();
       return [0];
     } on FirebaseAuthException catch (e) {
