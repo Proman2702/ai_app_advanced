@@ -41,8 +41,10 @@ class AuthService {
         return [1, 'format'];
       } else if (e.code == 'user-not-found') {
         return [1, 'not_found'];
-      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+      } else if (e.code == 'wrong-password') {
         return [1, 'wrong'];
+      } else if (e.code == 'invalid-credential') {
+        return [1, 'wrong_or_not_found'];
       }
     }
     return [1, 'unknown'];
@@ -57,6 +59,7 @@ class AuthService {
     }
   }
 
+  // Выслать письмо для верификации
   Future<void> sendVerification() async {
     try {
       await auth.currentUser?.sendEmailVerification();
@@ -65,6 +68,22 @@ class AuthService {
     }
   }
 
+  // Удалить аккаунт (подтверждение паролем)
+  Future<List> deleteAccount(String email, String password) async {
+    try {
+      User user = auth.currentUser!;
+      AuthCredential credentials =
+          EmailAuthProvider.credential(email: email, password: password);
+      final result = await user.reauthenticateWithCredential(credentials);
+      await result.user!.delete();
+      return [0];
+    } on FirebaseAuthException catch (e) {
+      log("Ошибка $e");
+    }
+    return [1, 'unknown'];
+  }
+
+  // Сбросить пароль
   Future<List> resetPassword(String email) async {
     try {
       await auth.sendPasswordResetEmail(email: email);

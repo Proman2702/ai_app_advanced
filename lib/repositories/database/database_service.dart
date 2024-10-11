@@ -14,11 +14,23 @@ class DatabaseService {
         toFirestore: (user, _) => user.toJson());
   }
 
+  // Получить данные
   Stream<QuerySnapshot> getUsers() {
     return usersRef.snapshots();
   }
 
-  void addUser(CustomUser user) async {
-    usersRef.doc(user.email).set(user);
+  // Добавить в базу данных пользователя
+  Future<void> addUser(CustomUser user) async {
+    await usersRef.doc(user.email).set(user);
+  }
+
+  // Обновление данных (используются все параметры пользователя)
+  Future<void> updateUser(String userId, CustomUser user) async {
+    await usersRef.doc(userId).update(user.toJson());
+  }
+
+  // Удаление по почте
+  Future<void> deleteUser(String email) async {
+    await usersRef.doc(email).delete();
   }
 }

@@ -9,6 +9,7 @@ class CustomColors {
   static int white = 0xffffffff;
   static int shadow = 0xffd9d9d9;
   static int dialogBack = 0xffefd8ec;
+  static int delete = 0xFFDB2A24;
 
   List<int> get getBackgroundGrad => backgroundGrad;
   List<int> get getTileGrad => tileGrad;

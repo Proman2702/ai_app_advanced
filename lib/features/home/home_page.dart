@@ -90,7 +90,8 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                       onPressed: () async {
                         //await auth.signOut();
-                        Navigator.of(context).pushNamed('/settings');
+                        Navigator.of(context)
+                            .pushNamed('/settings', arguments: user);
                       },
                       icon: Icon(
                         Icons.settings,

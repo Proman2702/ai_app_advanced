@@ -47,7 +47,7 @@ class _FirstPageState extends State<FirstPage> {
     if (user![0] == 0) {
       log("Пользователь создан");
 
-      database.addUser(CustomUser(
+      await database.addUser(CustomUser(
           username: username!,
           email: em,
           defect: [],
