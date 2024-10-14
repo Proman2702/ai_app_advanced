@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/features/auth/auth_page.dart';
@@ -30,7 +32,11 @@ class Wrapper extends StatelessWidget {
               } else {
                 if (snapshot.data == null) {
                   return const AuthPage();
+                } else if (snapshot.data!.emailVerified == false) {
+                  
+                  return const AuthPage();
                 } else {
+                  log("вход");
                   return const HomePage();
                 }
               }

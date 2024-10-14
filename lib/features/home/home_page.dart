@@ -1,12 +1,16 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
 
 import 'dart:developer';
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
+import 'package:ai_app/repositories/database/get_values.dart';
+
 
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +25,31 @@ class _HomePageState extends State<HomePage> {
   final auth = AuthService();
   final database = DatabaseService();
   User? user;
+  List<dynamic>? users;
+  GetValues? dbGetter;
+  
+
+  asyncGetter() async {
+
+    await database.getUsers().listen((snapshot) {
+        List<dynamic> users_tmp = snapshot.docs;
+        dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);
+        setState(() {
+          users = users_tmp;
+        });
+      }
+      );
+    
+    
+  }
 
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
     super.initState();
+
+    asyncGetter();
+  
   }
 
   @override
@@ -49,30 +73,16 @@ class _HomePageState extends State<HomePage> {
               child: IconButton(onPressed: null, icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
             ),
             title: Center(
-              child: StreamBuilder(
-                  stream: database.getUsers(),
-                  builder: (context, snapshot) {
-                    List users = snapshot.data?.docs ?? [];
-
-                    for (var i in users) {
-                      if (i.id == user!.email) {
-                        return Text(
-                          "${i.data().username}",
-                          style: TextStyle(color: Color(CustomColors.main), fontWeight: FontWeight.w700, fontSize: 25),
-                        );
-                      }
-                    }
-                    return CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
-                    );
-                  }),
+                child: Text(
+                  dbGetter?.getUser()?.username ?? '<Загрузка...>', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color(CustomColors.main))
+                  )
+            
             ),
             actions: [
               Row(
                 children: [
                   IconButton(
                       onPressed: () async {
-                        //await auth.signOut();
                         Navigator.of(context).pushNamed('/settings', arguments: user);
                       },
                       icon: Icon(Icons.settings, color: Color(CustomColors.main), size: 30)),
@@ -82,8 +92,94 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: Center(),
-      ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 10,),
+                  InformationField(),
+                  SizedBox(height: 10,),
+            
+                  Container(height: 480, width: 400, decoration: BoxDecoration(color: Colors.white, 
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))),
+                  child: 
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20),
+                          Center(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Меню", style: TextStyle(color: Color(CustomColors.main), fontSize: 25, fontWeight: FontWeight.w700)),
+                              Container(width: 335, height: 1, color: Colors.black26,)
+                            ],
+                          ),),
+
+                          SizedBox(height: 25),
+                          Center(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(height: 85, width: 340, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), gradient: TileGrad1(), 
+                                boxShadow: [BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)]),),
+                              )
+
+                          ],),),
+                          SizedBox(height: 25),
+                          Center(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(height: 85, width: 340, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), gradient: TileGrad2(), 
+                                boxShadow: [BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)]),),
+                              )
+
+                          ],),),
+                          SizedBox(height: 25),
+                          Center(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(height: 85, width: 340, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), gradient: TileGrad3(), 
+                                boxShadow: [BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)]),),
+                              )
+
+                          ],),),
+                                  
+                        ],
+                      ),
+                    ),)
+            
+                  
+                ],
+              ),
+          ),
+        ),
+        ),
+    );
+  }
+}
+
+class InformationField extends StatefulWidget {
+  const InformationField({super.key});
+
+  @override
+  State<InformationField> createState() => _InformationFieldState();
+}
+
+class _InformationFieldState extends State<InformationField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      width: 400,
+      color: Colors.transparent,
     );
   }
 }

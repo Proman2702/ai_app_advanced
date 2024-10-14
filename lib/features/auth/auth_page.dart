@@ -48,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
       if (user[1].emailVerified) {
         log(user[1].emailVerified.toString());
         log("Успешный вход");
-        //Navigator.of(context).pushNamed("/");
+        Navigator.of(context).pushReplacementNamed("/");
       } else {
         showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: "verify"));
       }

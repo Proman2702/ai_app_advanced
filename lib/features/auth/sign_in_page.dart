@@ -47,7 +47,7 @@ class _FirstPageState extends State<FirstPage> {
       log("Пользователь создан");
 
       await database.addUser(
-          CustomUser(username: username!, email: em, defect: [], lessons: {}, lessons_correct: {}, time_plan: {}));
+          CustomUser(username: username!, email: em, defect: [], lessons_passed: {}, lessons_correct: {}, time_plan: {}, lessons: {}, isDiagnosed: false, isRedacted: false,));
 
       Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
