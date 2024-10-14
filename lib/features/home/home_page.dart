@@ -125,7 +125,25 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 onTap: () {},
                                 child: Container(height: 85, width: 340, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), gradient: TileGrad1(), 
-                                boxShadow: [BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)]),),
+                                boxShadow: [BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)]),
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      
+                                    
+                                      
+                                      children: [
+                                        Text("Пройти диагностику"),
+                                        SizedBox(height: 30),
+                                        Icon(Icons.check)
+                                      ],
+                                    )
+                                  ],
+                                  
+                                ),
+                                ),
                               )
 
                           ],),),
