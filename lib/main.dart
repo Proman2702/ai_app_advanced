@@ -2,6 +2,7 @@ import 'package:ai_app/features/auth/forgot_password_page.dart';
 import 'package:ai_app/features/auth/sign_in_page.dart';
 import 'package:ai_app/features/auth/wrapper.dart';
 import 'package:ai_app/features/diagnostics/diag_page.dart';
+import 'package:ai_app/features/sandbox/sandbox.dart';
 import 'package:ai_app/features/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         '/auth/create': (context) => const FirstPage(),
         '/auth/forgot': (context) => const ForgotPasswordPage(),
         '/settings': (context) => const SettingsPage(),
-        '/diagnostics': (context) => const DiagnosticsPage()
+        '/diagnostics': (context) => const DiagnosticsPage(),
+        '/sandbox': (context) => const Sandbox()
       },
       theme: ThemeData(fontFamily: "Jura"),
     );

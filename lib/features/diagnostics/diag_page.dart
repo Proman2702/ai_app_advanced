@@ -22,7 +22,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
   List<dynamic>? users;
   GetValues? dbGetter;
 
-  asyncGetter() async {
+  void asyncGetter() async {
     await database.getUsers().listen((snapshot) {
       List<dynamic> users_tmp = snapshot.docs;
       dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);

@@ -1,10 +1,10 @@
 class CustomColors {
   final List<int> backgroundGrad = [0xFFE8C4E8, 0xFF421058];
   final List<int> tileGrad1 = [0xFF633D9D, 0xffD192BE];
-  final List<int> tileGrad2 = [0xFFC3645E, 0xFFBB93C2];
+  final List<int> tileGrad2 = [0xFFD3B1D9, 0xFF8146C0];
   final List<int> tileGrad3 = [0xff61D7D0, 0xFFCF96DA];
 
-  static int main = 0xff552366;
+  static int main = 0xff6B3C7A;
   static int mainLight = 0xFF90559F;
   static int mainLightX2 = 0xDDE9C1E9;
   static int bright = 0xff7021A7;

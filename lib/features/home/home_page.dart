@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 dbGetter?.getUser() == null
-                    ? SizedBox(width: 400, height: 200, child: CircularProgressIndicator())
+                    ? SizedBox(width: 200, height: 200, child: CircularProgressIndicator())
                     : InformationField(
                         user: dbGetter!.getUser()!,
                         defectType: 0,
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 Container(
-                  height: 480,
+                  height: 450,
                   width: 400,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -159,78 +159,9 @@ class _HomePageState extends State<HomePage> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(height: 10),
-                                            dbGetter?.getUser()?.isDiagnosed == null
+                                            dbGetter?.getUser()?.defect == null
                                                 ? CircularProgressIndicator()
-                                                : dbGetter!.getUser()!.isDiagnosed
-                                                    ? Icon(Icons.check, color: Colors.white)
-                                                    : Icon(Icons.cancel_outlined, color: Colors.white)
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 48, right: 10),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            SizedBox(
-                                              child: Text(
-                                                dbGetter?.getUser()?.isDiagnosed == null
-                                                    ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.isDiagnosed
-                                                        ? "Уже пройдена!"
-                                                        : "Еще не пройдена!",
-                                                textAlign: TextAlign.end,
-                                                style: TextStyle(
-                                                    color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 25),
-                        Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  height: 85,
-                                  width: 340,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      gradient: TileGrad3(),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)
-                                      ]),
-                                  child: Stack(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 8, left: 12),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Редактор занятий",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontFamily: 'Nunito',
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            SizedBox(height: 10),
-                                            dbGetter?.getUser()?.isDiagnosed == null
-                                                ? CircularProgressIndicator()
-                                                : dbGetter!.getUser()!.lessons.isEmpty
+                                                : dbGetter!.getUser()!.defect.isEmpty
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
                                           ],
@@ -244,11 +175,11 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             SizedBox(
                                               child: Text(
-                                                dbGetter?.getUser()?.isDiagnosed == null
+                                                dbGetter?.getUser()?.defect == null
                                                     ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.lessons.isEmpty
-                                                        ? "Еще не пройден!"
-                                                        : "Уже пройден!",
+                                                    : dbGetter!.getUser()!.defect.isEmpty
+                                                        ? "Еще не пройдена!"
+                                                        : "Уже пройдена!",
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                     color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
@@ -297,9 +228,9 @@ class _HomePageState extends State<HomePage> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(height: 10),
-                                            dbGetter?.getUser()?.isDiagnosed == null
+                                            dbGetter?.getUser()?.current_level == null
                                                 ? CircularProgressIndicator()
-                                                : dbGetter!.getUser()!.lessons.isEmpty
+                                                : dbGetter!.getUser()!.current_level.isEmpty
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
                                           ],
@@ -313,11 +244,11 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             SizedBox(
                                               child: Text(
-                                                dbGetter?.getUser()?.isDiagnosed == null
+                                                dbGetter?.getUser()?.current_level == null
                                                     ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.lessons.isEmpty
-                                                        ? "Недоступны!"
-                                                        : "Пройдено {}", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                                                    : dbGetter!.getUser()!.current_level.isEmpty
+                                                        ? "Прохождение не начато!"
+                                                        : "В процессе: {}", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                     color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
@@ -333,6 +264,11 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/sandbox');
+                            },
+                            child: Text('В песочницу'))
                       ],
                     ),
                   ),
@@ -359,50 +295,51 @@ class _InformationFieldState extends State<InformationField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 200,
+        height: 300,
         width: 400,
         color: Colors.transparent,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 100),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: 100,
                     width: 155,
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [
-                      BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)
-                    ]),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Прогресс за занятия",
-                              style: TextStyle(color: Color(CustomColors.main), fontSize: 16),
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.white, width: 3),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: []),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Ваш прогресс",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 17, fontFamily: 'nunito', fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            width: 60,
+                            height: 35,
+                            alignment: Alignment.center,
+                            decoration:
+                                BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
+                            child: Text(
+                              '?%', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 5),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 70.0),
-                              child: Container(
-                                width: 60,
-                                height: 32,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color(CustomColors.mainLight), borderRadius: BorderRadius.circular(15)),
-                                child: Text(
-                                  widget.user.lessons.isEmpty ? '0%' : 'n%', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                                  style: TextStyle(color: Colors.white, fontSize: 18),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -410,38 +347,37 @@ class _InformationFieldState extends State<InformationField> {
                   Container(
                     height: 100,
                     width: 155,
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [
-                      BoxShadow(spreadRadius: 2, offset: Offset(0, 3), blurRadius: 4, color: Colors.black26)
-                    ]),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Процент усп. выполнения",
-                              style: TextStyle(color: Color(CustomColors.main), fontSize: 16),
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.white, width: 3),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: []),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Лучшая серия",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 17, fontFamily: 'nunito', fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            width: 60,
+                            height: 35,
+                            alignment: Alignment.center,
+                            decoration:
+                                BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
+                            child: Text(
+                              '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 70.0),
-                              child: Container(
-                                width: 60,
-                                height: 32,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color(CustomColors.mainLight), borderRadius: BorderRadius.circular(15)),
-                                child: Text(
-                                  widget.user.lessons.isEmpty ? '0%' : 'n%', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                                  style: TextStyle(color: Colors.white, fontSize: 18),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -452,14 +388,14 @@ class _InformationFieldState extends State<InformationField> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Пройдено уроков: {}",
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+                    "Всего правильных заданий: {}",
+                    style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
                   ), // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                   SizedBox(
                     height: 2,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 15,
                     width: 335,
                     child: LinearProgressIndicator(
                       value: 0.3, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
@@ -472,8 +408,8 @@ class _InformationFieldState extends State<InformationField> {
                     width: 335,
                     child: Text(
                       textAlign: TextAlign.end,
-                      "Всего уроков: {}",
-                      style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+                      "Всего заданий: {}",
+                      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
