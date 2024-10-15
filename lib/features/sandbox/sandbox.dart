@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ai_app/etc/colors/colors.dart';
+import 'package:ai_app/repositories/audio/sound_recorder.dart';
 import 'package:flutter/material.dart';
-import 'package:record/record.dart';
 
 class Sandbox extends StatefulWidget {
   const Sandbox({super.key});
@@ -12,7 +12,9 @@ class Sandbox extends StatefulWidget {
 }
 
 class _SandboxState extends State<Sandbox> {
-  final record = AudioRecorder();
+  final recorder = SoundRecorder();
+
+  //INIT STATE LOAD ETC
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +53,10 @@ class _SandboxState extends State<Sandbox> {
                     decoration:
                         BoxDecoration(color: Color(CustomColors.delete), borderRadius: BorderRadius.circular(40)),
                     child: Icon(
+                      //recorder.isRecording ? Icons.pause : Icons.mic,
                       Icons.mic,
                       size: 50,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                 ),
