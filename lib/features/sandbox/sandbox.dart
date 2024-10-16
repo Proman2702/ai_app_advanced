@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ai_app/etc/colors/colors.dart';
+import 'package:ai_app/repositories/audio/sound_player.dart';
 import 'package:ai_app/repositories/audio/sound_recorder.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,21 @@ class Sandbox extends StatefulWidget {
 
 class _SandboxState extends State<Sandbox> {
   final recorder = SoundRecorder();
+  final player = SoundPlayer();
 
-  //INIT STATE LOAD ETC
+  @override
+  void initState() {
+    super.initState();
+    recorder.init();
+    player.init();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    recorder.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +46,26 @@ class _SandboxState extends State<Sandbox> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    await player.togglePlaying(whenFinished: () {});
+                    setState(() {});
+                  },
                   child: Container(
                     height: 50,
                     width: 50,
                     decoration: BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(25)),
                     child: Icon(
-                      Icons.replay_outlined,
-                      size: 30,
+                      player.isPlaying ? Icons.stop : Icons.play_arrow,
                       color: Colors.white,
                     ),
                   ),
                 ),
                 SizedBox(width: 20),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    await recorder.toggleRecording();
+                    setState(() {});
+                  },
                   child: Container(
                     height: 70,
                     width: 70,
@@ -54,7 +73,7 @@ class _SandboxState extends State<Sandbox> {
                         BoxDecoration(color: Color(CustomColors.delete), borderRadius: BorderRadius.circular(40)),
                     child: Icon(
                       //recorder.isRecording ? Icons.pause : Icons.mic,
-                      Icons.mic,
+                      recorder.isRecording ? Icons.pause : Icons.mic,
                       size: 50,
                       color: Colors.white,
                     ),

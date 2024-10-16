@@ -32,10 +32,18 @@ class SoundRecorder {
   }
 
   Future<void> record() async {
+    if (!isRecorderInit) {
+      return;
+    }
+
     await audioRecorder!.startRecorder(toFile: audioPath);
   }
 
   Future<void> stop() async {
+    if (!isRecorderInit) {
+      return;
+    }
+
     await audioRecorder!.stopRecorder();
   }
 
