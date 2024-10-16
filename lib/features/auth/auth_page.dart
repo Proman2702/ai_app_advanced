@@ -109,7 +109,10 @@ class _AuthPageState extends State<AuthPage> {
                     Container(
                       height: 40,
                       width: 295,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
                       child: Row(
                         children: [
                           SizedBox(width: 8),
@@ -226,7 +229,9 @@ class _AuthPageState extends State<AuthPage> {
                   height: 40,
                   width: 180,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.bright)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(CustomColors.bright),
+                    ),
                     onPressed: () async {
                       if (username == null || password == null) {
                         showModalBottomSheet(

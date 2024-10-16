@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
-
+import 'dart:math' as math;
 import 'dart:developer';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
@@ -92,10 +92,27 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 dbGetter?.getUser() == null
-                    ? SizedBox(width: 200, height: 200, child: CircularProgressIndicator())
-                    : InformationField(
-                        user: dbGetter!.getUser()!,
-                        defectType: 0,
+                    ? SizedBox(width: 200, height: 320, child: CircularProgressIndicator())
+                    : CarouselSlider(
+                        items: [
+                          InformationField(
+                            user: dbGetter!.getUser()!,
+                            defectType: 1,
+                          ),
+                          InformationField(
+                            user: dbGetter!.getUser()!,
+                            defectType: 2,
+                          ),
+                        ],
+                        options: CarouselOptions(
+                          height: 320.0,
+                          enlargeCenterPage: false,
+                          autoPlay: false,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: false,
+                          viewportFraction: 1,
+                        ),
                       ),
                 SizedBox(
                   height: 10,
@@ -132,7 +149,9 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/diagnostics');
+                                },
                                 child: Container(
                                   height: 85,
                                   width: 340,
@@ -201,7 +220,9 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/tasks');
+                                },
                                 child: Container(
                                   height: 85,
                                   width: 340,
@@ -248,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                                                     ? "Загрузка..."
                                                     : dbGetter!.getUser()!.current_level.isEmpty
                                                         ? "Прохождение не начато!"
-                                                        : "В процессе: {}", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                                                        : "В процессе: ${dbGetter!.getUser()!.current_level.length} курса", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                     color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
@@ -264,6 +285,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 20),
                         ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).pushNamed('/sandbox');
@@ -294,150 +316,177 @@ class InformationField extends StatefulWidget {
 class _InformationFieldState extends State<InformationField> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
+
     return Container(
         height: 300,
         width: 400,
         color: Colors.transparent,
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+        child: Stack(
+          children: [
+            Padding(
+                padding: EdgeInsets.only(top: height / 3.7, left: width / 1.45),
+                child: Transform.rotate(
+                  angle: math.pi / 2,
+                  child: Image.asset("images/hexagon.png",
+                      scale: 1.2, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center),
+                )),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 50,
-                    width: 300,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        gradient: TileGrad1(),
-                        boxShadow: [
-                          BoxShadow(spreadRadius: 2, offset: Offset(0, 4), blurRadius: 4, color: Colors.black26)
-                        ],
-                        borderRadius:
-                            BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))),
-                    child: Text(
-                      "Дефект 1 (картавость)",
-                      style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 300,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            gradient: TileGrad1(),
+                            boxShadow: [
+                              BoxShadow(spreadRadius: 2, offset: Offset(0, 4), blurRadius: 4, color: Colors.black26)
+                            ],
+                            borderRadius:
+                                BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))),
+                        child: Text(
+                          widget.defectType == 1 ? "Дефект 1 (ротацизм)" : "Дефект 2 (г)",
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 35),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 155,
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            //border: Border.all(color: Colors.white, width: 3),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: []),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Ваш прогресс",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color(CustomColors.main),
+                                    fontSize: 17,
+                                    fontFamily: 'nunito',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: 60,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
+                                child: Text(
+                                  widget.user.current_level['${widget.defectType}'] != null
+                                      ? '${widget.user.current_level['${widget.defectType}'] * 15}%'
+                                      : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 25),
+                      Container(
+                        height: 100,
+                        width: 155,
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            //border: Border.all(color: Colors.white, width: 3),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: []),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Лучшая серия",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color(CustomColors.main),
+                                    fontSize: 17,
+                                    fontFamily: 'nunito',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                width: 60,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
+                                child: Text(
+                                  widget.user.max_combo['${widget.defectType}'] != null
+                                      ? '${widget.user.max_combo['${widget.defectType}']}'
+                                      : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Всего правильных заданий: ${widget.user.lessons_correct['${widget.defectType}'] ?? "?"}",
+                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                      ), // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                      SizedBox(height: 2),
+                      SizedBox(
+                        height: 15,
+                        width: 320,
+                        child: LinearProgressIndicator(
+                          value: ((widget.user.lessons_passed['${widget.defectType}'] != null) &&
+                                  ((widget.user.lessons_correct['${widget.defectType}']) != null))
+                              ? widget.user.lessons_correct['${widget.defectType}'] /
+                                  widget.user.lessons_passed['${widget.defectType}']
+                              : 0.0, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(CustomColors.bright),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 320,
+                        child: Text(
+                          textAlign: TextAlign.end,
+                          "Всего заданий: ${widget.user.lessons_passed['${widget.defectType}'] ?? "?"}",
+                          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
-              SizedBox(height: 35),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 100,
-                    width: 155,
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: []),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Ваш прогресс",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 17, fontFamily: 'nunito', fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 60,
-                            height: 35,
-                            alignment: Alignment.center,
-                            decoration:
-                                BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              '?%', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 25),
-                  Container(
-                    height: 100,
-                    width: 155,
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: []),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Лучшая серия",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 17, fontFamily: 'nunito', fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            width: 60,
-                            height: 35,
-                            alignment: Alignment.center,
-                            decoration:
-                                BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Всего правильных заданий: {}",
-                    style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                  ), // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                  SizedBox(
-                    height: 2,
-                  ),
-                  SizedBox(
-                    height: 15,
-                    width: 335,
-                    child: LinearProgressIndicator(
-                      value: 0.3, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(CustomColors.bright),
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 335,
-                    child: Text(
-                      textAlign: TextAlign.end,
-                      "Всего заданий: {}",
-                      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ));
   }
 }
