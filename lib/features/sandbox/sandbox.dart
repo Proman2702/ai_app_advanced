@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
+
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/repositories/audio/sound_player.dart';
 import 'package:ai_app/repositories/audio/sound_recorder.dart';
+import 'package:ai_app/repositories/server/upload_to_server.dart';
 import 'package:flutter/material.dart';
 
 class Sandbox extends StatefulWidget {
@@ -28,6 +31,35 @@ class _SandboxState extends State<Sandbox> {
     player.dispose();
     recorder.dispose();
     super.dispose();
+  }
+
+  int? result;
+  String ip = 'http://0.tcp.eu.ngrok.io:11728/upload';
+
+  Future<int> get_response(BuildContext context) async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => SizedBox(
+              child: SizedBox(
+                height: 20,
+                width: 20,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Color(CustomColors.dialogBack),
+                )),
+              ),
+            ));
+    try {
+      final res = await UploadAudio().uploadAudio('audio.aac', ip);
+      log("Ошибка в запросе $res");
+      Navigator.pop(context);
+      return res;
+    } on Exception catch (e) {
+      log("Ошибка после запроса $e");
+      Navigator.pop(context);
+      return 400;
+    }
   }
 
   @override
@@ -81,16 +113,39 @@ class _SandboxState extends State<Sandbox> {
                 ),
                 SizedBox(width: 20),
                 Container(
-                    height: 50,
-                    width: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      "2/3",
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                    )),
+                  height: 50,
+                  width: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Color(CustomColors.main), borderRadius: BorderRadius.circular(25)),
+                  child: Text(
+                    "2/3",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ),
               ],
-            )
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+                onPressed: () async {
+                  final response = await get_response(context);
+
+                  // Сработал ли запрос
+                  // нет
+                  if (response == 400) {
+                    result = response;
+                    setState(() {});
+                    // да
+                  } else {
+                    result = response;
+                    log("$result");
+                  }
+                },
+                child: Text("Загрузить")),
+            result == null
+                ? Text("Пока не воспользовались моделью")
+                : result == 400
+                    ? Text('Ошибка')
+                    : Text('Результат модели $result')
           ],
         ),
       ),
