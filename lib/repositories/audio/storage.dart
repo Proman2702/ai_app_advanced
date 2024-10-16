@@ -1,42 +1,29 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  String completePath = "";
   String directoryPath = "";
+  final fileName = 'audio.wav';
 
-  Future<String> _completePath(String directory) async {
-    var fileName = _fileName();
-    return "$directory$fileName";
+  Future<String> completePath() async {
+    log("path got");
+    var directory = await getExternalStorageDirectory();
+    var directoryPath = directory!.path;
+
+    await _createFile('$directoryPath/records/$fileName');
+
+    return "$directoryPath/records/$fileName";
   }
 
-  Future<String> _directoryPath() async {
-    var directory = await getApplicationDocumentsDirectory();
-    var directoryPath = directory.path;
-    return "$directoryPath/records/";
-  }
-
-  String _fileName() {
-    return "record.wav";
-  }
-
-  Future _createFile() async {
-    File(completePath).create(recursive: true).then((File file) async {
-      //write to file
-      Uint8List bytes = await file.readAsBytes();
-      file.writeAsBytes(bytes);
-      print("FILE CREATED AT : " + file.path);
-    });
-  }
-
-  void _createDirectory() async {
-    bool isDirectoryCreated = await Directory(directoryPath).exists();
-    if (!isDirectoryCreated) {
-      Directory(directoryPath).create().then((Directory directory) {
-        print("DIRECTORY CREATED AT : " + directory.path);
-      });
-    }
+  Future<void> _createFile(String directoryPath) async {
+    var file = await File(directoryPath).create(recursive: true);
+    //write to file
+    Uint8List bytes = await file.readAsBytes();
+    file.writeAsBytes(bytes);
+    log("FILE CREATED AT : " + file.path);
+    ;
   }
 }

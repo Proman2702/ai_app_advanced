@@ -1,16 +1,23 @@
+import 'dart:developer';
 import 'dart:ui';
 
+import 'package:ai_app/repositories/audio/storage.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
-
-final audioPath = 'audio.aac';
 
 class SoundPlayer {
   FlutterSoundPlayer? audioPlayer;
+  String? audioPath;
 
   bool get isPlaying => audioPlayer!.isPlaying;
 
   Future init() async {
     audioPlayer = FlutterSoundPlayer();
+
+    try {
+      audioPath = await Storage().completePath();
+    } catch (e) {
+      log('Ошибка $e');
+    }
 
     await audioPlayer!.openAudioSession();
   }
@@ -21,7 +28,12 @@ class SoundPlayer {
   }
 
   Future play(VoidCallback whenFinished) async {
-    await audioPlayer!.startPlayer(fromURI: audioPath, whenFinished: whenFinished);
+    try {
+      await audioPlayer!.startPlayer(fromURI: audioPath!, whenFinished: whenFinished);
+    } on Exception catch (e) {
+      log("Ошибка $e");
+      // TODO
+    }
   }
 
   Future stop() async {

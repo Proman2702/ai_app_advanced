@@ -39,6 +39,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/upload', methods=['POST'])
 def upload_audio():
+    print("<server> uploaded")
 
     all_files = os.listdir(UPLOAD_FOLDER)
 
@@ -50,6 +51,8 @@ def upload_audio():
         return 'No file part', 400
 
     file = request.files['audio']
+    
+
 
     if file.filename == '':
         return 'No selected file', 400
@@ -62,8 +65,8 @@ def upload_audio():
         prediction = predict(file_path)
         print("<server> predicted")
 
-    except:
-        print("<server> connection closed")
+    except Exception as e:
+        print(f"<server> connection closed {e}")
         
     
     finally:

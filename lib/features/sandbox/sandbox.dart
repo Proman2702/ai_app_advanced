@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/repositories/audio/sound_player.dart';
 import 'package:ai_app/repositories/audio/sound_recorder.dart';
+import 'package:ai_app/repositories/audio/storage.dart';
 import 'package:ai_app/repositories/server/upload_to_server.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class _SandboxState extends State<Sandbox> {
   }
 
   int? result;
-  String ip = 'http://0.tcp.eu.ngrok.io:11728/upload';
+  String ip = 'http://6.tcp.eu.ngrok.io:18814/upload';
 
   Future<int> get_response(BuildContext context) async {
     showDialog(
@@ -51,8 +52,9 @@ class _SandboxState extends State<Sandbox> {
               ),
             ));
     try {
-      final res = await UploadAudio().uploadAudio('audio.aac', ip);
-      log("Ошибка в запросе $res");
+      final audioPath = await Storage().completePath();
+
+      final res = await UploadAudio().uploadAudio(audioPath, ip);
       Navigator.pop(context);
       return res;
     } on Exception catch (e) {
@@ -138,6 +140,7 @@ class _SandboxState extends State<Sandbox> {
                   } else {
                     result = response;
                     log("$result");
+                    setState(() {});
                   }
                 },
                 child: Text("Загрузить")),

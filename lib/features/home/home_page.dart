@@ -302,7 +302,29 @@ class _InformationFieldState extends State<InformationField> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 100),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 50,
+                    width: 300,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        gradient: TileGrad1(),
+                        boxShadow: [
+                          BoxShadow(spreadRadius: 2, offset: Offset(0, 4), blurRadius: 4, color: Colors.black26)
+                        ],
+                        borderRadius:
+                            BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))),
+                    child: Text(
+                      "Дефект 1 (картавость)",
+                      style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 35),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -383,7 +405,7 @@ class _InformationFieldState extends State<InformationField> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
