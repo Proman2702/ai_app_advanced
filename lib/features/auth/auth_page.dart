@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/repositories/auth/auth_formats.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
@@ -225,12 +226,19 @@ class _AuthPageState extends State<AuthPage> {
                   ],
                 ),
                 SizedBox(height: (height - width) > 0 ? height / 10 : height / 16),
-                SizedBox(
+                Container(
                   height: 40,
                   width: 180,
+                  decoration: BoxDecoration(
+                      gradient: ButtonGrad(),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
+                      ]),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(CustomColors.bright),
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                     ),
                     onPressed: () async {
                       if (username == null || password == null) {

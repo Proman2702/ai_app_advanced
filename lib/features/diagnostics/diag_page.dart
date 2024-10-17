@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/drawer.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
@@ -82,6 +83,153 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                   SizedBox(width: 10)
                 ],
               ),
+            ],
+          ),
+        ),
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 100),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 330,
+                    height: 100,
+                    child: Text(
+                      "Диагностика речи",
+                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 90),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 330,
+                    child: Text(
+                      'Всего загружено 2 дефекта',
+                      style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 330,
+                    child: Text(
+                      'Нажмите на вкладку, чтобы пройти диагностику',
+                      style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 330,
+                      height: 60,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(left: 15, right: 5),
+                      decoration: BoxDecoration(
+                          gradient: TileGrad1(),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 195,
+                            child: Text(
+                              'Дефект 1 - картавость',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 5),
+                              dbGetter?.getUser()?.defect == null
+                                  ? CircularProgressIndicator()
+                                  : dbGetter!.getUser()!.defect.contains("1")
+                                      ? Icon(Icons.cancel_outlined, color: Colors.white)
+                                      : Icon(Icons.check, color: Colors.white),
+                              SizedBox(
+                                width: 110,
+                                height: 20,
+                                child: Text(
+                                  dbGetter?.getUser()?.defect == null
+                                      ? "Загрузка..."
+                                      : dbGetter!.getUser()!.defect.contains("1")
+                                          ? "Обнаружено!"
+                                          : "не обнаружено",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(color: Colors.white, fontSize: 11),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 330,
+                      height: 60,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(left: 15, right: 5),
+                      decoration: BoxDecoration(
+                          gradient: TileGrad1(),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 195,
+                            child: Text(
+                              'Дефект 2 - г',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 5),
+                              dbGetter?.getUser()?.defect == null
+                                  ? CircularProgressIndicator()
+                                  : dbGetter!.getUser()!.defect.contains("2")
+                                      ? Icon(Icons.cancel_outlined, color: Colors.white)
+                                      : Icon(Icons.check, color: Colors.white),
+                              SizedBox(
+                                width: 110,
+                                height: 20,
+                                child: Text(
+                                  dbGetter?.getUser()?.defect == null
+                                      ? "Загрузка..."
+                                      : dbGetter!.getUser()!.defect.contains("2")
+                                          ? "Обнаружено!"
+                                          : "не обнаружено",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(color: Colors.white, fontSize: 11),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),

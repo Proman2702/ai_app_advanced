@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
 import 'package:ai_app/models/user.dart';
@@ -250,11 +251,20 @@ class _FirstPageState extends State<FirstPage> {
                       ],
                     ),
                     SizedBox(height: (height - width) > 0 ? height / 11 : height / 18),
-                    SizedBox(
+                    Container(
                       height: 40,
                       width: 180,
+                      decoration: BoxDecoration(
+                          gradient: ButtonGrad(),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
+                          ]),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.bright)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
                         onPressed: () async {
                           if (username == null || password == null) {
                             showModalBottomSheet(

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
@@ -35,9 +36,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               child: Transform.rotate(
                 angle: 5 * math.pi / 12,
                 child: Image.asset("images/triangle.png",
-                    scale: 1.2,
-                    opacity: const AlwaysStoppedAnimation(0.15),
-                    alignment: Alignment.center),
+                    scale: 1.2, opacity: const AlwaysStoppedAnimation(0.15), alignment: Alignment.center),
               )),
           Scaffold(
             resizeToAvoidBottomInset: true,
@@ -61,9 +60,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 7 : height / 10),
+                    SizedBox(height: (height - width) > 0 ? height / 7 : height / 10),
                     Center(
                       child: SizedBox(
                         height: 110,
@@ -80,9 +77,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 10 : height / 15),
+                    SizedBox(height: (height - width) > 0 ? height / 10 : height / 15),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -91,18 +86,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           width: 250,
                           child: Text(
                             "Введите почту, к которой привязывали аккаунт",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15),
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15),
                           ),
                         ),
                         Container(
                           height: 40,
                           width: 295,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
                               SizedBox(width: 8),
@@ -118,22 +108,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: ConstrainedBox(
-                                    constraints:
-                                        BoxConstraints.expand(width: 450),
+                                    constraints: BoxConstraints.expand(width: 450),
                                     child: TextField(
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: Colors.black87),
+                                          fontWeight: FontWeight.w700, fontSize: 18, color: Colors.black87),
                                       maxLength: 25,
                                       onChanged: (value) => setState(() {
                                         email = value;
                                       }),
                                       decoration: InputDecoration(
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        contentPadding:
-                                            EdgeInsets.only(bottom: 8),
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        contentPadding: EdgeInsets.only(bottom: 8),
                                         counterText: "",
                                         border: InputBorder.none,
                                       ),
@@ -146,21 +131,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                        height:
-                            (height - width) > 0 ? height / 6 : height / 10),
-                    SizedBox(
+                    SizedBox(height: (height - width) > 0 ? height / 6 : height / 10),
+                    Container(
                       height: 40,
                       width: 220,
+                      decoration: BoxDecoration(
+                          gradient: ButtonGrad(),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
+                          ]),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(CustomColors.bright)),
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
                         onPressed: () async {
                           if (email == null) {
                             showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    const AuthDenySheet(type: "none"));
+                                context: context, builder: (BuildContext context) => const AuthDenySheet(type: "none"));
                           } else {
                             log("Почта: $email");
                             showDialog(
@@ -168,9 +157,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 builder: (BuildContext context) {
                                   return Center(
                                     child: CircularProgressIndicator(
-                                      valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              Color(CustomColors.mainLightX2)),
+                                      valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
                                     ),
                                   );
                                 });
@@ -179,23 +166,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             if (result[0] == 0) {
                               Navigator.of(context).pop();
                               showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      EmailNotificator(type: "sent"));
+                                  context: context, builder: (BuildContext context) => EmailNotificator(type: "sent"));
                             } else {
                               showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AuthDenySheet(type: result[1]));
+                                  context: context, builder: (BuildContext context) => AuthDenySheet(type: result[1]));
                             }
                           }
                         },
                         child: Text(
                           "Восстановить",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),

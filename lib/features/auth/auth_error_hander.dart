@@ -68,7 +68,9 @@ class AuthDenySheet extends StatelessWidget {
               height: 30,
               width: 110,
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.mainLightX2)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(CustomColors.main),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
                   onPressed: () => Navigator.pop(context),
                   child: const Text("Закрыть", style: TextStyle(color: Colors.white))),
             )
