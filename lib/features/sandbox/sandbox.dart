@@ -35,7 +35,7 @@ class _SandboxState extends State<Sandbox> {
   }
 
   int? result;
-  String ip = 'http://6.tcp.eu.ngrok.io:18814/upload';
+  String ip = 'http://5.tcp.eu.ngrok.io:19987/upload';
 
   Future<int> get_response(BuildContext context) async {
     showDialog(
@@ -148,7 +148,11 @@ class _SandboxState extends State<Sandbox> {
                 ? Text("Пока не воспользовались моделью")
                 : result == 400
                     ? Text('Ошибка')
-                    : Text('Результат модели $result')
+                    : result == 0
+                        ? Text('Результат модели: вы здоровы')
+                        : result == 1
+                            ? Text('Результат модели: у вас картавость')
+                            : Text('Результат модели: вы хохлина')
           ],
         ),
       ),

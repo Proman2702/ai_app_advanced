@@ -2,6 +2,7 @@
 import 'dart:math' as math;
 import 'dart:developer';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
+import 'package:ai_app/features/drawer.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ai_app/etc/colors/colors.dart';
@@ -21,6 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final auth = AuthService();
   final database = DatabaseService();
   User? user;
@@ -50,8 +52,10 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(gradient: BackgroundGrad()),
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
+        drawer: AppDrawer(chosen: 0),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(65.0),
           child: AppBar(
@@ -63,7 +67,11 @@ class _HomePageState extends State<HomePage> {
             leadingWidth: 60,
             leading: Padding(
               padding: const EdgeInsets.only(top: 5, left: 5),
-              child: IconButton(onPressed: null, icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
+              child: IconButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
             ),
             title: Center(
                 child: Text(dbGetter?.getUser()?.username ?? '<Загрузка...>',
@@ -114,9 +122,7 @@ class _HomePageState extends State<HomePage> {
                           viewportFraction: 1,
                         ),
                       ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 Container(
                   height: 450,
                   width: 400,

@@ -2,6 +2,7 @@
 
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/features/drawer.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
@@ -16,6 +17,7 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final auth = AuthService();
   final database = DatabaseService();
   User? user;
@@ -45,6 +47,8 @@ class _TasksPageState extends State<TasksPage> {
     return Container(
       decoration: BoxDecoration(gradient: BackgroundGrad()),
       child: Scaffold(
+        key: _scaffoldKey,
+        drawer: AppDrawer(chosen: 1),
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
@@ -58,7 +62,11 @@ class _TasksPageState extends State<TasksPage> {
             leadingWidth: 60,
             leading: Padding(
               padding: const EdgeInsets.only(top: 5, left: 5),
-              child: IconButton(onPressed: null, icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
+              child: IconButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
             ),
             title: Center(
                 child: Text(dbGetter?.getUser()?.username ?? '<Загрузка...>',
