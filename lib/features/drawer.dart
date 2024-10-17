@@ -56,11 +56,11 @@ class _AppDrawerState extends State<AppDrawer> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 80),
+              SizedBox(height: 60),
               Text('AI App', style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold)),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               Container(
-                height: 100,
+                height: 90,
                 width: 230,
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 20),
@@ -89,12 +89,12 @@ class _AppDrawerState extends State<AppDrawer> {
                         ],
                 ),
               ),
-              SizedBox(height: 15),
-              Container(
-                width: 140,
-                height: 3,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
-              ),
+              SizedBox(height: 10),
+              // Container(
+              //   width: 140,
+              //   height: 3,
+              //   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
+              // ),
               SizedBox(height: 50),
               GestureDetector(
                 onTap: () {
@@ -255,17 +255,33 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                 ),
               ),
+              SizedBox(height: 15),
               Stack(
                 children: [
                   Padding(
-                      padding: EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.only(left: 40, top: 35),
                       child: Transform.rotate(
                         angle: 2 * math.pi,
                         child: Image.asset("images/hexagon_grad.png",
-                            scale: 1.5, opacity: const AlwaysStoppedAnimation(0.5), alignment: Alignment.center),
+                            scale: 1.6, opacity: const AlwaysStoppedAnimation(0.5), alignment: Alignment.center),
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(right: 0, bottom: 0),
+                      child: Transform.rotate(
+                        angle: 2 * math.pi,
+                        child: Image.asset("images/hexagon_grad.png",
+                            scale: 1.9, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center),
                       )),
                 ],
               ),
+              SizedBox(
+                  height: 40,
+                  width: 170,
+                  child: Text(
+                    'Created and designed by Proman2702',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white24),
+                  ))
             ],
           ),
         ),
