@@ -31,3 +31,14 @@ class ButtonGrad extends LinearGradient {
           tileMode: TileMode.decal,
         );
 }
+
+
+class GreyTile extends LinearGradient {
+  GreyTile()
+      : super(
+          colors: [Color(CustomColors().getGreyTile[0]), Color(CustomColors().getGreyTile[1])],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          tileMode: TileMode.decal,
+        );
+}

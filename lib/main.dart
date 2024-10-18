@@ -4,11 +4,13 @@ import 'package:ai_app/features/auth/wrapper.dart';
 import 'package:ai_app/features/diagnostics/diag_page.dart';
 import 'package:ai_app/features/sandbox/sandbox.dart';
 import 'package:ai_app/features/settings/settings_page.dart';
+import 'package:ai_app/features/tasks/levels.dart';
 import 'package:ai_app/features/tasks/tasks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const SettingsPage(),
         '/diagnostics': (context) => const DiagnosticsPage(),
         '/tasks': (context) => const TasksPage(),
+        '/tasks/levels': (context) => const LevelsMenu(),
         '/sandbox': (context) => const Sandbox()
       },
       theme: ThemeData(fontFamily: "Jura"),

@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 dbGetter?.getUser() == null
-                    ? SizedBox(width: 200, height: 320, child: CircularProgressIndicator())
+                    ? SizedBox(width: 320, height: 320, child: CircularProgressIndicator())
                     : CarouselSlider(
                         items: [
                           InformationField(

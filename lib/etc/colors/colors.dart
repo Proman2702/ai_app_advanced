@@ -4,6 +4,7 @@ class CustomColors {
   final List<int> tileGrad1 = [0xFF633D9D, 0xffD192BE];
   final List<int> tileGrad2 = [0xFFD3B1D9, 0xFF8146C0];
   final List<int> buttonGrad = [0xFF9951F8, 0xFF5B1587];
+  final List<int> greyTile = [0xFF725C77, 0xFFDBB1DA];
 
   static int main = 0xff6B3C7A;
   static int mainLight = 0xFF7B5488;
@@ -19,4 +20,5 @@ class CustomColors {
   List<int> get getTileGrad1 => tileGrad1;
   List<int> get getTileGrad2 => tileGrad2;
   List<int> get getButtonGrad => buttonGrad;
+  List<int> get getGreyTile => greyTile;
 }
