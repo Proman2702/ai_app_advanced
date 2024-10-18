@@ -364,7 +364,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           onTap: () {
                             showDialog(
                               context: context,
-                              builder: (context) => ConfirmationDialog(info: "exit", action: signOut),
+                              builder: (context) =>
+                                  ConfirmationDialog(info: "Вы уверены, что хотите выйти?", action: signOut),
                             );
                           },
                           child: Container(

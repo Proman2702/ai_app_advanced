@@ -4,7 +4,6 @@ import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/drawer.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +19,6 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final auth = AuthService();
   final database = DatabaseService();
   User? user;
   List<dynamic>? users;
@@ -172,7 +170,7 @@ class _TasksPageState extends State<TasksPage> {
                       // SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed('/tasks/levels');
+                          Navigator.of(context).pushNamed('/tasks/levels', arguments: 1);
                         },
                         child: Container(
                             width: 330,
@@ -231,7 +229,9 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                       SizedBox(height: 15),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/tasks/levels', arguments: 2);
+                        },
                         child: Container(
                             width: 330,
                             height: 80,

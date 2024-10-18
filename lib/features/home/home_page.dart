@@ -1,18 +1,18 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
-import 'dart:math' as math;
-import 'dart:developer';
-import 'package:ai_app/etc/colors/gradients/tiles.dart';
-import 'package:ai_app/features/drawer.dart';
-import 'package:ai_app/repositories/database/get_values.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ai_app/etc/colors/colors.dart';
-import 'package:ai_app/etc/colors/gradients/background.dart';
-import 'package:ai_app/models/user.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/get_values.dart';
+import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/etc/colors/gradients/tiles.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ai_app/etc/colors/colors.dart';
+import 'package:ai_app/features/drawer.dart';
+import 'package:ai_app/models/user.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
+import 'dart:developer';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final auth = AuthService();
   final database = DatabaseService();
   User? user;
   GetValues? dbGetter;

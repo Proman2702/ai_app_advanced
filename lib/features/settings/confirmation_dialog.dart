@@ -9,8 +9,8 @@ class ConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        "Вы уверены, что хотите выйти?",
+      title: Text(
+        info,
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
       ),
