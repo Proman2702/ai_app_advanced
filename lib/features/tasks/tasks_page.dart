@@ -26,32 +26,22 @@ class _TasksPageState extends State<TasksPage> {
   List<dynamic>? users;
   GetValues? dbGetter;
 
-  void asyncGetter() async {
-    await database.getUsers().listen((snapshot) {
-      List<dynamic> users_tmp = snapshot.docs;
-      dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);
-      setState(() {
-        users = users_tmp;
-      });
-    });
-  }
-
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
+    database.getUsers().listen((snapshot) {
+      List<dynamic> users = snapshot.docs;
+      dbGetter = GetValues(user: user!, users: users);
+      setState(() {});
+    });
     super.initState();
-
-    asyncGetter();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-
 
     return Container(
       decoration: BoxDecoration(gradient: BackgroundGrad()),
@@ -96,37 +86,33 @@ class _TasksPageState extends State<TasksPage> {
         ),
         body: Stack(
           children: [
-
             // Padding(
             //   padding: EdgeInsets.only(top: height / 11, left: width / 2),
             //   child: Transform.rotate(
             //       angle: 6 * math.pi / 12,
             //       child: Image.asset("images/hexagon.png",
             //           scale: 1.4, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
-            
-            Padding(
-              padding: EdgeInsets.only(top: height / 1.53, left: width / 2),
-              child: Transform.rotate(
-                  angle: 0 * math.pi / 12,
-                  child: Image.asset("images/hexagon_grad.png",
-                      scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
 
+            Padding(
+                padding: EdgeInsets.only(top: height / 1.53, left: width / 2),
+                child: Transform.rotate(
+                    angle: 0 * math.pi / 12,
+                    child: Image.asset("images/hexagon_grad.png",
+                        scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
 
-            
-            
             Padding(
-              padding: EdgeInsets.only(top: height / 1.65, left: width / 2.8),
-              child: Transform.rotate(
-                  angle: 0 * math.pi / 12,
-                  child: Image.asset("images/hexagon_grad.png",
-                      scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
-            
+                padding: EdgeInsets.only(top: height / 1.65, left: width / 2.8),
+                child: Transform.rotate(
+                    angle: 0 * math.pi / 12,
+                    child: Image.asset("images/hexagon_grad.png",
+                        scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
+
             Padding(
-              padding: EdgeInsets.only(top: height / 1.55, left: width / 7),
-              child: Transform.rotate(
-                  angle: 0 * math.pi / 12,
-                  child: Image.asset("images/hexagon_grad.png",
-                      scale: 1.5, opacity: const AlwaysStoppedAnimation(0.4), alignment: Alignment.center))),
+                padding: EdgeInsets.only(top: height / 1.55, left: width / 7),
+                child: Transform.rotate(
+                    angle: 0 * math.pi / 12,
+                    child: Image.asset("images/hexagon_grad.png",
+                        scale: 1.5, opacity: const AlwaysStoppedAnimation(0.4), alignment: Alignment.center))),
 
             Center(
               child: Column(
@@ -185,92 +171,125 @@ class _TasksPageState extends State<TasksPage> {
                       // ),
                       // SizedBox(height: 10),
                       GestureDetector(
-                        onTap: () {Navigator.of(context).pushNamed('/tasks/levels');},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/tasks/levels');
+                        },
                         child: Container(
-                          width: 330,
-                          height: 80,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(left: 15, right: 10),
-                          decoration: BoxDecoration(
-                              gradient: dbGetter?.getUser()?.username == null ? GreyTile() : dbGetter!.getUser()!.defect.contains('1') ? TileGrad1() : GreyTile(),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
-                              ]),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [Text('Коррекция картавости', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'nunito'))],
-                                
+                            width: 330,
+                            height: 80,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(left: 15, right: 10),
+                            decoration: BoxDecoration(
+                                gradient: dbGetter?.getUser()?.username == null
+                                    ? GreyTile()
+                                    : dbGetter!.getUser()!.defect.contains('1')
+                                        ? TileGrad1()
+                                        : GreyTile(),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
+                                ]),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
                                 ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Text('Задание ${dbGetter?.getUser()?.current_level["1"] ?? 0}/6', style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))],
-                              )
-
-                            ],
-                          )
-                        ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('Коррекция картавости',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'nunito'))
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text('Задание ${dbGetter?.getUser()?.current_level["1"] ?? 0}/6',
+                                        style:
+                                            TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
+                                  ],
+                                )
+                              ],
+                            )),
                       ),
                       SizedBox(height: 5),
                       SizedBox(
-                         width: 330,
-                         child: Text(
-                           dbGetter?.getUser()?.username == null ? 'Загрузка...' : dbGetter!.getUser()!.defect.contains('1') ? 'Рекомендуется' : 'Не рекомендуется диагностикой',
-                           style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
-                         ),
-                       ),
-                        SizedBox(height: 15),
+                        width: 330,
+                        child: Text(
+                          dbGetter?.getUser()?.username == null
+                              ? 'Загрузка...'
+                              : dbGetter!.getUser()!.defect.contains('1')
+                                  ? 'Рекомендуется'
+                                  : 'Не рекомендуется диагностикой',
+                          style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      ),
+                      SizedBox(height: 15),
                       GestureDetector(
                         onTap: () {},
                         child: Container(
-                          width: 330,
-                          height: 80,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(left: 15, right: 10),
-                          decoration: BoxDecoration(
-                              gradient: dbGetter?.getUser()?.username == null ? GreyTile() : dbGetter!.getUser()!.defect.contains('2') ? TileGrad1() : GreyTile(),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
-                              ]),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [Text('Коррекция "Г"', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'nunito'))],
-                                
+                            width: 330,
+                            height: 80,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(left: 15, right: 10),
+                            decoration: BoxDecoration(
+                                gradient: dbGetter?.getUser()?.username == null
+                                    ? GreyTile()
+                                    : dbGetter!.getUser()!.defect.contains('2')
+                                        ? TileGrad1()
+                                        : GreyTile(),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
+                                ]),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
                                 ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Text('Задание ${dbGetter?.getUser()?.current_level["2"] ?? 0}/6', style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))],
-                              )
-
-                            ],
-                          )
-                        ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('Коррекция "Г"',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'nunito'))
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text('Задание ${dbGetter?.getUser()?.current_level["2"] ?? 0}/6',
+                                        style:
+                                            TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
+                                  ],
+                                )
+                              ],
+                            )),
                       ),
                       SizedBox(height: 5),
                       SizedBox(
-                         width: 330,
-                         child: Text(
-                           dbGetter?.getUser()?.username == null ? 'Загрузка...' : dbGetter!.getUser()!.defect.contains('2') ? 'Рекомендуется' : 'Не рекомендуется диагностикой',
-                           style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
-                         ),
-                       ),
-            
-            
+                        width: 330,
+                        child: Text(
+                          dbGetter?.getUser()?.username == null
+                              ? 'Загрузка...'
+                              : dbGetter!.getUser()!.defect.contains('2')
+                                  ? 'Рекомендуется'
+                                  : 'Не рекомендуется диагностикой',
+                          style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      ),
                     ],
                   ),
-                  
-                      SizedBox(height: 80),
-            
-                      
+                  SizedBox(height: 80),
                 ],
               ),
             ),

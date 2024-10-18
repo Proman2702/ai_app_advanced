@@ -26,25 +26,17 @@ class _HomePageState extends State<HomePage> {
   final auth = AuthService();
   final database = DatabaseService();
   User? user;
-  List<dynamic>? users;
   GetValues? dbGetter;
-
-  asyncGetter() async {
-    await database.getUsers().listen((snapshot) {
-      List<dynamic> users_tmp = snapshot.docs;
-      dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);
-      setState(() {
-        users = users_tmp;
-      });
-    });
-  }
 
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
+    database.getUsers().listen((snapshot) {
+      List<dynamic> users = snapshot.docs;
+      dbGetter = GetValues(user: user!, users: users);
+      setState(() {});
+    });
     super.initState();
-
-    asyncGetter();
   }
 
   @override

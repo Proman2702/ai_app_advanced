@@ -2,18 +2,20 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-//
-// Сервис для работы с аунтефикацией
+// апи для работы с аунтефикацией
 // Реализованы основные функции аунтефикации
-//
+
+// Формат выходных данных - список, где 0 эл. - код ошибки (0 - успешно, 1 - есть ошибка)
 
 class AuthService {
-  final auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
-  // Регистрация (е-маил, пароль)
+  // Регистрация
+  // Входные данные: е-маил, пароль
+  // Выходные данные: либо [0 и инстанс пользователя], либо [1 и описание ошибки]
   Future<List?> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      final cred = await auth.createUserWithEmailAndPassword(email: email, password: password);
+      final cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       return [0, cred.user];
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -27,10 +29,12 @@ class AuthService {
     return [1, 'unknown'];
   }
 
-  // Логин (е-маил и пароль)
+  // Логин
+  // Входные данные: е-маил, пароль
+  // Выходные данные: либо [0 и инстанс пользователя], либо [1 и описание ошибки]
   Future<List> loginUserWithEmailAndPassword(String email, String password) async {
     try {
-      final cred = await auth.signInWithEmailAndPassword(email: email, password: password);
+      final cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return [0, cred.user];
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -49,7 +53,7 @@ class AuthService {
   // Выход из сессии
   Future<void> signOut() async {
     try {
-      await auth.signOut();
+      await _auth.signOut();
     } catch (e) {
       log("Ошибка $e");
     }
@@ -58,15 +62,18 @@ class AuthService {
   // Выслать письмо для верификации
   Future<void> sendVerification() async {
     try {
-      await auth.currentUser?.sendEmailVerification();
+      await _auth.currentUser?.sendEmailVerification();
     } catch (e) {
       log("Ошибка $e");
     }
   }
 
+  // Смена пароля
+  // Входные данные: е-маил, текущий пароль, новый пароль
+  // Выходные данные: либо [0], либо [1 и описание ошибки]
   Future<List> changePassword(String email, String currentPassword, String newPassword) async {
     try {
-      User user = auth.currentUser!;
+      User user = _auth.currentUser!;
       AuthCredential cred = EmailAuthProvider.credential(email: email, password: currentPassword);
       final result = await user.reauthenticateWithCredential(cred);
       result.user!.updatePassword(newPassword);
@@ -77,10 +84,12 @@ class AuthService {
     return [1, 'unknown'];
   }
 
-  // Удалить аккаунт (подтверждение паролем)
+  // Смена пароля
+  // Входные данные: е-маил, текущий пароль
+  // Выходные данные: либо [0], либо [1 и описание ошибки]
   Future<List> deleteAccount(String email, String password) async {
     try {
-      User user = auth.currentUser!;
+      User user = _auth.currentUser!;
       AuthCredential cred = EmailAuthProvider.credential(email: email, password: password);
       final result = await user.reauthenticateWithCredential(cred);
       await result.user!.delete();
@@ -91,10 +100,12 @@ class AuthService {
     return [1, 'unknown'];
   }
 
-  // Сбросить пароль
+  // Сброс пароля (восстановление по почте)
+  // Входные данные: е-маил
+  // Выходные данные: либо [0], либо [1 и описание ошибки]
   Future<List> resetPassword(String email) async {
     try {
-      await auth.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
       return [0];
     } on FirebaseAuthException catch (e) {
       if (e.toString() == "auth/invalid-email") return [1, 'format'];

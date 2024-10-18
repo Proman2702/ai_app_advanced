@@ -4,33 +4,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 const String database_path = 'users';
 
 class DatabaseService {
-  final firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
+  late final CollectionReference _usersRef;
 
-  late final CollectionReference usersRef;
-
+  // В конструкоре класса создается референс к базе данных
+  // Который автоматически обрабатывает входные и выходные данные
   DatabaseService() {
-    usersRef = firestore.collection(database_path).withConverter<CustomUser>(
+    _usersRef = _firestore.collection(database_path).withConverter<CustomUser>(
         fromFirestore: (snapshots, _) => CustomUser.fromJson(snapshots.data()!),
         toFirestore: (user, _) => user.toJson());
   }
 
-  // Получить данные
+  // Получить данные (Stream)
+  // Нужен только для init state (ради оптимизации)
   Stream<QuerySnapshot> getUsers() {
-    return usersRef.snapshots();
+    return _usersRef.snapshots();
   }
 
   // Добавить в базу данных пользователя
+  // Входные данные: используется инстанс класса CustomUser с заполненными данными
   Future<void> addUser(CustomUser user) async {
-    await usersRef.doc(user.email).set(user);
+    await _usersRef.doc(user.email).set(user);
   }
 
   // Обновление данных (используются все параметры пользователя)
-  Future<void> updateUser(String userId, CustomUser user) async {
-    await usersRef.doc(userId).update(user.toJson());
+  // Входные данные: используется инстанс класса CustomUser c теми
+  // заполненными данными, которые вы хотите изменить
+  Future<void> updateUser(CustomUser user) async {
+    await _usersRef.doc(user.email).update(user.toJson());
   }
 
-  // Удаление по почте
+  // Удаление пользователя из базы данных
+  // Входные данные: почта аккаунта
   Future<void> deleteUser(String email) async {
-    await usersRef.doc(email).delete();
+    await _usersRef.doc(email).delete();
   }
 }

@@ -26,31 +26,22 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
   List<dynamic>? users;
   GetValues? dbGetter;
 
-  void asyncGetter() async {
-    await database.getUsers().listen((snapshot) {
-      List<dynamic> users_tmp = snapshot.docs;
-      dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);
-      setState(() {
-        users = users_tmp;
-      });
-    });
-  }
-
   @override
   void initState() {
     user = FirebaseAuth.instance.currentUser;
+    database.getUsers().listen((snapshot) {
+      List<dynamic> users = snapshot.docs;
+      dbGetter = GetValues(user: user!, users: users);
+      setState(() {});
+    });
     super.initState();
-
-    asyncGetter();
   }
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-
 
     return Container(
       decoration: BoxDecoration(gradient: BackgroundGrad()),
@@ -95,21 +86,18 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
         ),
         body: Stack(
           children: [
-
             Padding(
-              padding: EdgeInsets.only(top: height / 11, left: width / 2),
-              child: Transform.rotate(
-                  angle: 6 * math.pi / 12,
-                  child: Image.asset("images/hexagon.png",
-                      scale: 1.4, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
-            
+                padding: EdgeInsets.only(top: height / 11, left: width / 2),
+                child: Transform.rotate(
+                    angle: 6 * math.pi / 12,
+                    child: Image.asset("images/hexagon.png",
+                        scale: 1.4, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
             Padding(
-              padding: EdgeInsets.only(top: height / 1.5, left: width / 12),
-              child: Transform.rotate(
-                  angle: 0 * math.pi / 12,
-                  child: Image.asset("images/hexagon_grad.png",
-                      scale: 1.7, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
-
+                padding: EdgeInsets.only(top: height / 1.5, left: width / 12),
+                child: Transform.rotate(
+                    angle: 0 * math.pi / 12,
+                    child: Image.asset("images/hexagon_grad.png",
+                        scale: 1.7, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -252,35 +240,30 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                           ),
                         ),
                       ),
-            
-            
                     ],
                   ),
-                  
-                      SizedBox(height: 80),
-            
-                      Container(
-                          height: 40,
-                          width: 180,
-                          decoration: BoxDecoration(
-                              gradient: ButtonGrad(),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
-                              ]),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
-                            ),
-                            onPressed: () {
-                            },
-                            child: Text(
-                              "Создать",
-                              style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        )
+                  SizedBox(height: 80),
+                  Container(
+                    height: 40,
+                    width: 180,
+                    decoration: BoxDecoration(
+                        gradient: ButtonGrad(),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
+                        ]),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Создать",
+                        style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

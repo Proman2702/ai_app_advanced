@@ -1,22 +1,21 @@
 import 'package:ai_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
+// Класс для обработки сырых данных потока и вывода информации для конкретного пользователя (user)
 class GetValues {
-  final List users;
-  final User user;
-  final String subject;
+  final List _users;
+  final User _user;
 
-  GetValues({required this.subject, required this.users, required this.user});
-
+  GetValues({required List<dynamic> users, required User user})
+      : _user = user,
+        _users = users;
 
   CustomUser? getUser() {
-
-    for (var i in users) {
-        if (i.id == user.email) {
-            return i.data();
-        }
-  }
-  return null;
+    for (var i in _users) {
+      if (i.id == _user.email) {
+        return i.data();
+      }
+    }
+    return null;
   }
 }

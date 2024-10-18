@@ -30,7 +30,7 @@ class _AppDrawerState extends State<AppDrawer> {
   asyncGetter() async {
     await database.getUsers().listen((snapshot) {
       List<dynamic> users_tmp = snapshot.docs;
-      dbGetter = GetValues(subject: "username", user: user!, users: users_tmp);
+      dbGetter = GetValues(user: user!, users: users_tmp);
       setState(() {
         users = users_tmp;
       });

@@ -4,47 +4,53 @@ import 'dart:ui';
 import 'package:ai_app/repositories/audio/storage.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 
+// Класс работы с плеером
+
 class SoundPlayer {
-  FlutterSoundPlayer? audioPlayer;
-  String? audioPath;
+  FlutterSoundPlayer? _audioPlayer;
+  String? _audioPath;
 
-  bool get isPlaying => audioPlayer!.isPlaying;
+  bool get isPlaying => _audioPlayer!.isPlaying;
 
+  // Инициализация плеера
   Future init() async {
-    audioPlayer = FlutterSoundPlayer();
+    _audioPlayer = FlutterSoundPlayer();
 
     try {
-      audioPath = await Storage().completePath();
+      _audioPath = await Storage().completePath();
     } catch (e) {
       log('Ошибка $e');
     }
 
-    await audioPlayer!.openAudioSession();
+    await _audioPlayer!.openAudioSession();
   }
 
+  // Отключение плеера при выходе
   void dispose() {
-    audioPlayer!.closeAudioSession();
-    audioPlayer = null;
+    _audioPlayer!.closeAudioSession();
+    _audioPlayer = null;
   }
 
-  Future play(VoidCallback whenFinished) async {
+  // Локальный метод запуска аудиофайла
+  Future _play(VoidCallback whenFinished) async {
     try {
-      await audioPlayer!.startPlayer(fromURI: audioPath!, whenFinished: whenFinished);
+      await _audioPlayer!.startPlayer(fromURI: _audioPath!, whenFinished: whenFinished);
     } on Exception catch (e) {
       log("Ошибка $e");
-      // TODO
     }
   }
 
-  Future stop() async {
-    await audioPlayer!.stopPlayer();
+  // Локальный метод остановки аудиофайла
+  Future _stop() async {
+    await _audioPlayer!.stopPlayer();
   }
 
+  // Запустить/остановить аудиофайл
   Future togglePlaying({required VoidCallback whenFinished}) async {
-    if (audioPlayer!.isStopped) {
-      await play(whenFinished);
+    if (_audioPlayer!.isStopped) {
+      await _play(whenFinished);
     } else {
-      await stop();
+      await _stop();
     }
   }
 }

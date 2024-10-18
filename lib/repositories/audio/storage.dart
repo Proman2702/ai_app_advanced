@@ -5,13 +5,12 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  String directoryPath = "";
   final fileName = 'audio.wav';
 
   Future<String> completePath() async {
-    log("path got");
     var directory = await getExternalStorageDirectory();
     var directoryPath = directory!.path;
+    log("<Storage> Path got");
 
     await _createFile('$directoryPath/records/$fileName');
 
@@ -23,7 +22,7 @@ class Storage {
     //write to file
     Uint8List bytes = await file.readAsBytes();
     file.writeAsBytes(bytes);
-    log("FILE CREATED AT : " + file.path);
+    log("<Storage> File created at: ${file.path}");
     ;
   }
 }

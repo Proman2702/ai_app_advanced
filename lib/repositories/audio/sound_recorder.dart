@@ -5,71 +5,60 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:ai_app/repositories/audio/storage.dart';
 
 class SoundRecorder {
-  FlutterSoundRecorder? audioRecorder;
-  bool isRecorderInit = false;
-  String? audioPath;
+  FlutterSoundRecorder? _audioRecorder;
+  String? _audioPath;
 
-  bool get isRecording => audioRecorder!.isRecording;
+  // Проверка, включен ли диктофон
+  bool get isRecording => _audioRecorder!.isRecording;
 
+  // Инициализация диктофона
   Future init() async {
-    log("init sound");
-    audioRecorder = FlutterSoundRecorder();
+    _audioRecorder = FlutterSoundRecorder();
 
-    final statusMic = await Permission.microphone.request();
-    if (statusMic != PermissionStatus.granted) {
-      throw RecordingPermissionException('microphone permission');
+    final statusMic = await Permission.storage.status;
+    if (!statusMic.isGranted) {
+      await Permission.microphone.request();
     }
     final statusStorage = await Permission.storage.status;
     if (!statusStorage.isGranted) {
       await Permission.storage.request();
     }
 
-    log("До audioPath");
-
     try {
-      audioPath = await Storage().completePath();
+      _audioPath = await Storage().completePath();
     } catch (e) {
-      log('Ошибка $e');
+      log('<SoundRecorder> Ошибка $e');
     }
 
-    log("После audioPath $audioPath");
+    log("<SoundRecorder> Путь к аудио: $_audioPath");
 
-    await audioRecorder!.openAudioSession();
-    isRecorderInit = true;
+    await _audioRecorder!.openAudioSession();
   }
 
+  // Выключение диктофона при выходе
   void dispose() {
-    if (!isRecorderInit) {
-      return;
-    }
-
-    audioRecorder!.closeAudioSession();
-    audioRecorder = null;
-    isRecorderInit = false;
+    _audioRecorder!.closeAudioSession();
+    _audioRecorder = null;
   }
 
-  Future<void> record() async {
-    if (!isRecorderInit) {
-      return;
-    }
-    await audioRecorder!.openAudioSession();
-    await audioRecorder!.startRecorder(toFile: audioPath);
+  // Локальный метод запуска диктофона
+  Future<void> _record() async {
+    await _audioRecorder!.openAudioSession();
+    await _audioRecorder!.startRecorder(toFile: _audioPath);
   }
 
-  Future<void> stop() async {
-    if (!isRecorderInit) {
-      return;
-    }
-
-    await audioRecorder!.stopRecorder();
-    audioRecorder!.closeAudioSession();
+  // Локальный метод остановки диктофона
+  Future<void> _stop() async {
+    await _audioRecorder!.stopRecorder();
+    _audioRecorder!.closeAudioSession();
   }
 
-  Future toggleRecording() async {
-    if (audioRecorder!.isStopped) {
-      await record();
+  // Включение/отключение диктофона
+  Future<void> toggleRecording() async {
+    if (_audioRecorder!.isStopped) {
+      await _record();
     } else {
-      await stop();
+      await _stop();
     }
   }
 }
