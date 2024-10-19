@@ -419,7 +419,7 @@ class _InformationFieldState extends State<InformationField> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Лучшая серия",
+                                "Текущая серия",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Color(CustomColors.main),
@@ -435,8 +435,8 @@ class _InformationFieldState extends State<InformationField> {
                                 decoration: BoxDecoration(
                                     color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
                                 child: Text(
-                                  widget.user.max_combo['${widget.defectType}'] != null
-                                      ? '${widget.user.max_combo['${widget.defectType}']}'
+                                  widget.user.current_combo['${widget.defectType}'] != null
+                                      ? '${widget.user.current_combo['${widget.defectType}']}'
                                       : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                   style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
