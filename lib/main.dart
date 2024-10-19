@@ -7,7 +7,7 @@ import 'package:ai_app/features/sandbox/sandbox.dart';
 import 'package:ai_app/features/tasks/levels.dart';
 import 'package:ai_app/features/auth/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ai_app/features/tasks/task.dart';
+import 'package:ai_app/features/tasks/task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
