@@ -27,6 +27,8 @@ def predict(audio):
     predicted_ids = torch.argmax(logits, dim=-1)
 
     print('<server> model prediction ended')
+    print(predicted_ids.tolist())
+
     
     return jsonify({'prediction': predicted_ids.tolist()})
 

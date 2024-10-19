@@ -7,6 +7,7 @@ import 'package:ai_app/features/sandbox/sandbox.dart';
 import 'package:ai_app/features/tasks/levels.dart';
 import 'package:ai_app/features/auth/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ai_app/features/tasks/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/diagnostics': (context) => const DiagnosticsPage(),
         '/tasks': (context) => const TasksPage(),
         '/tasks/levels': (context) => const LevelsMenu(),
+        '/tasks/levels/level': (context) => const TaskPage(),
         '/sandbox': (context) => const Sandbox()
       },
       theme: ThemeData(fontFamily: "Jura"),

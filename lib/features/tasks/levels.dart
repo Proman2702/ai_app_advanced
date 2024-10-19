@@ -8,6 +8,7 @@ import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/settings/confirmation_dialog.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
+import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -93,10 +94,24 @@ class _LevelsMenuState extends State<LevelsMenu> {
                     children: [
                       // 1 уровень ВСЕГДА ОТКРЫТ
                       GestureDetector(
-                        onTap: () {
-                          log("1 уровень");
-                          // Проверка если текущий уровень больше этого
-                        },
+                        onTap: dbGetter?.getUser()?.current_level == null
+                            ? () {}
+                            : dbGetter!.getUser()!.current_level['$defectType'] >= 0
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      1,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 0 ||
+                                              dbGetter!.getUser()!.current_level['$defectType'] == 1
+                                          ? 1
+                                          : 0
+                                    ]);
+
+                                    Tasks tasks = await Tasks.create(defectType, 1);
+                                    log(tasks.getRandomWord());
+                                    // Проверка если текущий уровень больше этого
+                                  }
+                                : () {},
                         child: Container(
                           height: 105,
                           width: 150,

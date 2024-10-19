@@ -71,6 +71,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - assets/defects/1/
     - images/hexagon.png
     - images/hexagon_grad.png
     - images/triangle.png

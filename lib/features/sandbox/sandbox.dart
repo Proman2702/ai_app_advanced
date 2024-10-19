@@ -35,7 +35,7 @@ class _SandboxState extends State<Sandbox> {
   }
 
   int? result;
-  String ip = 'http://0.tcp.eu.ngrok.io:19669/upload';
+  String ip = 'http://7.tcp.eu.ngrok.io:10055/upload';
 
   Future<int> get_response(BuildContext context) async {
     showDialog(
