@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:developer';
 import 'dart:math' as math;
 import 'package:ai_app/etc/colors/colors.dart';
@@ -36,7 +34,7 @@ class _FirstPageState extends State<FirstPage> {
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
             ),
           );
         });
@@ -50,16 +48,15 @@ class _FirstPageState extends State<FirstPage> {
       await database.addUser(CustomUser(
           username: username!,
           email: em,
-          defect: [],
+          defects: {"1": 0, "2": 0}, // 0 - не пройдено, 1 - нет дефекта, 2 - есть дефект
           lessons_passed: {"1": 0, "2": 0},
           lessons_correct: {"1": 0, "2": 0},
           current_combo: {"1": 0, "2": 0},
-          current_level: {"1": 0, "2": 0},
-          max_combo: {"1": 0, "2": 0}));
+          current_level: {"1": 0, "2": 0}));
 
       Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
-      showDialog(context: context, builder: (BuildContext context) => EmailNotificator(type: "verify"));
+      showDialog(context: context, builder: (BuildContext context) => const EmailNotificator(type: "verify"));
     } else if (user[0] == 1) {
       log("Ошибка ${user[1]}");
       showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: user[1]));
@@ -96,17 +93,17 @@ class _FirstPageState extends State<FirstPage> {
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
                         ),
                       ],
                     ),
                     SizedBox(height: (height - width) > 0 ? height / 7 : height / 10),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                       child: Text(
                         "Регистрация",
@@ -118,7 +115,7 @@ class _FirstPageState extends State<FirstPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Ваш никнейм:",
                           style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
@@ -128,9 +125,9 @@ class _FirstPageState extends State<FirstPage> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Icon(Icons.account_circle_outlined, size: 24, color: Color(CustomColors.bright)),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               SizedBox(
                                 width: 250,
                                 height: 40,
@@ -145,7 +142,7 @@ class _FirstPageState extends State<FirstPage> {
                                       onChanged: (value) => setState(() {
                                         username = value;
                                       }),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         floatingLabelBehavior: FloatingLabelBehavior.never,
                                         contentPadding: EdgeInsets.only(bottom: 8),
                                         counterText: "",
@@ -158,8 +155,8 @@ class _FirstPageState extends State<FirstPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
+                        const SizedBox(height: 10),
+                        const Text(
                           "Почта:",
                           style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
@@ -169,9 +166,9 @@ class _FirstPageState extends State<FirstPage> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Icon(Icons.mail_outline, size: 24, color: Color(CustomColors.bright)),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               SizedBox(
                                 width: 250,
                                 height: 40,
@@ -186,7 +183,7 @@ class _FirstPageState extends State<FirstPage> {
                                       onChanged: (value) => setState(() {
                                         email = value;
                                       }),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         floatingLabelBehavior: FloatingLabelBehavior.never,
                                         contentPadding: EdgeInsets.only(bottom: 12),
                                         counterText: "",
@@ -199,8 +196,8 @@ class _FirstPageState extends State<FirstPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
+                        const SizedBox(height: 10),
+                        const Text(
                           "Пароль:",
                           style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
@@ -210,9 +207,9 @@ class _FirstPageState extends State<FirstPage> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
                           child: Row(
                             children: [
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Icon(Icons.key_outlined, size: 24, color: Color(CustomColors.bright)),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               SizedBox(
                                 width: 210,
                                 height: 40,
@@ -228,7 +225,7 @@ class _FirstPageState extends State<FirstPage> {
                                       onChanged: (value) => setState(() {
                                         password = value;
                                       }),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         floatingLabelBehavior: FloatingLabelBehavior.never,
                                         contentPadding: EdgeInsets.only(bottom: 12),
                                         counterText: "",
@@ -244,7 +241,7 @@ class _FirstPageState extends State<FirstPage> {
                                   onPressed: () => setState(() {
                                         obscureBool = !obscureBool;
                                       }),
-                                  icon: !obscureBool ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+                                  icon: !obscureBool ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off))
                             ],
                           ),
                         ),
@@ -257,7 +254,7 @@ class _FirstPageState extends State<FirstPage> {
                       decoration: BoxDecoration(
                           gradient: ButtonGrad(),
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
                           ]),
                       child: ElevatedButton(
@@ -271,13 +268,14 @@ class _FirstPageState extends State<FirstPage> {
                                 context: context, builder: (BuildContext context) => const AuthDenySheet(type: "none"));
                           } else if (username!.length < 4 || password!.length < 4) {
                             showModalBottomSheet(
-                                context: context, builder: (BuildContext context) => AuthDenySheet(type: "length"));
+                                context: context,
+                                builder: (BuildContext context) => const AuthDenySheet(type: "length"));
                           } else {
                             log("Логин: $username, пароль: $password");
                             signUp(email!, password!);
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           "Создать",
                           style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                         ),

@@ -134,7 +134,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       ),
                       SizedBox(height: 10),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/diagnostics/level', arguments: 1);
+                        },
                         child: Container(
                           width: 330,
                           height: 60,
@@ -161,20 +163,22 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(height: 5),
-                                  dbGetter?.getUser()?.defect == null
+                                  dbGetter?.getUser()?.defects == null
                                       ? CircularProgressIndicator()
-                                      : dbGetter!.getUser()!.defect.contains("1")
-                                          ? Icon(Icons.cancel_outlined, color: Colors.white)
-                                          : Icon(Icons.check, color: Colors.white),
+                                      : dbGetter!.getUser()!.defects['1'] == 1
+                                          ? Icon(Icons.check, color: Colors.white)
+                                          : Icon(Icons.cancel_outlined, color: Colors.white),
                                   SizedBox(
                                     width: 110,
                                     height: 20,
                                     child: Text(
-                                      dbGetter?.getUser()?.defect == null
+                                      dbGetter?.getUser()?.defects == null
                                           ? "Загрузка..."
-                                          : dbGetter!.getUser()!.defect.contains("1")
-                                              ? "Обнаружено!"
-                                              : "не обнаружено",
+                                          : dbGetter!.getUser()!.defects['1'] == 0
+                                              ? "Еще не выполнено!"
+                                              : dbGetter!.getUser()!.defects['1'] == 2
+                                                  ? "Обнаружено"
+                                                  : "Не обнаружено",
                                       textAlign: TextAlign.end,
                                       style: TextStyle(color: Colors.white, fontSize: 11),
                                     ),
@@ -187,7 +191,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       ),
                       SizedBox(height: 20),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/diagnostics/level', arguments: 1);
+                        },
                         child: Container(
                           width: 330,
                           height: 60,
@@ -214,20 +220,22 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(height: 5),
-                                  dbGetter?.getUser()?.defect == null
+                                  dbGetter?.getUser()?.defects == null
                                       ? CircularProgressIndicator()
-                                      : dbGetter!.getUser()!.defect.contains("2")
-                                          ? Icon(Icons.cancel_outlined, color: Colors.white)
-                                          : Icon(Icons.check, color: Colors.white),
+                                      : dbGetter!.getUser()!.defects['2'] == 1
+                                          ? Icon(Icons.check, color: Colors.white)
+                                          : Icon(Icons.cancel_outlined, color: Colors.white),
                                   SizedBox(
                                     width: 110,
                                     height: 20,
                                     child: Text(
-                                      dbGetter?.getUser()?.defect == null
+                                      dbGetter?.getUser()?.defects == null
                                           ? "Загрузка..."
-                                          : dbGetter!.getUser()!.defect.contains("2")
-                                              ? "Обнаружено!"
-                                              : "не обнаружено",
+                                          : dbGetter!.getUser()!.defects['2'] == 0
+                                              ? "Еще не выполнено!"
+                                              : dbGetter!.getUser()!.defects['2'] == 2
+                                                  ? "Обнаружено"
+                                                  : "Не обнаружено",
                                       textAlign: TextAlign.end,
                                       style: TextStyle(color: Colors.white, fontSize: 11),
                                     ),

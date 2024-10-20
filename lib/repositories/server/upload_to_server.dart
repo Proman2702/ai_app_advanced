@@ -47,7 +47,7 @@ class UploadAudio {
 
       // Что-то пошло не так в основном функционале
     } catch (e) {
-      log('$e');
+      log('<upload> $e');
       return 400;
     }
   }

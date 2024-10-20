@@ -40,15 +40,9 @@ class AIInfoSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.only(left: 5, right: 5),
               alignment: Alignment.center,
-              child: Text(
-                handler(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+              child: Text(handler(), textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w700)),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             SizedBox(
               height: 30,
               width: 110,

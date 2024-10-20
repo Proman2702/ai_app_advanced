@@ -175,9 +175,10 @@ class _HomePageState extends State<HomePage> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(height: 10),
-                                            dbGetter?.getUser()?.defect == null
+                                            dbGetter?.getUser()?.defects == null
                                                 ? CircularProgressIndicator()
-                                                : dbGetter!.getUser()!.defect.isEmpty
+                                                : dbGetter!.getUser()!.defects['1'] == 0 &&
+                                                        dbGetter!.getUser()!.defects['2'] == 0
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
                                           ],
@@ -191,11 +192,12 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             SizedBox(
                                               child: Text(
-                                                dbGetter?.getUser()?.defect == null
+                                                dbGetter?.getUser()?.defects == null
                                                     ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.defect.isEmpty
+                                                    : dbGetter!.getUser()!.defects['1'] == 0 &&
+                                                            dbGetter!.getUser()!.defects['2'] == 0
                                                         ? "Еще не пройдена!"
-                                                        : "Уже пройдена!",
+                                                        : "Пройдена!",
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                     color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),

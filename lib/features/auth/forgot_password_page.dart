@@ -138,7 +138,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       decoration: BoxDecoration(
                           gradient: ButtonGrad(),
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
                           ]),
                       child: ElevatedButton(

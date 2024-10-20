@@ -178,9 +178,9 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 15, right: 10),
                             decoration: BoxDecoration(
-                                gradient: dbGetter?.getUser()?.username == null
+                                gradient: dbGetter?.getUser()?.defects == null
                                     ? GreyTile()
-                                    : dbGetter!.getUser()!.defect.contains('1')
+                                    : dbGetter!.getUser()!.defects['1'] == 2
                                         ? TileGrad1()
                                         : GreyTile(),
                                 borderRadius: BorderRadius.circular(20),
@@ -219,11 +219,13 @@ class _TasksPageState extends State<TasksPage> {
                       SizedBox(
                         width: 330,
                         child: Text(
-                          dbGetter?.getUser()?.username == null
+                          dbGetter?.getUser()?.defects == null
                               ? 'Загрузка...'
-                              : dbGetter!.getUser()!.defect.contains('1')
-                                  ? 'Рекомендуется'
-                                  : 'Не рекомендуется диагностикой',
+                              : dbGetter!.getUser()!.defects['1'] == 1
+                                  ? 'Не рекомендуется диагностикой'
+                                  : dbGetter!.getUser()!.defects['1'] == 2
+                                      ? 'Рекомендуется'
+                                      : 'Диагностика не пройдена',
                           style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
@@ -238,9 +240,9 @@ class _TasksPageState extends State<TasksPage> {
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 15, right: 10),
                             decoration: BoxDecoration(
-                                gradient: dbGetter?.getUser()?.username == null
+                                gradient: dbGetter?.getUser()?.defects == null
                                     ? GreyTile()
-                                    : dbGetter!.getUser()!.defect.contains('2')
+                                    : dbGetter!.getUser()!.defects['2'] == 2
                                         ? TileGrad1()
                                         : GreyTile(),
                                 borderRadius: BorderRadius.circular(20),
@@ -279,11 +281,13 @@ class _TasksPageState extends State<TasksPage> {
                       SizedBox(
                         width: 330,
                         child: Text(
-                          dbGetter?.getUser()?.username == null
+                          dbGetter?.getUser()?.defects == null
                               ? 'Загрузка...'
-                              : dbGetter!.getUser()!.defect.contains('2')
-                                  ? 'Рекомендуется'
-                                  : 'Не рекомендуется диагностикой',
+                              : dbGetter!.getUser()!.defects['2'] == 1
+                                  ? 'Не рекомендуется диагностикой'
+                                  : dbGetter!.getUser()!.defects['2'] == 2
+                                      ? 'Рекомендуется'
+                                      : 'Диагностика не пройдена',
                           style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),

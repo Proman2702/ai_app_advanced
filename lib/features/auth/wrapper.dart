@@ -22,21 +22,20 @@ class Wrapper extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                     child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
                 ));
               } else if (snapshot.hasError) {
                 return Text(
-                  "Произошла ошибка ${snapshot.error.toString()}!",
+                  "<Wrapper> Произошла ошибка ${snapshot.error.toString()}!",
                   style: TextStyle(color: Color(CustomColors.delete), fontSize: 40, fontWeight: FontWeight.w700),
                 );
               } else {
                 if (snapshot.data == null) {
                   return const AuthPage();
                 } else if (snapshot.data!.emailVerified == false) {
-                  
                   return const AuthPage();
                 } else {
-                  log("вход");
+                  log("<Wrapper> Вход");
                   return const HomePage();
                 }
               }
