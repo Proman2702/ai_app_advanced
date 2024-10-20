@@ -1,14 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:developer';
-
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/settings/confirmation_dialog.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
-import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -103,12 +100,10 @@ class _LevelsMenuState extends State<LevelsMenu> {
                                       1,
                                       dbGetter!.getUser()!.current_level['$defectType'] == 0 ||
                                               dbGetter!.getUser()!.current_level['$defectType'] == 1
-                                          ? 1
-                                          : 0
+                                          ? 0
+                                          : 1
                                     ]);
 
-                                    Tasks tasks = await Tasks.create(defectType, 1);
-                                    log(tasks.getRandomWord());
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},
@@ -163,8 +158,13 @@ class _LevelsMenuState extends State<LevelsMenu> {
                         onTap: dbGetter?.getUser()?.current_level == null
                             ? () {}
                             : dbGetter!.getUser()!.current_level['$defectType'] >= 2
-                                ? () {
-                                    log('2 уровень');
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      2,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 2 ? 0 : 1
+                                    ]);
+
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},
@@ -227,8 +227,13 @@ class _LevelsMenuState extends State<LevelsMenu> {
                         onTap: dbGetter?.getUser()?.current_level == null
                             ? () {}
                             : dbGetter!.getUser()!.current_level['$defectType'] >= 3
-                                ? () {
-                                    log('3 уровень');
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      3,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 3 ? 0 : 1
+                                    ]);
+
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},
@@ -286,8 +291,13 @@ class _LevelsMenuState extends State<LevelsMenu> {
                         onTap: dbGetter?.getUser()?.current_level == null
                             ? () {}
                             : dbGetter!.getUser()!.current_level['$defectType'] >= 4
-                                ? () {
-                                    log('4 уровень');
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      4,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 4 ? 0 : 1
+                                    ]);
+
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},
@@ -351,8 +361,13 @@ class _LevelsMenuState extends State<LevelsMenu> {
                         onTap: dbGetter?.getUser()?.current_level == null
                             ? () {}
                             : dbGetter!.getUser()!.current_level['$defectType'] >= 5
-                                ? () {
-                                    log('5 уровень');
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      5,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 5 ? 0 : 1
+                                    ]);
+
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},
@@ -411,8 +426,13 @@ class _LevelsMenuState extends State<LevelsMenu> {
                         onTap: dbGetter?.getUser()?.current_level == null
                             ? () {}
                             : dbGetter!.getUser()!.current_level['$defectType'] >= 6
-                                ? () {
-                                    log('6 уровень');
+                                ? () async {
+                                    Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
+                                      defectType,
+                                      6,
+                                      dbGetter!.getUser()!.current_level['$defectType'] == 6 ? 0 : 1
+                                    ]);
+
                                     // Проверка если текущий уровень больше этого
                                   }
                                 : () {},

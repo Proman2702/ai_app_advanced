@@ -37,11 +37,11 @@ class UploadAudio {
 
       // Обработчик ошибок
       if (response.statusCode == 200) {
-        log('Аудиофайл успешно загружен');
+        log('<upload> Аудиофайл успешно загружен');
         log("${response.data["prediction"][0]}");
         return response.data["prediction"][0];
       } else {
-        log('Ошибка при загрузке: ${response.statusCode} ${response.statusMessage}');
+        log('<upload> Ошибка при загрузке: ${response.statusCode} ${response.statusMessage}');
         return 400;
       }
 

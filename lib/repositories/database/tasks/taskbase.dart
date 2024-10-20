@@ -26,8 +26,6 @@ class Tasks {
 
   /// Public factory
   static Future<Tasks> create(int type, int level) async {
-    log('<tasks> called');
-
     // Call the private constructor
     var component = Tasks._create(defectType: type, level: level);
 

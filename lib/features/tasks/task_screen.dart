@@ -1,4 +1,5 @@
-import 'package:ai_app/features/tasks/ai_hander.dart';
+// ignore_for_file: unused_import
+
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:ai_app/repositories/server/upload_to_server.dart';
@@ -8,6 +9,8 @@ import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/repositories/audio/sound_player.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/repositories/audio/storage.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:ai_app/features/tasks/ai_hander.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -30,42 +33,77 @@ class _TaskPageState extends State<TaskPage> {
   GetValues? dbGetter;
   final recorder = SoundRecorder();
   final player = SoundPlayer();
-  int recordNum = 1;
-  bool recorded = false;
+  late int recordNum = 0;
+  late bool recorded = false;
+
+  late List<int> results = [];
   String? word;
-  List<int> results = [];
 
+  // функция обработки результата страницы
   void startLevel() async {
+    bool exited = false;
+
+    // если 3 попытки истрачено
     if (recordNum >= 3) {
-      if (completed == 0) {
-        var curCombo = dbGetter!.getUser()!.current_combo;
-        if (results.where((e) => e == defectType).length >= 2) {
-          curCombo['$defectType'] += 1;
-          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo['$defectType']));
+      // если дефектов нет или только 1
+      if (results.where((e) => e == 0).length >= 2) {
+        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'right'));
+
+        // если уровень еще не пройден
+        if (completed == 0) {
+          var curCombo = dbGetter!.getUser()!.current_combo; // аолучение данных с БД
+
+          curCombo['$defectType'] += 1; // к текущему комбо +1
+
+          // записываем результат обратно в БД
+          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo));
+
+          // если комбо больше или 5
           if (curCombo['$defectType'] >= 5) {
-            curCombo['$defectType'] = 0;
+            curCombo['$defectType'] = 0; //обнуляем его
 
-            var curLevel = dbGetter!.getUser()!.current_level;
-            curLevel['$defectType'] += 1;
+            var curLevel = dbGetter!.getUser()!.current_level; // получаем текущий уровень из БД
+            curLevel['$defectType'] += 1; // переходим на следующий
 
+            // записываем данные обратно в БД
             await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo, current_level: curLevel));
-            Navigator.of(context).pop();
+            exited = true; // подтверждаем выход
+            Navigator.of(context).pop(); // выходим из окна уведомелния результата
+            Navigator.of(context).pop(); // выходим из страницы
+
+            // уведомляем, что пользователь прошел уровень
             showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'passed'));
           }
-        } else {
-          curCombo['$defectType'] = 0;
-          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo['$defectType']));
+        }
+        // если 2 или больше дефектов
+      } else {
+        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'wrong'));
+
+        // если уровень еще не пройден
+        if (completed == 0) {
+          var curCombo = dbGetter!.getUser()!.current_combo; // получаем комбо из БД
+          curCombo['$defectType'] = 0; // обнуляем комбо и записываем в БД
+          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo));
         }
       }
     }
 
-    recordNum = 1;
-    results = [];
+    // если пользователь не вышел со страницы
+    if (!exited) {
+      // сбрасываем список с дефектами и попытки
+      recordNum = 1;
+      results = [];
 
-    Tasks tasks = await Tasks.create(defectType, 1);
-    word = tasks.getRandomWord();
-    setState(() {});
-    log("<taskPage> Уровень загружен");
+      // даем новое задание
+      Tasks tasks = await Tasks.create(defectType, level);
+      word = tasks.getRandomWord();
+      log("<taskPage> Уровень загружен");
+
+      if (mounted)
+        setState(() {});
+      else
+        return;
+    }
   }
 
   @override
@@ -77,16 +115,18 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   void initState() {
+    super.initState();
+    recordNum = 0;
+    results = [];
     user = FirebaseAuth.instance.currentUser;
     database.getUsers().listen((snapshot) {
       List<dynamic> users = snapshot.docs;
       dbGetter = GetValues(user: user!, users: users);
-      setState(() {});
+      if (mounted) setState(() {});
     });
-    super.initState();
+
     recorder.init();
     player.init();
-    setState(() {});
   }
 
   @override
@@ -102,19 +142,22 @@ class _TaskPageState extends State<TaskPage> {
       level = args[1];
       completed = args[2];
 
-      startLevel();
-
-      setState(() {});
+      if (recordNum == 0) {
+        startLevel();
+      }
     }
 
     super.didChangeDependencies();
   }
 
-  int? result;
-  String ip = 'http://7.tcp.eu.ngrok.io:10055/upload';
+  int? result; // поле, куда будет помещен результат
 
+  String ip = 'http://2.tcp.eu.ngrok.io:16690/upload'; // айпишник сервера (http://{ip}/upload)
+
+  // Функция формирования запроса со страницы
   Future<int> get_response(BuildContext context) async {
     showDialog(
+        // circularprogress indicator
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => SizedBox(
@@ -127,14 +170,14 @@ class _TaskPageState extends State<TaskPage> {
                 )),
               ),
             ));
-    try {
-      final audioPath = await Storage().completePath();
 
-      final res = await UploadAudio().uploadAudio(audioPath, ip);
-      Navigator.pop(context);
-      return res;
+    try {
+      final audioPath = await Storage().completePath(); // Получение пути локального файла записи диктофона
+      final res = await UploadAudio().uploadAudio(audioPath, ip); // Загрузка файла на сервер
+      Navigator.pop(context); // Выход из circularprogressindicator
+      return res; // возврат результата запроса
     } on Exception catch (e) {
-      log("Ошибка после запроса $e");
+      log("<taskPage> Ошибка после запроса $e"); // ошибка формирования запроса
       Navigator.pop(context);
       return 400;
     }
@@ -224,22 +267,26 @@ class _TaskPageState extends State<TaskPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     word == null
                         ? const CircularProgressIndicator()
                         : Container(
                             height: 190,
                             width: 300,
-                            alignment: Alignment.center,
+                            alignment: const Alignment(0.0, -0.2),
                             child: SingleChildScrollView(
                               child: Text(
                                 "$word",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 48, fontWeight: FontWeight.bold, color: Color(CustomColors.main)),
+                                    fontSize: 44,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(CustomColors.main),
+                                    height: 1.2),
                               ),
                             ),
                           ),
+                    const SizedBox(height: 10),
                     const SizedBox(
                       width: 250,
                       child: Text(
@@ -256,9 +303,8 @@ class _TaskPageState extends State<TaskPage> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      recorded = true;
                       await player.togglePlaying(whenFinished: () {});
-                      setState(() {});
+                      if (mounted) setState(() {});
                     },
                     child: Container(
                       height: 45,
@@ -279,7 +325,8 @@ class _TaskPageState extends State<TaskPage> {
                   GestureDetector(
                     onTap: () async {
                       await recorder.toggleRecording();
-                      setState(() {});
+                      Future.delayed(const Duration(milliseconds: 400), () => recorded = true);
+                      if (mounted) setState(() {});
                     },
                     child: Container(
                       height: 65,
@@ -327,34 +374,42 @@ class _TaskPageState extends State<TaskPage> {
                     shadowColor: Colors.transparent,
                   ),
                   onPressed: () async {
+                    // Проверка на то, что пользователь вкючал запись
                     if (recorded) {
+                      // формирование запроса
                       final response = await get_response(context);
 
                       // Сработал ли запрос
                       // нет
                       if (response == 400) {
                         log("<taskPage> Ошибка");
-                        setState(() {});
                         // да
                       } else {
+                        // запись запроса в результат
                         result = response;
                         log("<taskPage> Результат модели - $result");
+
                         recorded = false;
-                        if (result != 0 || result != defectType) {
+
+                        // если дефект не совпадает с текущим, то считаем, что дефекта нет
+                        if (result == null || result != defectType) {
                           result = 0;
                         }
-                        results.add(result!);
 
-                        setState(() {});
-
+                        results.add(result!); // добавление дефекта в список результатов модели
+                        log("<taskPage> RESULTS ($results)");
+                        // обработчик того, последняя ли попытка записи была
                         if (recordNum >= 3) {
                           startLevel();
                         } else {
                           recordNum += 1;
                         }
+                        log("<taskPage> Номер записи $recordNum");
                       }
+                      if (mounted) setState(() {});
+                      // если пользователь не включал запись
                     } else {
-                      log("Вы должны включить микрофон");
+                      log("<taskPage> Вы должны включить микрофон");
                     }
                   },
                   child: const Text(
