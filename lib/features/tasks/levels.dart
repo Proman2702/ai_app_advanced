@@ -4,6 +4,7 @@ import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/settings/confirmation_dialog.dart';
+import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,6 +40,30 @@ class _LevelsMenuState extends State<LevelsMenu> {
     final args = ModalRoute.of(context)!.settings.arguments; //NULL CHECK VALUE
     defectType = args as int;
     super.didChangeDependencies();
+  }
+
+  void clearCourse() async {
+    if (dbGetter?.getUser()?.username == null) {
+      return;
+    } else {
+      CustomUser curUser = dbGetter!.getUser()!;
+      var curCombo = curUser.current_combo;
+      var curLevel = curUser.current_level;
+      var curLevels = curUser.lessons_passed;
+      var curCorrectLevels = curUser.lessons_correct;
+
+      curLevel['$defectType'] = 0;
+      curCombo['$defectType'] = 0;
+      curLevels['$defectType'] = 0;
+      curCorrectLevels['$defectType'] = 0;
+
+      await database.updateUser(curUser.copyWith(
+          current_combo: curCombo,
+          current_level: curLevel,
+          lessons_correct: curCorrectLevels,
+          lessons_passed: curLevels));
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -498,11 +523,8 @@ class _LevelsMenuState extends State<LevelsMenu> {
                   onPressed: () {
                     showDialog(
                         context: context,
-                        builder: (context) => ConfirmationDialog(
-                            info: "Вы уверены, что хотите очистить курс?",
-                            action: () {
-                              // ЗАПОЛНИТЬ ФУНКЦИЮ УДАЛЕНИЯ
-                            }));
+                        builder: (context) =>
+                            ConfirmationDialog(info: "Вы уверены, что хотите очистить курс?", action: clearCourse));
                   },
                   child: Text(
                     "Сбросить курс",

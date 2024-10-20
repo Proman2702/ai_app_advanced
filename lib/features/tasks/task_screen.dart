@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:ai_app/repositories/server/upload_to_server.dart';
@@ -51,22 +52,32 @@ class _TaskPageState extends State<TaskPage> {
 
         // если уровень еще не пройден
         if (completed == 0) {
-          var curCombo = dbGetter!.getUser()!.current_combo; // аолучение данных с БД
+          CustomUser curUser = dbGetter!.getUser()!;
+          var curCombo = curUser.current_combo; // аолучение данных с БД
+          var curLevels = curUser.lessons_passed;
+          var curCorrectLevels = curUser.lessons_correct;
 
           curCombo['$defectType'] += 1; // к текущему комбо +1
+          curLevels['$defectType'] += 1;
+          curCorrectLevels['$defectType'] += 1;
 
           // записываем результат обратно в БД
-          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo));
+          await database.updateUser(
+              curUser.copyWith(current_combo: curCombo, lessons_correct: curCorrectLevels, lessons_passed: curLevels));
 
           // если комбо больше или 5
           if (curCombo['$defectType'] >= 5) {
             curCombo['$defectType'] = 0; //обнуляем его
 
-            var curLevel = dbGetter!.getUser()!.current_level; // получаем текущий уровень из БД
+            var curLevel = curUser.current_level; // получаем текущий уровень из БД
+
+            if (curLevel['$defectType'] == 0) {
+              curLevel['$defectType'] += 1;
+            }
             curLevel['$defectType'] += 1; // переходим на следующий
 
             // записываем данные обратно в БД
-            await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo, current_level: curLevel));
+            await database.updateUser(curUser.copyWith(current_combo: curCombo, current_level: curLevel));
             exited = true; // подтверждаем выход
             Navigator.of(context).pop(); // выходим из окна уведомелния результата
             Navigator.of(context).pop(); // выходим из страницы
@@ -81,9 +92,14 @@ class _TaskPageState extends State<TaskPage> {
 
         // если уровень еще не пройден
         if (completed == 0) {
-          var curCombo = dbGetter!.getUser()!.current_combo; // получаем комбо из БД
+          CustomUser curUser = dbGetter!.getUser()!;
+
+          var curCombo = curUser.current_combo; // получаем комбо из БД
+          var curLevels = curUser.lessons_passed;
+
           curCombo['$defectType'] = 0; // обнуляем комбо и записываем в БД
-          await database.updateUser(dbGetter!.getUser()!.copyWith(current_combo: curCombo));
+          curLevels['$defectType'] += 1;
+          await database.updateUser(curUser.copyWith(current_combo: curCombo, lessons_passed: curLevels));
         }
       }
     }
@@ -95,6 +111,7 @@ class _TaskPageState extends State<TaskPage> {
       results = [];
 
       // даем новое задание
+
       Tasks tasks = await Tasks.create(defectType, level);
       word = tasks.getRandomWord();
       log("<taskPage> Уровень загружен");
@@ -122,7 +139,7 @@ class _TaskPageState extends State<TaskPage> {
     database.getUsers().listen((snapshot) {
       List<dynamic> users = snapshot.docs;
       dbGetter = GetValues(user: user!, users: users);
-      if (mounted) setState(() {});
+      setState(() {});
     });
 
     recorder.init();
@@ -304,7 +321,10 @@ class _TaskPageState extends State<TaskPage> {
                   GestureDetector(
                     onTap: () async {
                       await player.togglePlaying(whenFinished: () {});
-                      if (mounted) setState(() {});
+                      if (mounted)
+                        setState(() {});
+                      else
+                        return;
                     },
                     child: Container(
                       height: 45,
@@ -326,7 +346,10 @@ class _TaskPageState extends State<TaskPage> {
                     onTap: () async {
                       await recorder.toggleRecording();
                       Future.delayed(const Duration(milliseconds: 400), () => recorded = true);
-                      if (mounted) setState(() {});
+                      if (mounted)
+                        setState(() {});
+                      else
+                        return;
                     },
                     child: Container(
                       height: 65,
@@ -406,7 +429,10 @@ class _TaskPageState extends State<TaskPage> {
                         }
                         log("<taskPage> Номер записи $recordNum");
                       }
-                      if (mounted) setState(() {});
+                      if (mounted)
+                        setState(() {});
+                      else
+                        return;
                       // если пользователь не включал запись
                     } else {
                       log("<taskPage> Вы должны включить микрофон");

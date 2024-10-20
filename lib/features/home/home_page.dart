@@ -460,8 +460,10 @@ class _InformationFieldState extends State<InformationField> {
                         height: 15,
                         width: 320,
                         child: LinearProgressIndicator(
-                          value: ((widget.user.lessons_passed['${widget.defectType}'] != null) &&
-                                  ((widget.user.lessons_correct['${widget.defectType}']) != null))
+                          value: (((widget.user.lessons_passed['${widget.defectType}'] != null) &&
+                                      ((widget.user.lessons_correct['${widget.defectType}']) != null)) &&
+                                  (widget.user.lessons_passed['${widget.defectType}'] != 0) &&
+                                  (widget.user.lessons_correct['${widget.defectType}'] != 0))
                               ? widget.user.lessons_correct['${widget.defectType}'] /
                                   widget.user.lessons_passed['${widget.defectType}']
                               : 0.0, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ

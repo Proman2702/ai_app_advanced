@@ -51,11 +51,11 @@ class _FirstPageState extends State<FirstPage> {
           username: username!,
           email: em,
           defect: [],
-          lessons_passed: {},
-          lessons_correct: {},
-          current_combo: {},
-          current_level: {},
-          max_combo: {}));
+          lessons_passed: {"1": 0, "2": 0},
+          lessons_correct: {"1": 0, "2": 0},
+          current_combo: {"1": 0, "2": 0},
+          current_level: {"1": 0, "2": 0},
+          max_combo: {"1": 0, "2": 0}));
 
       Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
