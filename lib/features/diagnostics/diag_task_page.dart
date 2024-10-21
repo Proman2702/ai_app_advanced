@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ai_app/features/diagnostics/result_dialog.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
@@ -66,7 +67,10 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
         await database.updateUser(curUser.copyWith(defects: curDefects));
 
         Navigator.of(context).pop();
-        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: passed ? 'right' : 'wrong'));
+        showDialog(
+            context: context,
+            builder: (context) => ResultDialog(
+                info: passed ? 'Дефектов не обнаружено!' : 'Дефект обнаружен! Рекомендуем обратиться к врачу'));
       }
     }
     if (!exited) {
@@ -381,9 +385,10 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                         return;
                       // если пользователь не включал запись
                     } else {
-                      if (!recorded) showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
-                      else showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
-                      
+                      if (!recorded)
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
+                      else
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
                     }
                   },
                   child: const Text(

@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:ai_app/features/tasks/help.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
@@ -252,7 +253,10 @@ class _TaskPageState extends State<TaskPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                              context: context, builder: (context) => defectType == 1 ? HelpDialog1() : HelpDialog2());
+                        },
                         child: Container(
                           width: 40,
                           height: 40,
@@ -399,7 +403,7 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                   onPressed: () async {
                     // Проверка на то, что пользователь вкючал запись
-                    if (recorded && !recorder.isRecording && !player.isPlaying)  {
+                    if (recorded && !recorder.isRecording && !player.isPlaying) {
                       // формирование запроса
                       final response = await get_response(context);
 
@@ -439,9 +443,10 @@ class _TaskPageState extends State<TaskPage> {
                         return;
                       // если пользователь не включал запись
                     } else {
-                      if (!recorded) showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
-                      else showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
-                      
+                      if (!recorded)
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
+                      else
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
                     }
                   },
                   child: const Text(

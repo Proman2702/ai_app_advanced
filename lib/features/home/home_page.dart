@@ -91,7 +91,10 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 dbGetter?.getUser() == null
-                    ? SizedBox(width: 320, height: 320, child: CircularProgressIndicator())
+                    ? SizedBox(
+                        width: 320,
+                        height: 320,
+                        child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator()))
                     : CarouselSlider(
                         items: [
                           InformationField(
@@ -319,7 +322,10 @@ class _HomePageState extends State<HomePage> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(height: 10),
-                                            Icon(Icons.build_circle, color: Colors.white,)
+                                            Icon(
+                                              Icons.build_circle,
+                                              color: Colors.white,
+                                            )
                                           ],
                                         ),
                                       ),
@@ -451,7 +457,9 @@ class _InformationFieldState extends State<InformationField> {
                                     color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
                                 child: Text(
                                   widget.user.current_level['${widget.defectType}'] != null
-                                      ? widget.user.current_level['${widget.defectType}'] == 7 ? '100%' : '${widget.user.current_level['${widget.defectType}']*15}%'
+                                      ? widget.user.current_level['${widget.defectType}'] == 7
+                                          ? '100%'
+                                          : '${widget.user.current_level['${widget.defectType}'] * 15}%'
                                       : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                   style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                 ),

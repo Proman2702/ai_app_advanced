@@ -106,9 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(
-                  height: 40
-                ),
+                SizedBox(height: 40),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -542,31 +540,30 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
                 SizedBox(height: 30),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 40,
-                      child: Text(
-                        "Сервер",
-                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
-                      ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(
+                    height: 40,
+                    child: Text(
+                      "Сервер",
+                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
                     ),
-                    Container(height: 1, width: 330, color: Colors.black12),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            
-                            showDialog(context: context, builder: (context) => AlertDialog(
-                              title: Text(
-                                  "Введите новый IP-адрес или сбросьте его",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                                ),
-                              content: Container(
+                  ),
+                  Container(height: 1, width: 330, color: Colors.black12),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                      title: Text(
+                                        "Введите новый IP-адрес или сбросьте его",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                                      ),
+                                      content: Container(
                                         height: 40,
                                         width: 295,
                                         decoration: BoxDecoration(
@@ -584,8 +581,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                               child: SingleChildScrollView(
                                                 scrollDirection: Axis.horizontal,
                                                 child: ConstrainedBox(
-                                                  constraints: BoxConstraints.expand(
-                                                      width: 1000),
+                                                  constraints: BoxConstraints.expand(width: 1000),
                                                   child: TextField(
                                                     obscureText: false,
                                                     style: const TextStyle(
@@ -601,7 +597,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                       contentPadding: EdgeInsets.only(bottom: 12),
                                                       counterText: "",
                                                       border: InputBorder.none,
-                                                      labelText: "Новый айпи",
+                                                      labelText: "Новый IP",
                                                       labelStyle: TextStyle(
                                                           color: Colors.black12,
                                                           fontSize: 20,
@@ -614,95 +610,91 @@ class _SettingsPageState extends State<SettingsPage> {
                                           ],
                                         ),
                                       ),
-
                                       actionsAlignment: MainAxisAlignment.center,
-                                actionsPadding: EdgeInsets.only(bottom: 20),
-                                actions: [
-                                  SizedBox(
-                                    height: 35,
-                                    width: 100,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(5),
-                                          alignment: Alignment.center,
-                                            backgroundColor: Color(CustomColors.main),
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                                        onPressed: () {
-                                          Ip().resetIp();
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Сбросить",
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
+                                      actionsPadding: EdgeInsets.only(bottom: 20),
+                                      actions: [
+                                        SizedBox(
+                                          height: 35,
+                                          width: 100,
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.all(5),
+                                                  alignment: Alignment.center,
+                                                  backgroundColor: Color(CustomColors.main),
+                                                  shape:
+                                                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                                              onPressed: () {
+                                                Ip().resetIp();
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("Сбросить",
+                                                  style: TextStyle(
+                                                      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
+                                        ),
+                                        SizedBox(),
+                                        SizedBox(
+                                          height: 35,
+                                          width: 100,
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.all(5),
+                                                  alignment: Alignment.center,
+                                                  backgroundColor: Color(CustomColors.main),
+                                                  shape:
+                                                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+                                              onPressed: () {
+                                                Ip().setIp("http://$newIp!/upload");
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("Готово",
+                                                  style: TextStyle(
+                                                      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
+                                        )
+                                      ]));
+                        },
+                        child: Container(
+                          height: 90,
+                          width: 155,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(offset: Offset(0, 3), blurRadius: 5, spreadRadius: 1, color: Colors.black26)
+                              ],
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 0, left: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 85,
+                                  child: Text(
+                                    "Сменить IP модели",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontFamily: "Nunito",
+                                        color: Color(CustomColors.main),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(),
-                                  SizedBox(
-                                    height: 35,
-                                    width: 100,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(5),
-                                          alignment: Alignment.center,
-                                            backgroundColor: Color(CustomColors.main),
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                                        onPressed: () {
-                                          Ip().setIp("http://$newIp!/upload");
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Готово",
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
-                                  )
-                                ]
-                            ));
-
-                          },
-
-                          child: Container(
-                            height: 90,
-                            width: 155,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(offset: Offset(0, 3), blurRadius: 5, spreadRadius: 1, color: Colors.black26)
-                                ],
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 0, left: 5),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 50,
-                                    width: 85,
-                                    child: Text(
-                                      "Сменить IP модели",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontFamily: "Nunito",
-                                          color: Color(CustomColors.main),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 0, left: 5),
-                                    child: Icon(Icons.tap_and_play_outlined, size: 40, color: Color(CustomColors.main)),
-                                  )
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 0, left: 5),
+                                  child: Icon(Icons.tap_and_play_outlined, size: 40, color: Color(CustomColors.main)),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(width: 20),
-                        Container(
-                            height: 90, width: 155, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20))),
-                      ],
-                    ),
-                    
-                    
-                    ])
+                      ),
+                      SizedBox(width: 20),
+                      Container(
+                          height: 90, width: 155, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20))),
+                    ],
+                  ),
+                ])
               ],
             ),
           ),
