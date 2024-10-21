@@ -23,6 +23,11 @@ class AIInfoSheet extends StatelessWidget {
         return 'Открыт новый уровень!';
       case 'server_error':
         return 'Ошибка подключения к серверу!';
+      case 'no_record':
+        return 'Запишите свой голос!';
+      case 'in_process':
+        return 'Аудио записывается или воспроизводится!';
+      
     }
     return 'Что-то пошло не так';
   }

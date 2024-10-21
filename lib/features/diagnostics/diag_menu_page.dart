@@ -91,11 +91,17 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                     child: Image.asset("images/hexagon.png",
                         scale: 1.4, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
             Padding(
-                padding: EdgeInsets.only(top: height / 1.5, left: width / 12),
+                padding: EdgeInsets.only(top: height / 1.5, left: width / 4),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.7, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
+            Padding(
+                padding: EdgeInsets.only(top: height / 1.43, left: width / 2.3),
+                child: Transform.rotate(
+                    angle: 0 * math.pi / 12,
+                    child: Image.asset("images/hexagon_grad.png",
+                        scale: 1.9, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,14 +138,14 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                           style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed('/diagnostics/level', arguments: 1);
                         },
                         child: Container(
                           width: 330,
-                          height: 60,
+                          height: 80,
                           alignment: Alignment.center,
                           padding: EdgeInsets.only(left: 15, right: 5),
                           decoration: BoxDecoration(
@@ -152,10 +158,11 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: 195,
+                                width: 185,
+                                height: 50,
                                 child: Text(
                                   'Дефект 1 - картавость',
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                  style: TextStyle(height:1.2, color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                               ),
                               Column(
@@ -169,7 +176,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                           ? Icon(Icons.check, color: Colors.white)
                                           : Icon(Icons.cancel_outlined, color: Colors.white),
                                   SizedBox(
-                                    width: 110,
+                                    width: 120,
                                     height: 20,
                                     child: Text(
                                       dbGetter?.getUser()?.defects == null
@@ -180,7 +187,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                                   ? "Обнаружено"
                                                   : "Не обнаружено",
                                       textAlign: TextAlign.end,
-                                      style: TextStyle(color: Colors.white, fontSize: 11),
+                                      style: TextStyle(color: Colors.white, fontSize: 12),
                                     ),
                                   )
                                 ],
@@ -196,7 +203,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                         },
                         child: Container(
                           width: 330,
-                          height: 60,
+                          height: 80,
                           alignment: Alignment.center,
                           padding: EdgeInsets.only(left: 15, right: 5),
                           decoration: BoxDecoration(
@@ -207,12 +214,16 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                               ]),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
-                                width: 195,
-                                child: Text(
-                                  'Дефект 2 - г',
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                              Center(
+                                child: SizedBox(
+                                  width: 185,
+                                  height: 50,
+                                  child: Text(
+                                    'Дефект 2 - г ',
+                                    style: TextStyle(height: 1.2, color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
                                 ),
                               ),
                               Column(
@@ -225,8 +236,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                       : dbGetter!.getUser()!.defects['2'] == 1
                                           ? Icon(Icons.check, color: Colors.white)
                                           : Icon(Icons.cancel_outlined, color: Colors.white),
+                                  SizedBox(height: 5),
                                   SizedBox(
-                                    width: 110,
+                                    width: 120,
                                     height: 20,
                                     child: Text(
                                       dbGetter?.getUser()?.defects == null
@@ -237,7 +249,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                                   ? "Обнаружено"
                                                   : "Не обнаружено",
                                       textAlign: TextAlign.end,
-                                      style: TextStyle(color: Colors.white, fontSize: 11),
+                                      style: TextStyle(color: Colors.white, fontSize: 12),
                                     ),
                                   )
                                 ],
@@ -248,28 +260,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 80),
-                  Container(
-                    height: 40,
-                    width: 180,
-                    decoration: BoxDecoration(
-                        gradient: ButtonGrad(),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
-                        ]),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Создать",
-                        style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  )
+                
                 ],
               ),
             ),

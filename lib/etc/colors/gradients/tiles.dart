@@ -22,6 +22,17 @@ class TileGrad2 extends LinearGradient {
         );
 }
 
+
+class TileGrad3 extends LinearGradient {
+  TileGrad3()
+      : super(
+          colors: [Color(CustomColors().getTileGrad3[0]), Color(CustomColors().getTileGrad3[1])],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          tileMode: TileMode.decal,
+        );
+}
+
 class ButtonGrad extends LinearGradient {
   ButtonGrad()
       : super(

@@ -1,16 +1,26 @@
 
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
+import 'package:ai_app/features/drawer.dart';
 import 'package:flutter/material.dart';
 
-class InfoPage extends StatelessWidget {
+class InfoPage extends StatefulWidget {
+  
   const InfoPage({super.key});
 
+  @override
+  State<InfoPage> createState() => _InfoPageState();
+}
+
+class _InfoPageState extends State<InfoPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(gradient: BackgroundGrad()),
       child: Scaffold(
+        key: _scaffoldKey,
+        drawer: AppDrawer(chosen: 4),
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(preferredSize: Size.fromHeight(65), child: AppBar(
           shape: RoundedRectangleBorder(
@@ -22,12 +32,10 @@ class InfoPage extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.only(top: 5, left: 5),
               child: IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Color(CustomColors.main),
-                    size: 30,
-                  )),
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30))
             ),
             title: Center(
                 child: Text(
@@ -44,12 +52,12 @@ class InfoPage extends StatelessWidget {
             
               children: 
             [
-              SizedBox(height: 50,),
+              SizedBox(height: 30,),
               SizedBox(width: 350, child: Text('AI App v1.0', style: TextStyle(color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),)),
               SizedBox(height: 15,),
               Container(width: 350, height: 3, decoration: BoxDecoration(color: Colors.white24),),
               SizedBox(height: 5,),
-              SizedBox(width: 350, child: Text('AIIJC Т-Банк - саморазвитие', style: TextStyle(color: Colors.white70, fontSize: 20, fontWeight: FontWeight.bold),)),
+              SizedBox(width: 350, child: Text('AI Т-Банк - саморазвитие', style: TextStyle(color: Colors.white70, fontSize: 20, fontWeight: FontWeight.bold),)),
               SizedBox(height: 5,),
               SizedBox(width: 350, child: Text('Команда "Десептиконы"', style: TextStyle(color: Colors.white70, fontSize: 20, fontWeight: FontWeight.bold),)),
               SizedBox(height: 15,),

@@ -3,6 +3,7 @@
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
+import 'package:ai_app/repositories/server/ip.dart';
 import 'package:ai_app/repositories/server/upload_to_server.dart';
 import 'package:ai_app/repositories/audio/sound_recorder.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
@@ -169,7 +170,7 @@ class _TaskPageState extends State<TaskPage> {
 
   int? result; // поле, куда будет помещен результат
 
-  String ip = 'http://2.tcp.eu.ngrok.io:16690/upload'; // айпишник сервера (http://{ip}/upload)
+  String ip = Ip().getIp; // айпишник сервера (http://{ip}/upload)
 
   // Функция формирования запроса со страницы
   Future<int> get_response(BuildContext context) async {
@@ -398,7 +399,7 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                   onPressed: () async {
                     // Проверка на то, что пользователь вкючал запись
-                    if (recorded) {
+                    if (recorded && !recorder.isRecording && !player.isPlaying)  {
                       // формирование запроса
                       final response = await get_response(context);
 
@@ -438,7 +439,9 @@ class _TaskPageState extends State<TaskPage> {
                         return;
                       // если пользователь не включал запись
                     } else {
-                      log("<taskPage> Вы должны включить микрофон");
+                      if (!recorded) showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
+                      else showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
+                      
                     }
                   },
                   child: const Text(
