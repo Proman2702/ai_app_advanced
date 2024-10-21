@@ -395,7 +395,7 @@ class _InformationFieldState extends State<InformationField> {
                                     color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
                                 child: Text(
                                   widget.user.current_level['${widget.defectType}'] != null
-                                      ? '${widget.user.current_level['${widget.defectType}'] * 15}%'
+                                      ? widget.user.current_level['${widget.defectType}'] == 7 ? '100%' : '${widget.user.current_level['${widget.defectType}']*15}%'
                                       : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                   style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                 ),

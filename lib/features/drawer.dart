@@ -227,8 +227,8 @@ class _AppDrawerState extends State<AppDrawer> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
-                  if (widget.chosen != 0) {
-                    Navigator.of(context).pushNamed('/');
+                  if (widget.chosen != 4) {
+                    Navigator.of(context).pushNamed('/info');
                   }
                 },
                 child: Container(

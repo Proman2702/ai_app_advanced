@@ -21,6 +21,8 @@ class AIInfoSheet extends StatelessWidget {
         return 'Дефект обнаружен!';
       case 'passed':
         return 'Открыт новый уровень!';
+      case 'server_error':
+        return 'Ошибка подключения к серверу!';
     }
     return 'Что-то пошло не так';
   }

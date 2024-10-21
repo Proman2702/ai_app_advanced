@@ -350,6 +350,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                       // нет
                       if (response == 400) {
                         log("<taskPage> Ошибка");
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'server_error'));
                         // да
                       } else {
                         // запись запроса в результат

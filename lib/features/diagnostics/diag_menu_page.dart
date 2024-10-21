@@ -192,7 +192,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed('/diagnostics/level', arguments: 1);
+                          Navigator.of(context).pushNamed('/diagnostics/level', arguments: 2);
                         },
                         child: Container(
                           width: 330,
