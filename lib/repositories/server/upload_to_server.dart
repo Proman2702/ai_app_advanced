@@ -22,7 +22,7 @@ class UploadAudio {
       final dio = Dio(options);
 
       // Строка, обновляющая хар-ки файла
-      log("${await File(filename).length()}");
+      await File(filename).length();
 
       // Сборка аудиофалйа и его названия для отправки на сервер
       final formData = FormData.fromMap(

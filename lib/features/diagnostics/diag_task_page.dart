@@ -38,7 +38,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
   final player = SoundPlayer();
   late int recordNum = 0;
   late bool recorded = false;
-
+  bool waiting = false;
   late List<int> results = [];
   late List<int> resultsLevels = [];
   String? word;
@@ -325,13 +325,15 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
+                      waiting = false;
                       if (recorder.isRecording) {
                         endTimer(false);
                       } else {
                         startTimer();
                       }
                       await recorder.toggleRecording();
-                      Future.delayed(const Duration(milliseconds: 400), () => recorded = true);
+                      recorded = true;
+                      Future.delayed(const Duration(milliseconds: 1300), () => waiting = true);
                       if (mounted)
                         setState(() {});
                       else
@@ -384,7 +386,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   ),
                   onPressed: () async {
                     // Проверка на то, что пользователь вкючал запись
-                    if (recorded && !recorder.isRecording && !player.isPlaying) {
+                    if (recorded && !recorder.isRecording && !player.isPlaying && waiting) {
                       // формирование запроса
                       final response = await get_response(context);
 
@@ -424,8 +426,10 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                     } else {
                       if (!recorded)
                         showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
-                      else
+                      else if (recorder.isRecording || player.isPlaying)
                         showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
+                      else
+                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'wait'));
                     }
                   },
                   child: const Text(

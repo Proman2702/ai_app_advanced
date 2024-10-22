@@ -27,7 +27,8 @@ class AIInfoSheet extends StatelessWidget {
         return 'Запишите свой голос!';
       case 'in_process':
         return 'Аудио записывается или воспроизводится!';
-      
+      case 'wait':
+        return 'Подождите немного...';
     }
     return 'Что-то пошло не так';
   }
