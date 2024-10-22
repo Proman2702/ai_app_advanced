@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:ai_app/features/diagnostics/result_dialog.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
@@ -44,7 +46,6 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
   // функция обработки результата страницы (диагностика)
   void startLevel() async {
     bool passed = false;
-    bool exited = false;
     // если 3 попытки истрачено
     if (recordNum >= 3) {
       if (results.where((e) => e == 0).length >= 2) {
@@ -63,7 +64,6 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
         } else {
           curDefects['$defectType'] = 2;
         }
-        exited = true;
         await database.updateUser(curUser.copyWith(defects: curDefects));
 
         Navigator.of(context).pop();
@@ -71,22 +71,53 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
             context: context,
             builder: (context) => ResultDialog(
                 info: passed ? 'Дефектов не обнаружено!' : 'Дефект обнаружен! Рекомендуем обратиться к врачу'));
+        return;
       }
     }
-    if (!exited) {
-      // сбрасываем список с дефектами и попытки
-      recordNum = 1;
-      results = [];
 
-      // даем новое задание
-      Tasks tasks = await Tasks.create(defectType, 6);
-      word = tasks.getRandomWord();
-      log("<taskPage> Уровень загружен");
+    // сбрасываем список с дефектами и попытки
+    recordNum = 1;
+    results = [];
 
-      if (mounted)
-        setState(() {});
-      else
-        return;
+    // даем новое задание
+    Tasks tasks = await Tasks.create(defectType, 6);
+    word = tasks.getRandomWord();
+    log("<taskPage> Уровень загружен");
+
+    if (mounted)
+      setState(() {});
+    else
+      return;
+  }
+
+  Timer? _timer;
+  int _start = 7;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 1) {
+          setState(() {
+            endTimer(true);
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  void endTimer(bool stop) async {
+    if (_timer != null) _timer!.cancel();
+    log("<taskPage> timer ended");
+    _start = 7;
+    if (stop) {
+      await recorder.toggleRecording();
+      setState(() {});
     }
   }
 
@@ -94,6 +125,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
   void dispose() {
     player.dispose();
     recorder.dispose();
+    if (_timer != null) _timer!.cancel();
     super.dispose();
   }
 
@@ -293,6 +325,11 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
+                      if (recorder.isRecording) {
+                        endTimer(false);
+                      } else {
+                        startTimer();
+                      }
                       await recorder.toggleRecording();
                       Future.delayed(const Duration(milliseconds: 400), () => recorded = true);
                       if (mounted)

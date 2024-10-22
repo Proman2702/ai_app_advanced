@@ -133,7 +133,7 @@ class HelpDialog2 extends StatelessWidget {
                   children: <TextSpan>[
                     TextSpan(
                         text: 'Упражнение №1 "г":\n', style: const TextStyle(fontWeight: FontWeight.bold, height: 3)),
-                    TextSpan(text: 'бурда бурда бурда бурда бурда бурда бурда бурда бурда бурда'),
+                    TextSpan(text: '...'),
                   ],
                 ),
               ),

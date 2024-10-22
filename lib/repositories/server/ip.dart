@@ -1,5 +1,5 @@
 class Ip {
-  String? _ip; // Айпи, если пользователь решит поменять его
+  static String? _ip; // Айпи, если пользователь решит поменять его
   String defaultIp = 'http://0.tcp.eu.ngrok.io:14650/upload'; // Поле для айпи сервера
 
   void setIp(String ip) {

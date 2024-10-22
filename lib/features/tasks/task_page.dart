@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import
 
+import 'dart:async';
+
 import 'package:ai_app/features/tasks/help.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
@@ -44,8 +46,6 @@ class _TaskPageState extends State<TaskPage> {
 
   // функция обработки результата страницы
   void startLevel() async {
-    bool exited = false;
-
     // если 3 попытки истрачено
     if (recordNum >= 3) {
       // если дефектов нет или только 1
@@ -80,12 +80,12 @@ class _TaskPageState extends State<TaskPage> {
 
             // записываем данные обратно в БД
             await database.updateUser(curUser.copyWith(current_combo: curCombo, current_level: curLevel));
-            exited = true; // подтверждаем выход
             Navigator.of(context).pop(); // выходим из окна уведомелния результата
             Navigator.of(context).pop(); // выходим из страницы
 
             // уведомляем, что пользователь прошел уровень
             showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'passed'));
+            return;
           }
         }
         // если 2 или больше дефектов
@@ -107,28 +107,27 @@ class _TaskPageState extends State<TaskPage> {
     }
 
     // если пользователь не вышел со страницы
-    if (!exited) {
-      // сбрасываем список с дефектами и попытки
-      recordNum = 1;
-      results = [];
+    // сбрасываем список с дефектами и попытки
+    recordNum = 1;
+    results = [];
 
-      // даем новое задание
+    // даем новое задание
 
-      Tasks tasks = await Tasks.create(defectType, level);
-      word = tasks.getRandomWord();
-      log("<taskPage> Уровень загружен");
+    Tasks tasks = await Tasks.create(defectType, level);
+    word = tasks.getRandomWord();
+    log("<taskPage> Уровень загружен");
 
-      if (mounted)
-        setState(() {});
-      else
-        return;
-    }
+    if (mounted)
+      setState(() {});
+    else
+      return;
   }
 
   @override
   void dispose() {
     player.dispose();
     recorder.dispose();
+    if (_timer != null) _timer!.cancel();
     super.dispose();
   }
 
@@ -146,6 +145,37 @@ class _TaskPageState extends State<TaskPage> {
 
     recorder.init();
     player.init();
+  }
+
+  Timer? _timer;
+  int _start = 7;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 1) {
+          setState(() {
+            endTimer(true);
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  void endTimer(bool stop) async {
+    if (_timer != null) _timer!.cancel();
+    log("<taskPage> timer ended");
+    _start = 7;
+    if (stop) {
+      await recorder.toggleRecording();
+      setState(() {});
+    }
   }
 
   @override
@@ -293,7 +323,7 @@ class _TaskPageState extends State<TaskPage> {
                     word == null
                         ? const CircularProgressIndicator()
                         : Container(
-                            height: 190,
+                            height: 200,
                             width: 300,
                             alignment: const Alignment(0.0, -0.2),
                             child: SingleChildScrollView(
@@ -310,10 +340,10 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                     const SizedBox(height: 10),
                     const SizedBox(
-                      width: 250,
+                      width: 290,
                       child: Text(
-                        'Произнесите слово вслух, нажав на красную кнопку',
-                        style: TextStyle(color: Colors.black26, fontSize: 12, fontWeight: FontWeight.bold),
+                        'Произнесите слово вслух (постарайтесь уложиться в 7 с.), нажав на красную кнопку',
+                        style: TextStyle(color: Colors.black26, fontSize: 11, fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
@@ -326,6 +356,7 @@ class _TaskPageState extends State<TaskPage> {
                   GestureDetector(
                     onTap: () async {
                       await player.togglePlaying(whenFinished: () {});
+
                       if (mounted)
                         setState(() {});
                       else
@@ -349,6 +380,11 @@ class _TaskPageState extends State<TaskPage> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
+                      if (recorder.isRecording) {
+                        endTimer(false);
+                      } else {
+                        startTimer();
+                      }
                       await recorder.toggleRecording();
                       Future.delayed(const Duration(milliseconds: 400), () => recorded = true);
                       if (mounted)

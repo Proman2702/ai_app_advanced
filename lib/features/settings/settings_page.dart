@@ -588,7 +588,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                         fontWeight: FontWeight.w700,
                                                         fontSize: 18,
                                                         color: Colors.black87),
-                                                    maxLength: AuthSettings().maxPasswordLength,
+                                                    maxLength: 70,
                                                     onChanged: (value) => setState(() {
                                                       newIp = value;
                                                     }),
@@ -643,8 +643,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   shape:
                                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                                               onPressed: () {
-                                                Ip().setIp("http://$newIp!/upload");
-                                                Navigator.of(context).pop();
+                                                if (newIp == null) {
+                                                  showModalBottomSheet(
+                                                      context: context,
+                                                      builder: (BuildContext context) => AuthDenySheet(
+                                                            type: "none",
+                                                          ));
+                                                } else {
+                                                  Ip().setIp(newIp!);
+                                                  Navigator.of(context).pop();
+                                                }
                                               },
                                               child: const Text("Готово",
                                                   style: TextStyle(
