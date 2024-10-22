@@ -132,8 +132,42 @@ class HelpDialog2 extends StatelessWidget {
                       fontSize: 16.0, color: Colors.black87, height: 1.1, fontFamily: 'nunito', letterSpacing: 0.5),
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Упражнение №1 "г":\n', style: const TextStyle(fontWeight: FontWeight.bold, height: 3)),
-                    TextSpan(text: '...'),
+                        text: 'Упражнение №1 "Катушка":\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold, height: 3)),
+                    TextSpan(
+                        text:
+                            'Рот открыт, кончик языка упирается в нижние зубы, боковые края прижаты к верхним коренным зубам. Широкий язык выталкивается вперед и упирается вглубь рта.'),
+                  ],
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  // Note: Styles for TextSpans must be explicitly defined.
+                  // Child text spans will inherit styles from parent
+                  style: const TextStyle(
+                      fontSize: 16.0, color: Colors.black87, height: 1.1, fontFamily: 'nunito', letterSpacing: 0.5),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Упражнение №2 "Чашечка":\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold, height: 3)),
+                    TextSpan(
+                        text:
+                            'Рот широко открыть. Широкий язык поднять кверху. Подтянуться боковыми краями и кончиком языка к верхним зубам, но не касаться их.'),
+                  ],
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  // Note: Styles for TextSpans must be explicitly defined.
+                  // Child text spans will inherit styles from parent
+                  style: const TextStyle(
+                      fontSize: 16.0, color: Colors.black87, height: 1.1, fontFamily: 'nunito', letterSpacing: 0.5),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: 'Упражнение №3 "Горка":\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold, height: 3)),
+                    TextSpan(
+                        text: 'Улыбнуться, показать зубы, кончик языка поднять за нижние зубы и выдохнуть воздух.'),
                   ],
                 ),
               ),
