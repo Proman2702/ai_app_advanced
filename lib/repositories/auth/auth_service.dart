@@ -84,7 +84,7 @@ class AuthService {
     return [1, 'unknown'];
   }
 
-  // Смена пароля
+  // Удаление аккаунта
   // Входные данные: е-маил, текущий пароль
   // Выходные данные: либо [0], либо [1 и описание ошибки]
   Future<List> deleteAccount(String email, String password) async {
