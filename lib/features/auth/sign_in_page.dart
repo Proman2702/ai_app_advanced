@@ -9,7 +9,7 @@ import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_app/repositories/auth/auth_formats.dart';
+import 'package:ai_app/features/auth/auth_formats.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});

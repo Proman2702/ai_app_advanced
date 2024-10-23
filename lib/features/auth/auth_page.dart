@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
-import 'package:ai_app/repositories/auth/auth_formats.dart';
+import 'package:ai_app/features/auth/auth_formats.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
