@@ -5,22 +5,28 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:ai_app/repositories/audio/storage.dart';
 
 class SoundRecorder {
-  FlutterSoundRecorder? _audioRecorder;
+  FlutterSoundRecorder? audioRecorder;
+
   String? _audioPath;
 
   // Проверка, включен ли диктофон
-  bool get isRecording => _audioRecorder!.isRecording;
+  bool get isRecording => audioRecorder!.isRecording;
 
   // Инициализация диктофона
   Future init() async {
-    _audioRecorder = FlutterSoundRecorder();
+    audioRecorder = FlutterSoundRecorder();
 
-    final statusMic = await Permission.storage.status;
+    final statusMic = await Permission.microphone.status;
     if (!statusMic.isGranted) {
       await Permission.microphone.request();
     }
-    final statusStorage = await Permission.storage.status;
+    final statusStorage = await Permission.audio.status;
     if (!statusStorage.isGranted) {
+      await Permission.audio.request();
+    }
+
+    final statusStorage1 = await Permission.storage.status;
+    if (!statusStorage1.isGranted) {
       await Permission.storage.request();
     }
 
@@ -32,30 +38,28 @@ class SoundRecorder {
 
     log("<SoundRecorder> Путь к аудио: $_audioPath");
 
-    await _audioRecorder!.openAudioSession();
+    await audioRecorder!.openAudioSession();
   }
 
   // Выключение диктофона при выходе
   void dispose() {
-    _audioRecorder!.closeAudioSession();
-    _audioRecorder = null;
+    audioRecorder!.closeAudioSession();
+    audioRecorder = null;
   }
 
   // Локальный метод запуска диктофона
   Future<void> _record() async {
-    await _audioRecorder!.openAudioSession();
-    await _audioRecorder!.startRecorder(toFile: _audioPath);
+    await audioRecorder!.startRecorder(toFile: _audioPath);
   }
 
   // Локальный метод остановки диктофона
   Future<void> _stop() async {
-    await _audioRecorder!.stopRecorder();
-    _audioRecorder!.closeAudioSession();
+    await audioRecorder!.stopRecorder();
   }
 
   // Включение/отключение диктофона
   Future<void> toggleRecording() async {
-    if (_audioRecorder!.isStopped) {
+    if (audioRecorder!.isStopped) {
       await _record();
     } else {
       await _stop();

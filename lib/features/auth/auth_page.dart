@@ -43,18 +43,22 @@ class _AuthPageState extends State<AuthPage> {
         });
 
     final user = await auth.loginUserWithEmailAndPassword(em, p);
-    Navigator.pop(context);
 
     if (user[0] == 0) {
       if (user[1].emailVerified) {
         log(user[1].emailVerified.toString());
         log("Успешный вход");
+
+        Navigator.of(context).pop();
         Navigator.of(context).pushReplacementNamed("/");
       } else {
+        Navigator.of(context).pop();
         showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: "verify"));
       }
     } else if (user[0] == 1) {
+      Navigator.of(context).pop();
       log("Ошибка ${user[1]}");
+
       showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: user[1]));
     }
   }
@@ -75,7 +79,16 @@ class _AuthPageState extends State<AuthPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: (height - width) > 0 ? height / 3 : height / 12),
+                SizedBox(height: (height - width) > 0 ? height / 7 : height / 12),
+                Container(
+                  height: 140,
+                  width: 140,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(75)),
+                  child: Image.asset("images/icon.png",
+                      scale: 4.2, opacity: const AlwaysStoppedAnimation(1), alignment: Alignment.center),
+                ),
+                SizedBox(height: 30),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -103,7 +116,7 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: (height - width) > 0 ? height / 6.5 : height / 10),
+                SizedBox(height: (height - width) > 0 ? height / 8 : height / 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -139,7 +152,7 @@ class _AuthPageState extends State<AuthPage> {
                                     contentPadding: EdgeInsets.only(bottom: 12),
                                     counterText: "",
                                     border: InputBorder.none,
-                                    labelText: "Логин",
+                                    labelText: "Почта",
                                     labelStyle:
                                         TextStyle(color: Colors.black12, fontSize: 20, fontWeight: FontWeight.w700),
                                   ),

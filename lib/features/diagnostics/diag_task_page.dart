@@ -38,7 +38,6 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
   final player = SoundPlayer();
   late int recordNum = 0;
   late bool recorded = false;
-  bool waiting = false;
   late List<int> results = [];
   late List<int> resultsLevels = [];
   String? word;
@@ -325,7 +324,6 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () async {
-                      waiting = false;
                       if (recorder.isRecording) {
                         endTimer(false);
                       } else {
@@ -333,7 +331,6 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                       }
                       await recorder.toggleRecording();
                       recorded = true;
-                      Future.delayed(const Duration(milliseconds: 1300), () => waiting = true);
                       if (mounted)
                         setState(() {});
                       else
@@ -386,8 +383,26 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   ),
                   onPressed: () async {
                     // Проверка на то, что пользователь вкючал запись
-                    if (recorded && !recorder.isRecording && !player.isPlaying && waiting) {
+                    if (recorded && !recorder.isRecording && !player.isPlaying) {
                       // формирование запроса
+                      showDialog(
+                          // circularprogress indicator
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => SizedBox(
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Color(CustomColors.dialogBack),
+                                  )),
+                                ),
+                              ));
+                      await Future.delayed(const Duration(milliseconds: 400), () async {
+                        Navigator.pop(context);
+                      });
+
                       final response = await get_response(context);
 
                       // Сработал ли запрос

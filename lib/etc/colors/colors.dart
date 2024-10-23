@@ -1,5 +1,5 @@
 class CustomColors {
-  final List<int> backgroundGrad = [0xFFD0B1CC, 0xFF511869];
+  final List<int> backgroundGrad = [0xFFCFB5D6, 0xFF4E0F69];
   final List<int> drawerGrad = [0xFFCCAAD4, 0xFFB68FBF, 0xFF613974];
   final List<int> tileGrad1 = [0xFF633D9D, 0xffD192BE];
   final List<int> tileGrad2 = [0xFFD3B1D9, 0xFF5E1E8D];
