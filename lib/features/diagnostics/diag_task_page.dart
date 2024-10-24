@@ -287,7 +287,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                     const SizedBox(
                       width: 250,
                       child: Text(
-                        'Произнесите слово вслух, нажав на красную кнопку',
+                        'Произнесите фразу вслух (постарайтесь уложиться в 7 с.), нажав на красную кнопку',
                         style: TextStyle(color: Colors.black26, fontSize: 12, fontWeight: FontWeight.bold),
                       ),
                     )

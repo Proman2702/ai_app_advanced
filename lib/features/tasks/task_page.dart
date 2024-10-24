@@ -341,7 +341,7 @@ class _TaskPageState extends State<TaskPage> {
                     const SizedBox(
                       width: 290,
                       child: Text(
-                        'Произнесите слово вслух (постарайтесь уложиться в 7 с.), нажав на красную кнопку',
+                        'Произнесите фразу вслух (постарайтесь уложиться в 7 с.), нажав на красную кнопку',
                         style: TextStyle(color: Colors.black26, fontSize: 11, fontWeight: FontWeight.bold),
                       ),
                     )
