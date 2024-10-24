@@ -440,23 +440,6 @@ class _TaskPageState extends State<TaskPage> {
                     // Проверка на то, что пользователь вкючал запись
                     if (recorded && !recorder.isRecording && !player.isPlaying) {
                       // формирование запроса
-                      showDialog(
-                          // circularprogress indicator
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) => SizedBox(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: Center(
-                                      child: CircularProgressIndicator(
-                                    color: Color(CustomColors.dialogBack),
-                                  )),
-                                ),
-                              ));
-                      await Future.delayed(const Duration(milliseconds: 400), () async {
-                        Navigator.pop(context);
-                      });
 
                       final response = await get_response(context);
 

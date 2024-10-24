@@ -9,7 +9,6 @@ class Tasks {
   final int? _level;
   List? _words;
 
-  /// Private constructor
   Tasks._create({int? defectType, int? level})
       : _level = level,
         _defectType = defectType;
@@ -24,9 +23,7 @@ class Tasks {
     return word;
   }
 
-  /// Public factory
   static Future<Tasks> create(int type, int level) async {
-    // Call the private constructor
     var component = Tasks._create(defectType: type, level: level);
 
     await component._loadAsset();

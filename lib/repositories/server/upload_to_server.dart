@@ -13,15 +13,14 @@ class UploadAudio {
       final BaseOptions options = BaseOptions(
         baseUrl: url,
         validateStatus: (status) => true,
-        connectTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+        connectTimeout: const Duration(seconds: 60),
+        sendTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
       );
 
       // импорт библиотеки с параметрами
       final dio = Dio(options);
 
-      // Строка, обновляющая хар-ки файла
       final a = await File(filename).length();
       log('FILENAME LENGTH $a');
 
@@ -39,7 +38,7 @@ class UploadAudio {
       // Обработчик ошибок
       if (response.statusCode == 200) {
         log('<upload> Аудиофайл успешно загружен');
-        log("${response.data["prediction"][0]}");
+        log("<upload> ${response.data["prediction"][0]}");
         return response.data["prediction"][0];
       } else {
         log('<upload> Ошибка при загрузке: ${response.statusCode} ${response.statusMessage}');
