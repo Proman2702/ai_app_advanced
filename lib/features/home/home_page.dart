@@ -1,4 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
+import 'package:ai_app/features/home/home_appbar.dart';
+import 'package:ai_app/features/home/information_tile.dart';
+import 'package:ai_app/models/defects.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
@@ -26,9 +29,11 @@ class _HomePageState extends State<HomePage> {
   final database = DatabaseService();
   User? user;
   GetValues? dbGetter;
+  Map? defects;
 
   @override
   void initState() {
+    defects = Defects.getAll();
     user = FirebaseAuth.instance.currentUser;
     database.getUsers().listen((snapshot) {
       List<dynamic> users = snapshot.docs;
@@ -36,6 +41,31 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     });
     super.initState();
+  }
+
+  // Построение вкладок статистики
+  List<Widget> buildTiles() {
+    List<Widget> tiles = [];
+    defects!.forEach((i, value) {
+      tiles.add(
+        InformationField(
+          user: dbGetter!.getUser()!,
+          defectType: [i, value],
+        ),
+      );
+    });
+    return tiles;
+  }
+
+  // Условие наличия дефектов в диагностике
+  bool defectsDiagExisting() {
+    int counter = 0;
+    defects!.forEach((i, value) {
+      if (dbGetter!.getUser()!.defects[i] != 0) {
+        counter += 1;
+      }
+    });
+    return counter == defects!.length;
   }
 
   @override
@@ -47,40 +77,7 @@ class _HomePageState extends State<HomePage> {
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         drawer: AppDrawer(chosen: 0),
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65.0),
-          child: AppBar(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))),
-            backgroundColor: Colors.white,
-            elevation: 5,
-            shadowColor: Colors.black,
-            leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 5, left: 5),
-              child: IconButton(
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
-            ),
-            title: Center(
-                child: Text(dbGetter?.getUser()?.username ?? '<Загрузка...>',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color(CustomColors.main)))),
-            actions: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        Navigator.of(context).pushNamed('/settings', arguments: user);
-                      },
-                      icon: Icon(Icons.settings, color: Color(CustomColors.main), size: 30)),
-                  SizedBox(width: 10)
-                ],
-              ),
-            ],
-          ),
-        ),
+        appBar: NamedAppBar(scaffoldKey: _scaffoldKey, dbGetter: dbGetter, user: user),
         body: SingleChildScrollView(
           child: Center(
             child: Column(
@@ -91,21 +88,10 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 dbGetter?.getUser() == null
-                    ? SizedBox(
-                        width: 320,
-                        height: 320,
-                        child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator()))
+                    ? Container(
+                        width: 320, height: 320, padding: EdgeInsets.all(140), child: CircularProgressIndicator())
                     : CarouselSlider(
-                        items: [
-                          InformationField(
-                            user: dbGetter!.getUser()!,
-                            defectType: 1,
-                          ),
-                          InformationField(
-                            user: dbGetter!.getUser()!,
-                            defectType: 2,
-                          ),
-                        ],
+                        items: buildTiles(),
                         options: CarouselOptions(
                           height: 320.0,
                           enlargeCenterPage: false,
@@ -135,11 +121,7 @@ class _HomePageState extends State<HomePage> {
                               Text("Меню",
                                   style: TextStyle(
                                       color: Color(CustomColors.main), fontSize: 25, fontWeight: FontWeight.w700)),
-                              Container(
-                                width: 335,
-                                height: 1,
-                                color: Colors.black26,
-                              )
+                              Container(width: 335, height: 1, color: Colors.black26)
                             ],
                           ),
                         ),
@@ -179,9 +161,8 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             SizedBox(height: 10),
                                             dbGetter?.getUser()?.defects == null
-                                                ? CircularProgressIndicator()
-                                                : dbGetter!.getUser()!.defects['1'] == 0 &&
-                                                        dbGetter!.getUser()!.defects['2'] == 0
+                                                ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator())
+                                                : !defectsDiagExisting()
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
                                           ],
@@ -197,8 +178,7 @@ class _HomePageState extends State<HomePage> {
                                               child: Text(
                                                 dbGetter?.getUser()?.defects == null
                                                     ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.defects['1'] == 0 &&
-                                                            dbGetter!.getUser()!.defects['2'] == 0
+                                                    : !defectsDiagExisting()
                                                         ? "Еще не пройдена!"
                                                         : "Пройдена!",
                                                 textAlign: TextAlign.end,
@@ -252,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             SizedBox(height: 10),
                                             dbGetter?.getUser()?.current_level == null
-                                                ? CircularProgressIndicator()
+                                                ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator())
                                                 : dbGetter!.getUser()!.current_level.isEmpty
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
@@ -297,196 +277,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-}
-
-class InformationField extends StatefulWidget {
-  final CustomUser user;
-  final int defectType;
-  const InformationField({super.key, required this.user, required this.defectType});
-
-  @override
-  State<InformationField> createState() => _InformationFieldState();
-}
-
-class _InformationFieldState extends State<InformationField> {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double height = size.height;
-    double width = size.width;
-
-    return Container(
-        height: 300,
-        width: 400,
-        color: Colors.transparent,
-        child: Stack(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(top: height / 3.7, left: width / 1.45),
-                child: Transform.rotate(
-                  angle: math.pi / 2,
-                  child: Image.asset("images/hexagon.png",
-                      scale: 1.2, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center),
-                )),
-            Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 300,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            gradient: TileGrad1(),
-                            boxShadow: [
-                              BoxShadow(spreadRadius: 2, offset: Offset(0, 4), blurRadius: 4, color: Colors.black26)
-                            ],
-                            borderRadius:
-                                BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))),
-                        child: Text(
-                          widget.defectType == 1 ? "Дефект 1 (ротацизм)" : "Дефект 2 (г)",
-                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 35),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 155,
-                        padding: EdgeInsets.all(5),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            //border: Border.all(color: Colors.white, width: 3),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: []),
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Ваш прогресс",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(CustomColors.main),
-                                    fontSize: 17,
-                                    fontFamily: 'nunito',
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              Container(
-                                width: 60,
-                                height: 35,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
-                                child: Text(
-                                  widget.user.current_level['${widget.defectType}'] != null
-                                      ? widget.user.current_level['${widget.defectType}'] == 7
-                                          ? '100%'
-                                          : '${widget.user.current_level['${widget.defectType}'] * 15}%'
-                                      : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 25),
-                      Container(
-                        height: 100,
-                        width: 155,
-                        padding: EdgeInsets.all(5),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            //border: Border.all(color: Colors.white, width: 3),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: []),
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Текущая серия",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(CustomColors.main),
-                                    fontSize: 17,
-                                    fontFamily: 'nunito',
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              Container(
-                                width: 60,
-                                height: 35,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
-                                child: Text(
-                                  widget.user.current_combo['${widget.defectType}'] != null
-                                      ? '${widget.user.current_combo['${widget.defectType}']}'
-                                      : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Всего правильных заданий: ${widget.user.lessons_correct['${widget.defectType}'] ?? "?"}",
-                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                      ), // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                      SizedBox(height: 2),
-                      SizedBox(
-                        height: 15,
-                        width: 320,
-                        child: LinearProgressIndicator(
-                          value: (((widget.user.lessons_passed['${widget.defectType}'] != null) &&
-                                      ((widget.user.lessons_correct['${widget.defectType}']) != null)) &&
-                                  (widget.user.lessons_passed['${widget.defectType}'] != 0) &&
-                                  (widget.user.lessons_correct['${widget.defectType}'] != 0))
-                              ? widget.user.lessons_correct['${widget.defectType}'] /
-                                  widget.user.lessons_passed['${widget.defectType}']
-                              : 0.0, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(CustomColors.bright),
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 320,
-                        child: Text(
-                          textAlign: TextAlign.end,
-                          "Всего заданий: ${widget.user.lessons_passed['${widget.defectType}'] ?? "?"}",
-                          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ));
   }
 }
