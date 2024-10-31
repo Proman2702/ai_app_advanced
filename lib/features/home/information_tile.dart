@@ -173,7 +173,7 @@ class _InformationFieldState extends State<InformationField> {
                                   (widget.user.lessons_correct['${widget.defectType[0]}'] != 0))
                               ? widget.user.lessons_correct['${widget.defectType[0]}'] /
                                   widget.user.lessons_passed['${widget.defectType[0]}']
-                              : 0.0, // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                              : 0.0,
                           borderRadius: BorderRadius.circular(10),
                           color: Color(CustomColors.bright),
                           backgroundColor: Colors.white,

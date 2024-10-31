@@ -37,7 +37,7 @@ class _AuthPageState extends State<AuthPage> {
         builder: (BuildContext context) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
             ),
           );
         });
@@ -249,10 +249,8 @@ class _AuthPageState extends State<AuthPage> {
                         BoxShadow(spreadRadius: 1, offset: Offset(0, 2), blurRadius: 2, color: Colors.black26)
                       ]),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                    ),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
                     onPressed: () async {
                       if (username == null || password == null) {
                         showModalBottomSheet(
@@ -271,12 +269,9 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 GestureDetector(
                   onTap: () {
-                    log("create an account");
                     Navigator.of(context).pushNamed("/auth/create");
                   },
                   child: Text(

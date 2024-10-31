@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-// Апи сервера на фласке, где хранится модель
+// Апи к серверу на фласке, где хранится модель
 
 class UploadAudio {
   Future<int> uploadAudio(String filename, String url) async {

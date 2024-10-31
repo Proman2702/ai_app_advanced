@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
-import 'package:ai_app/features/home/home_appbar.dart';
+import 'package:ai_app/features/named_appbar.dart';
 import 'package:ai_app/features/home/information_tile.dart';
 import 'package:ai_app/models/defects.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
@@ -84,9 +84,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 dbGetter?.getUser() == null
                     ? Container(
                         width: 320, height: 320, padding: EdgeInsets.all(140), child: CircularProgressIndicator())

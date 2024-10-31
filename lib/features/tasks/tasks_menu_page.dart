@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import
 
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/drawer.dart';
+import 'package:ai_app/features/named_appbar.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,79 +46,36 @@ class _TasksPageState extends State<TasksPage> {
       decoration: BoxDecoration(gradient: BackgroundGrad()),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: AppDrawer(chosen: 1),
+        drawer: const AppDrawer(chosen: 1),
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65.0),
-          child: AppBar(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))),
-            backgroundColor: Colors.white,
-            elevation: 5,
-            shadowColor: Colors.black,
-            leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 5, left: 5),
-              child: IconButton(
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(Icons.menu, color: Color(CustomColors.main), size: 30)),
-            ),
-            title: Center(
-                child: Text(dbGetter?.getUser()?.username ?? '<Загрузка...>',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color(CustomColors.main)))),
-            actions: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        Navigator.of(context).pushNamed('/settings', arguments: user);
-                      },
-                      icon: Icon(Icons.settings, color: Color(CustomColors.main), size: 30)),
-                  SizedBox(width: 10)
-                ],
-              ),
-            ],
-          ),
-        ),
+        appBar: NamedAppBar(scaffoldKey: _scaffoldKey, dbGetter: dbGetter, user: user),
         body: Stack(
           children: [
-            // Padding(
-            //   padding: EdgeInsets.only(top: height / 11, left: width / 2),
-            //   child: Transform.rotate(
-            //       angle: 6 * math.pi / 12,
-            //       child: Image.asset("images/hexagon.png",
-            //           scale: 1.4, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
-
             Padding(
                 padding: EdgeInsets.only(top: height / 1.53, left: width / 2),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
-
             Padding(
                 padding: EdgeInsets.only(top: height / 1.65, left: width / 2.8),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.95, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
-
             Padding(
                 padding: EdgeInsets.only(top: height / 1.55, left: width / 7),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.5, opacity: const AlwaysStoppedAnimation(0.4), alignment: Alignment.center))),
-
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50),
-                  Column(
+                  const SizedBox(height: 50),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
@@ -149,7 +107,7 @@ class _TasksPageState extends State<TasksPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -176,7 +134,7 @@ class _TasksPageState extends State<TasksPage> {
                             width: 330,
                             height: 80,
                             alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 15, right: 10),
+                            padding: const EdgeInsets.only(left: 15, right: 10),
                             decoration: BoxDecoration(
                                 gradient: dbGetter?.getUser()?.defects == null
                                     ? GreyTile()
@@ -184,15 +142,15 @@ class _TasksPageState extends State<TasksPage> {
                                         ? TileGrad1()
                                         : GreyTile(),
                                 borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
                                 ]),
                             child: Column(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text('Коррекция картавости',
@@ -203,19 +161,19 @@ class _TasksPageState extends State<TasksPage> {
                                             fontFamily: 'nunito'))
                                   ],
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text('Задание ${dbGetter?.getUser()?.current_level["1"] ?? 0}/6',
-                                        style:
-                                            TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
+                                        style: const TextStyle(
+                                            fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
                                   ],
                                 )
                               ],
                             )),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       SizedBox(
                         width: 330,
                         child: Text(
@@ -226,10 +184,10 @@ class _TasksPageState extends State<TasksPage> {
                                   : dbGetter!.getUser()!.defects['1'] == 2
                                       ? 'Рекомендуется'
                                       : 'Диагностика не пройдена',
-                          style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                          style: const TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed('/tasks/levels', arguments: 2);
@@ -238,7 +196,7 @@ class _TasksPageState extends State<TasksPage> {
                             width: 330,
                             height: 80,
                             alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 15, right: 10),
+                            padding: const EdgeInsets.only(left: 15, right: 10),
                             decoration: BoxDecoration(
                                 gradient: dbGetter?.getUser()?.defects == null
                                     ? GreyTile()
@@ -246,15 +204,15 @@ class _TasksPageState extends State<TasksPage> {
                                         ? TileGrad1()
                                         : GreyTile(),
                                 borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(spreadRadius: 1, offset: Offset(0, 3), blurRadius: 2, color: Colors.black26)
                                 ]),
                             child: Column(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text('Коррекция "Г"',
@@ -265,19 +223,19 @@ class _TasksPageState extends State<TasksPage> {
                                             fontFamily: 'nunito'))
                                   ],
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text('Задание ${dbGetter?.getUser()?.current_level["2"] ?? 0}/6',
-                                        style:
-                                            TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
+                                        style: const TextStyle(
+                                            fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
                                   ],
                                 )
                               ],
                             )),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       SizedBox(
                         width: 330,
                         child: Text(
@@ -288,12 +246,12 @@ class _TasksPageState extends State<TasksPage> {
                                   : dbGetter!.getUser()!.defects['2'] == 2
                                       ? 'Рекомендуется'
                                       : 'Диагностика не пройдена',
-                          style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                          style: const TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 80),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
