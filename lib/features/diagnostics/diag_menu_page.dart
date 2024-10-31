@@ -51,7 +51,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
           defectType: [i, value],
         ),
       );
-      tiles.add(const SizedBox(height: 15));
+      tiles.add(const SizedBox(height: 17));
     });
     return tiles;
   }

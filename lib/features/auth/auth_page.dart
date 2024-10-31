@@ -44,19 +44,16 @@ class _AuthPageState extends State<AuthPage> {
 
     final user = await auth.loginUserWithEmailAndPassword(em, p);
 
+    Navigator.pop(context);
+
     if (user[0] == 0) {
       if (user[1].emailVerified) {
         log(user[1].emailVerified.toString());
         log("Успешный вход");
-
-        Navigator.of(context).pop();
-        Navigator.of(context).pushReplacementNamed("/");
       } else {
-        Navigator.of(context).pop();
         showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: "verify"));
       }
     } else if (user[0] == 1) {
-      Navigator.of(context).pop();
       log("Ошибка ${user[1]}");
 
       showModalBottomSheet(context: context, builder: (BuildContext context) => AuthDenySheet(type: user[1]));

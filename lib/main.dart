@@ -7,7 +7,7 @@ import 'package:ai_app/features/auth/sign_in_page.dart';
 import 'package:ai_app/features/tasks/tasks_menu_page.dart';
 
 import 'package:ai_app/features/tasks/levels_page.dart';
-import 'package:ai_app/features/auth/wrapper.dart';
+import 'package:ai_app/features/wrapper.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ai_app/features/tasks/task_page.dart';
