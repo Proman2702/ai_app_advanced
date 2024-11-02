@@ -50,7 +50,7 @@ class DiagTile extends StatelessWidget {
                   child: Text(
                     dbGetter?.getUser()?.defects == null
                         ? "Загрузка..."
-                        : dbGetter!.getUser()!.defects[defectType[0]] == 0
+                        : dbGetter!.getUser()!.defects[defectType[0]] == 2
                             ? "Обнаружено"
                             : dbGetter!.getUser()!.defects[defectType[0]] == 1
                                 ? "Не обнаружено"

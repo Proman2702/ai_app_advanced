@@ -73,6 +73,7 @@ flutter:
   assets:
     - assets/defects/1/
     - assets/defects/2/
+    - assets/defects/3/
     - images/hexagon.png
     - images/hexagon_grad.png
     - images/triangle.png

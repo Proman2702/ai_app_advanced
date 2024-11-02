@@ -31,8 +31,10 @@ class Wrapper extends StatelessWidget {
                 );
               } else {
                 if (snapshot.data == null) {
+                  log("<Wrapper> Ошибка");
                   return const AuthPage();
                 } else if (snapshot.data!.emailVerified == false) {
+                  log("<Wrapper> Нет верификации!");
                   return const AuthPage();
                 } else {
                   log("<Wrapper> Вход");

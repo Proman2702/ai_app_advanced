@@ -43,8 +43,8 @@ class _AuthPageState extends State<AuthPage> {
         });
 
     final user = await auth.loginUserWithEmailAndPassword(em, p);
-
     Navigator.pop(context);
+    Navigator.of(context).pushNamed('/');
 
     if (user[0] == 0) {
       if (user[1].emailVerified) {

@@ -43,7 +43,7 @@ class AuthDenySheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
+      height: 120,
       width: 200,
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
@@ -70,7 +70,7 @@ class AuthDenySheet extends StatelessWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(CustomColors.main),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                   onPressed: () => Navigator.pop(context),
                   child: const Text("Закрыть", style: TextStyle(color: Colors.white))),
             )

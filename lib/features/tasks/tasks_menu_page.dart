@@ -50,7 +50,7 @@ class _TasksPageState extends State<TasksPage> {
           defectType: [i, value],
         ),
       );
-      tiles.add(const SizedBox(height: 15));
+      tiles.add(const SizedBox(height: 10));
     });
     return tiles;
   }
@@ -89,50 +89,52 @@ class _TasksPageState extends State<TasksPage> {
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.5, opacity: const AlwaysStoppedAnimation(0.4), alignment: Alignment.center))),
-            Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 330,
-                        height: 45,
-                        child: Text(
-                          "Задания",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+            SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 50),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 330,
+                          height: 45,
+                          child: Text(
+                            "Задания",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 330,
-                        height: 45,
-                        child: Text(
-                          "для",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                        SizedBox(
+                          width: 330,
+                          height: 45,
+                          child: Text(
+                            "для",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 330,
-                        height: 45,
-                        child: Text(
-                          "прохождения",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                        SizedBox(
+                          width: 330,
+                          height: 45,
+                          child: Text(
+                            "прохождения",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 50),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: buildTiles(),
-                  ),
-                  const SizedBox(height: 80),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 50),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: buildTiles(),
+                    ),
+                    const SizedBox(height: 80),
+                  ],
+                ),
               ),
             ),
           ],

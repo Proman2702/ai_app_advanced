@@ -21,11 +21,9 @@ class EmailNotificator extends StatelessWidget {
           height: 30,
           width: 110,
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(CustomColors.mainLightX2)),
+              style: ElevatedButton.styleFrom(backgroundColor: Color(CustomColors.mainLight)),
               onPressed: () => Navigator.pop(context),
-              child:
-                  const Text("Закрыть", style: TextStyle(color: Colors.white))),
+              child: const Text("Закрыть", style: TextStyle(color: Colors.white))),
         )
       ],
     );

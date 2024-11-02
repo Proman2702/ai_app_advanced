@@ -53,8 +53,8 @@ class _InformationFieldState extends State<InformationField> {
                             borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(15), bottomRight: Radius.circular(15))),
                         child: Text(
-                          "Дефект ${widget.defectType[0]} (${widget.defectType[1]})",
-                          style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+                          "${widget.defectType[1]}",
+                          style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),
                         ),
                       )
                     ],

@@ -51,7 +51,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
           defectType: [i, value],
         ),
       );
-      tiles.add(const SizedBox(height: 17));
+      tiles.add(const SizedBox(height: 18));
     });
     return tiles;
   }
@@ -79,13 +79,13 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                     child: Image.asset("images/hexagon.png",
                         scale: 1.6, opacity: const AlwaysStoppedAnimation(0.05), alignment: Alignment.center))),
             Padding(
-                padding: EdgeInsets.only(top: height / 1.5, left: width / 4),
+                padding: EdgeInsets.only(top: height / 1.46, left: width / 4.5),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
                         scale: 1.7, opacity: const AlwaysStoppedAnimation(0.2), alignment: Alignment.center))),
             Padding(
-                padding: EdgeInsets.only(top: height / 1.43, left: width / 2.3),
+                padding: EdgeInsets.only(top: height / 1.38, left: width / 2.3),
                 child: Transform.rotate(
                     angle: 0 * math.pi / 12,
                     child: Image.asset("images/hexagon_grad.png",
@@ -111,10 +111,10 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           width: 330,
                           child: Text(
-                            'Всего загружено 2 дефекта',
+                            'Всего загружено ${defects!.length} дефекта(-ов)',
                             style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                         ),
@@ -125,7 +125,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                             style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         Column(
                           children: buildTiles(),
                         )
