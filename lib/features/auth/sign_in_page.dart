@@ -5,6 +5,7 @@ import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
+import 'package:ai_app/models/defects.dart';
 import 'package:ai_app/models/user.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
@@ -28,6 +29,16 @@ class _FirstPageState extends State<FirstPage> {
 
   bool obscureBool = true;
 
+  Map buildAuth() {
+    Map defs = Defects.getAll();
+    Map<String, int> new_defs = {};
+
+    defs.forEach((i, value) {
+      new_defs['$i'] = 0;
+    });
+    return new_defs;
+  }
+
   void signUp(String em, String p) async {
     showDialog(
         context: context,
@@ -45,14 +56,17 @@ class _FirstPageState extends State<FirstPage> {
     if (user![0] == 0) {
       log("Пользователь создан");
 
+      var pattern = buildAuth();
+      log("PATTERN $pattern");
+
       await database.addUser(CustomUser(
           username: username!,
           email: em,
-          defects: {"1": 0, "2": 0}, // 0 - не пройдено, 1 - нет дефекта, 2 - есть дефект
-          lessons_passed: {"1": 0, "2": 0},
-          lessons_correct: {"1": 0, "2": 0},
-          current_combo: {"1": 0, "2": 0},
-          current_level: {"1": 0, "2": 0}));
+          defects: pattern, // 0 - не пройдено, 1 - нет дефекта, 2 - есть дефект
+          lessons_passed: pattern,
+          lessons_correct: pattern,
+          current_combo: pattern,
+          current_level: pattern));
 
       Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
@@ -73,13 +87,6 @@ class _FirstPageState extends State<FirstPage> {
       decoration: BoxDecoration(gradient: BackgroundGrad()),
       child: Stack(
         children: [
-          // Padding(
-          //   padding: EdgeInsets.only(top: height / 6, left: width / 30),
-          //   child: Image.asset("images/hexagon.png",
-          //       scale: 2,
-          //       opacity: const AlwaysStoppedAnimation(0.1),
-          //       alignment: Alignment.center),
-          // ),
           Padding(
               padding: EdgeInsets.only(top: height / 1.6, left: width / 2.3),
               child: Transform.rotate(
