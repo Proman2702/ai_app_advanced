@@ -21,8 +21,8 @@ class UploadAudio {
       // импорт библиотеки с параметрами
       final dio = Dio(options);
 
-      final a = await File(filename).length();
-      log('FILENAME LENGTH $a');
+      //final a = await File(filename).length();
+      //log('FILENAME LENGTH $a');
 
       // Сборка аудиофалйа и его названия для отправки на сервер
       final formData = FormData.fromMap(
