@@ -1,3 +1,3 @@
-flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter v2
+flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter flutter and more v3
 
-for aiijc competition team "Десептиконы" case "Т-банк - саморазвитие" semi-final
+for AI challenge competition team "Десептиконы" case "Т-банк - саморазвитие" final!!!
