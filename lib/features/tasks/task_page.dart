@@ -49,7 +49,7 @@ class _TaskPageState extends State<TaskPage> {
     if (recordNum >= 3) {
       // если дефектов нет или только 1
       if (results.where((e) => e == 0).length >= 2) {
-        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'right'));
+        showModalBottomSheet(context: context, builder: (context) => const AIInfoSheet(type: 'right'));
 
         // если уровень еще не пройден
         if (completed == 0) {
@@ -83,13 +83,13 @@ class _TaskPageState extends State<TaskPage> {
             Navigator.of(context).pop(); // выходим из страницы
 
             // уведомляем, что пользователь прошел уровень
-            showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'passed'));
+            showModalBottomSheet(context: context, builder: (context) => const AIInfoSheet(type: 'passed'));
             return;
           }
         }
         // если 2 или больше дефектов
       } else {
-        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'wrong'));
+        showModalBottomSheet(context: context, builder: (context) => const AIInfoSheet(type: 'wrong'));
 
         // если уровень еще не пройден
         if (completed == 0) {
@@ -116,10 +116,7 @@ class _TaskPageState extends State<TaskPage> {
     word = tasks.getRandomWord();
     log("<taskPage> Уровень загружен");
 
-    if (mounted)
-      setState(() {});
-    else
-      return;
+    setState(() {});
   }
 
   @override
@@ -150,8 +147,8 @@ class _TaskPageState extends State<TaskPage> {
   int _start = 7;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 1) {
@@ -283,8 +280,7 @@ class _TaskPageState extends State<TaskPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          showDialog(
-                              context: context, builder: (context) => defectType == 1 ? HelpDialog1() : HelpDialog2());
+                          showDialog(context: context, builder: (context) => HelpDialog(defect: defectType));
                         },
                         child: Container(
                           width: 40,
@@ -356,10 +352,7 @@ class _TaskPageState extends State<TaskPage> {
                     onTap: () async {
                       await player.togglePlaying(whenFinished: () {});
 
-                      if (mounted)
-                        setState(() {});
-                      else
-                        return;
+                      setState(() {});
                     },
                     child: Container(
                       height: 45,
@@ -386,10 +379,7 @@ class _TaskPageState extends State<TaskPage> {
                       }
                       await recorder.toggleRecording();
                       recorded = true;
-                      if (mounted)
-                        setState(() {});
-                      else
-                        return;
+                      setState(() {});
                     },
                     child: Container(
                       height: 65,
@@ -448,7 +438,8 @@ class _TaskPageState extends State<TaskPage> {
                       if (response == 400) {
                         log("<taskPage> Ошибка");
 
-                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'server_error'));
+                        showModalBottomSheet(
+                            context: context, builder: (context) => const AIInfoSheet(type: 'server_error'));
 
                         // да
                       } else {
@@ -473,18 +464,18 @@ class _TaskPageState extends State<TaskPage> {
                         }
                         log("<taskPage> Номер записи $recordNum");
                       }
-                      if (mounted)
-                        setState(() {});
-                      else
-                        return;
+                      setState(() {});
                       // если пользователь не включал запись
                     } else {
-                      if (!recorded)
-                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
-                      else if (recorder.isRecording || player.isPlaying)
-                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
-                      else
-                        showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'wait'));
+                      if (!recorded) {
+                        showModalBottomSheet(
+                            context: context, builder: (context) => const AIInfoSheet(type: 'no_record'));
+                      } else if (recorder.isRecording || player.isPlaying) {
+                        showModalBottomSheet(
+                            context: context, builder: (context) => const AIInfoSheet(type: 'in_process'));
+                      } else {
+                        showModalBottomSheet(context: context, builder: (context) => const AIInfoSheet(type: 'wait'));
+                      }
                     }
                   },
                   child: const Text(

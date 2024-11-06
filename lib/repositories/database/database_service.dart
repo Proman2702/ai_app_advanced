@@ -1,7 +1,7 @@
 import 'package:ai_app/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-const String database_path = 'users';
+const String databasePath = 'users';
 
 class DatabaseService {
   final _firestore = FirebaseFirestore.instance;
@@ -10,7 +10,7 @@ class DatabaseService {
   // В конструкоре класса создается референс к базе данных
   // Который автоматически обрабатывает входные и выходные данные
   DatabaseService() {
-    _usersRef = _firestore.collection(database_path).withConverter<CustomUser>(
+    _usersRef = _firestore.collection(databasePath).withConverter<CustomUser>(
         fromFirestore: (snapshots, _) => CustomUser.fromJson(snapshots.data()!),
         toFirestore: (user, _) => user.toJson());
   }

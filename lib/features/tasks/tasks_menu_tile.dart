@@ -15,7 +15,7 @@ class TasksMenuTile extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed('/tasks/levels', arguments: int.parse(defectType[0]));
+            Navigator.of(context).pushNamed('/tasks/levels', arguments: defectType);
           },
           child: Container(
               width: 330,

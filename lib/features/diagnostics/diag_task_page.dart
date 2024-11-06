@@ -83,18 +83,15 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
     word = tasks.getRandomWord();
     log("<taskPage> Уровень загружен");
 
-    if (mounted)
-      setState(() {});
-    else
-      return;
+    setState(() {});
   }
 
   Timer? _timer;
   int _start = 7;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 1) {
@@ -167,7 +164,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
   String ip = Ip().getIp; // айпишник сервера (http://{ip}/upload)
 
   // Функция формирования запроса со страницы
-  Future<int> get_response(BuildContext context) async {
+  Future<int> getResponse(BuildContext context) async {
     showDialog(
         // circularprogress indicator
         context: context,
@@ -301,10 +298,11 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                   GestureDetector(
                     onTap: () async {
                       await player.togglePlaying(whenFinished: () {});
-                      if (mounted)
+                      if (mounted) {
                         setState(() {});
-                      else
+                      } else {
                         return;
+                      }
                     },
                     child: Container(
                       height: 45,
@@ -331,10 +329,11 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                       }
                       await recorder.toggleRecording();
                       recorded = true;
-                      if (mounted)
+                      if (mounted) {
                         setState(() {});
-                      else
+                      } else {
                         return;
+                      }
                     },
                     child: Container(
                       height: 65,
@@ -386,7 +385,7 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                     if (recorded && !recorder.isRecording && !player.isPlaying) {
                       // формирование запроса
 
-                      final response = await get_response(context);
+                      final response = await getResponse(context);
 
                       // Сработал ли запрос
                       // нет
@@ -416,18 +415,16 @@ class _DiagnosticsTaskPageState extends State<DiagnosticsTaskPage> {
                         }
                         log("<taskPage> Номер записи $recordNum");
                       }
-                      if (mounted)
-                        setState(() {});
-                      else
-                        return;
+                      setState(() {});
                       // если пользователь не включал запись
                     } else {
-                      if (!recorded)
+                      if (!recorded) {
                         showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'no_record'));
-                      else if (recorder.isRecording || player.isPlaying)
+                      } else if (recorder.isRecording || player.isPlaying) {
                         showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'in_process'));
-                      else
+                      } else {
                         showModalBottomSheet(context: context, builder: (context) => AIInfoSheet(type: 'wait'));
+                      }
                     }
                   },
                   child: const Text(

@@ -12,7 +12,7 @@ class ConfirmationDialog extends StatelessWidget {
       title: Text(
         info,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [

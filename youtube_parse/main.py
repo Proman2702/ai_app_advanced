@@ -4,19 +4,17 @@ import yt_dlp
 from mutagen.mp3 import MP3
 import os
 
-f = "".join(open("videos.txt").readlines()).splitlines()
-
-
+f = "".join(open("videos_zaik.txt").readlines()).splitlines()
 
 
 for i in f:
     with yt_dlp.YoutubeDL({
-    'outtmpl': f'output/{"".join(random.choice(string.ascii_letters) for _ in range(16))}.%(ext)s',
+    'outtmpl': f'output_zaik/{"".join(random.choice(string.ascii_letters) for _ in range(16))}.%(ext)s',
     'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
-        'preferredquality': '8',
+        'preferredquality': '16',
     }],
 }) as ydl:
         ydl.download(i)
@@ -31,7 +29,7 @@ def convert_seconds(seconds):
     seconds %= 60
     return "%02d:%02d:%02d" % (hours, minutes, seconds)
 
-path = "output/"
+path = "output_zaik/"
 total_length = 0
 for root, dirs, files in os.walk(os.path.abspath(path)):
     for file in files:

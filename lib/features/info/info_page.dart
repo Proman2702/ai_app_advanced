@@ -18,12 +18,12 @@ class _InfoPageState extends State<InfoPage> {
         decoration: BoxDecoration(gradient: BackgroundGrad()),
         child: Scaffold(
           key: _scaffoldKey,
-          drawer: AppDrawer(chosen: 4),
+          drawer: const AppDrawer(chosen: 4),
           backgroundColor: Colors.transparent,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(65),
+            preferredSize: const Size.fromHeight(65),
             child: AppBar(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))),
               backgroundColor: Colors.white,
               elevation: 5,
@@ -41,7 +41,7 @@ class _InfoPageState extends State<InfoPage> {
                 "О приложении",
                 style: TextStyle(color: Color(CustomColors.main), fontWeight: FontWeight.w700, fontSize: 25),
               )),
-              actions: [SizedBox(width: 50)],
+              actions: const [SizedBox(width: 50)],
             ),
           ),
           body: SingleChildScrollView(
@@ -99,7 +99,7 @@ class _InfoPageState extends State<InfoPage> {
                                   letterSpacing: 0.5,
                                   height: 1.2),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         SizedBox(

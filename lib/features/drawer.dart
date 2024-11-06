@@ -65,7 +65,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                    color: Color(CustomColors.mainLight),
+                    color: Color.fromARGB(153, 106, 64, 119),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(color: Colors.black12, offset: Offset(0, 3), spreadRadius: 1, blurRadius: 2)
@@ -83,7 +83,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17)),
                           Text(
-                            "${dbGetter!.getUser()!.email}",
+                            dbGetter!.getUser()!.email,
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
