@@ -31,12 +31,12 @@ class _FirstPageState extends State<FirstPage> {
 
   Map buildAuth() {
     Map defs = Defects.getAll();
-    Map<String, int> new_defs = {};
+    Map<String, int> newDefs = {};
 
     defs.forEach((i, value) {
-      new_defs['$i'] = 0;
+      newDefs['$i'] = 0;
     });
-    return new_defs;
+    return newDefs;
   }
 
   void signUp(String em, String p) async {

@@ -13,7 +13,7 @@ class EmailNotificator extends StatelessWidget {
             ? "Ссылка для сброса пароля отправлена на вашу почту"
             : "Ссылка для подтверждения аккаунта отправлена на вашу почту. Перейдите по ней и войдите под ранее записанными данными",
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 13),
+        style: const TextStyle(fontSize: 13),
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [

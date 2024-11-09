@@ -28,11 +28,11 @@ class _AppDrawerState extends State<AppDrawer> {
   GetValues? dbGetter;
 
   asyncGetter() async {
-    await database.getUsers().listen((snapshot) {
-      List<dynamic> users_tmp = snapshot.docs;
-      dbGetter = GetValues(user: user!, users: users_tmp);
+    database.getUsers().listen((snapshot) {
+      List<dynamic> usersTmp = snapshot.docs;
+      dbGetter = GetValues(user: user!, users: usersTmp);
       setState(() {
-        users = users_tmp;
+        users = usersTmp;
       });
     });
   }
@@ -76,7 +76,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   children: dbGetter?.getUser()?.username == null
                       ? [CircularProgressIndicator()]
                       : [
-                          Text("${dbGetter!.getUser()!.username}",
+                          Text(dbGetter!.getUser()!.username,
                               style: TextStyle(
                                   color: Color(CustomColors.bright),
                                   fontFamily: 'nunito',

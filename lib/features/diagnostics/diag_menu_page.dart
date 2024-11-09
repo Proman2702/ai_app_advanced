@@ -115,7 +115,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                           width: 330,
                           child: Text(
                             'Всего загружено ${defects!.length} дефекта(-ов)',
-                            style: TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
+                            style: const TextStyle(color: Colors.white30, fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                         ),
                         const SizedBox(
