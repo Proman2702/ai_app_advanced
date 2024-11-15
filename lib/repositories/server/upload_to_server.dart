@@ -19,9 +19,9 @@ class UploadAudio {
       final BaseOptions options = BaseOptions(
         baseUrl: url,
         validateStatus: (status) => true,
-        connectTimeout: const Duration(seconds: 60),
-        sendTimeout: const Duration(seconds: 60),
-        receiveTimeout: const Duration(seconds: 60),
+        connectTimeout: const Duration(seconds: 40),
+        sendTimeout: const Duration(seconds: 40),
+        receiveTimeout: const Duration(seconds: 40),
       );
 
       // импорт библиотеки с параметрами
