@@ -20,10 +20,7 @@ class Wrapper extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(CustomColors.mainLightX2)),
-                ));
+                return Container();
               } else if (snapshot.hasError) {
                 return Text(
                   "<Wrapper> Произошла ошибка ${snapshot.error.toString()}!",

@@ -1,4 +1,4 @@
-import 'package:ai_app/models/user.dart';
+import 'package:ai_app/etc/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String databasePath = 'users';

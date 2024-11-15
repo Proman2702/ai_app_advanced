@@ -1,6 +1,6 @@
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
-import 'package:ai_app/models/user.dart';
+import 'package:ai_app/etc/models/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 

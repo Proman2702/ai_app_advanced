@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:ai_app/features/diagnostics/result_dialog.dart';
-import 'package:ai_app/models/user.dart';
+import 'package:ai_app/etc/models/user.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:ai_app/repositories/server/ip.dart';

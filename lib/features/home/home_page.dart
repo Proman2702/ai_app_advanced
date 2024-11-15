@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_literals_to_create_immutables
 import 'package:ai_app/features/named_appbar.dart';
 import 'package:ai_app/features/home/information_tile.dart';
-import 'package:ai_app/models/defects.dart';
+import 'package:ai_app/etc/models/defects.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/features/drawer.dart';
-import 'package:ai_app/models/user.dart';
+import 'package:ai_app/etc/models/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:developer';

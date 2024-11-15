@@ -1,4 +1,4 @@
-import 'package:ai_app/models/user.dart';
+import 'package:ai_app/etc/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Класс для обработки сырых данных потока и вывода информации для конкретного пользователя (user)

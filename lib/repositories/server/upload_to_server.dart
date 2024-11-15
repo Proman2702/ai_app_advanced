@@ -1,11 +1,17 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'dart:math' as math;
 import 'package:dio/dio.dart';
 
 // Апи к серверу на фласке, где хранится модель
 
 class UploadAudio {
+  final String _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final math.Random _rnd = math.Random();
+
+  String getRandomString(int length) =>
+      String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   Future<int> uploadAudio(String filename, String url) async {
     try {
       // Задается настройка запроса (айпи сервера, максимальное ожидание)
@@ -26,7 +32,7 @@ class UploadAudio {
 
       // Сборка аудиофалйа и его названия для отправки на сервер
       final formData = FormData.fromMap(
-          {"audio": MultipartFile.fromBytes(File(filename).readAsBytesSync(), filename: filename.split("/").last)});
+          {"audio": MultipartFile.fromBytes(File(filename).readAsBytesSync(), filename: '${getRandomString(16)}.wav')});
       log("<upload> после формирования даты");
 
       // Пост-запрос на сервер с отправкой файла
