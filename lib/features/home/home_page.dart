@@ -5,7 +5,7 @@ import 'package:ai_app/etc/models/defects.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

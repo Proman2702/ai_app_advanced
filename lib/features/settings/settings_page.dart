@@ -7,7 +7,7 @@ import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/settings/confirmation_dialog.dart';
 import 'package:ai_app/features/auth/auth_formats.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/server/ip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +38,8 @@ class _SettingsPageState extends State<SettingsPage> {
     super.didChangeDependencies();
   }
 
-  final auth = AuthService();
+  // говно
+  dynamic auth;
   final database = DatabaseService();
 
   void signOut() async {

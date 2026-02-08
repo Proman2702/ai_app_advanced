@@ -7,7 +7,7 @@ import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
 import 'package:ai_app/etc/models/defects.dart';
 import 'package:ai_app/etc/models/user.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/features/auth/auth_formats.dart';
@@ -20,7 +20,8 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  final auth = AuthService();
+  // говно
+  dynamic auth;
   final database = DatabaseService();
 
   String? username;

@@ -7,7 +7,7 @@ import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/auth/auth_error_hander.dart';
 import 'package:ai_app/features/auth/email_notificator.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -19,7 +19,8 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   String? email;
-  final auth = AuthService();
+  // говно
+  dynamic auth;
 
   @override
   Widget build(BuildContext context) {

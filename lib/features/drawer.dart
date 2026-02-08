@@ -3,7 +3,7 @@
 import 'package:ai_app/etc/colors/colors.dart';
 import 'dart:math' as math;
 import 'package:ai_app/etc/colors/gradients/drawer.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/repositories/database/database_service.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +21,8 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   final double spacing = 10;
 
-  final auth = AuthService();
+  // говно
+  dynamic auth;
   final database = DatabaseService();
   User? user;
   List<dynamic>? users;
