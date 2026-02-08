@@ -13,7 +13,7 @@ import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/repositories/audio/sound_player.dart';
 import 'package:ai_app/etc/colors/gradients/tiles.dart';
-import 'package:ai_app/repositories/audio/storage.dart';
+import 'package:ai_app/repositories/audio/audio_storage.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:ai_app/features/tasks/ai_hander.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,8 +36,10 @@ class _TaskPageState extends State<TaskPage> {
   User? user;
   List<dynamic>? users;
   GetValues? dbGetter;
-  final recorder = SoundRecorder();
-  final player = SoundPlayer();
+
+  //говно
+  dynamic recorder;
+  dynamic player;
   late int recordNum = 0;
   late bool recorded = false;
   late List<int> results = [];
@@ -217,7 +219,9 @@ class _TaskPageState extends State<TaskPage> {
             ));
 
     try {
-      final audioPath = await Storage().completePath(); // Получение пути локального файла записи диктофона
+      // говно
+      dynamic storage;
+      final audioPath = await storage.completePath(); // Получение пути локального файла записи диктофона
       final res = await UploadAudio().uploadAudio(audioPath, ip); // Загрузка файла на сервер
       Navigator.pop(context); // Выход из circularprogressindicator
       return res; // возврат результата запроса

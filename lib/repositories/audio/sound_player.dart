@@ -1,56 +1,55 @@
-import 'dart:developer';
-import 'dart:ui';
-
-import 'package:ai_app/repositories/audio/storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 
-// Класс работы с плеером
+import 'audio_storage.dart';
 
-class SoundPlayer {
-  FlutterSoundPlayer? _audioPlayer;
-  String? _audioPath;
+class SoundPlayerService {
+  final AudioStorage storage;
+  final FlutterSoundPlayer _player = FlutterSoundPlayer();
 
-  bool get isPlaying => _audioPlayer!.isPlaying;
+  bool _inited = false;
+  String? _path;
 
-  // Инициализация плеера
-  Future init() async {
-    _audioPlayer = FlutterSoundPlayer();
+  SoundPlayerService(this.storage);
 
-    try {
-      _audioPath = await Storage().completePath();
-    } catch (e) {
-      log('Ошибка $e');
-    }
+  bool get isPlaying => _inited && _player.isPlaying;
 
-    await _audioPlayer!.openAudioSession();
+  Future<void> init() async {
+    if (_inited) return;
+
+    _path = await storage.getPath();
+    await _player.openAudioSession();
+
+    _inited = true;
   }
 
-  // Отключение плеера при выходе
-  void dispose() {
-    _audioPlayer!.closeAudioSession();
-    _audioPlayer = null;
+  Future<void> dispose() async {
+    if (!_inited) return;
+    await _player.closeAudioSession();
+    _inited = false;
   }
 
-  // Локальный метод запуска аудиофайла
-  Future _play(VoidCallback whenFinished) async {
-    try {
-      await _audioPlayer!.startPlayer(fromURI: _audioPath!, whenFinished: whenFinished);
-    } on Exception catch (e) {
-      log("Ошибка $e");
-    }
+  Future<void> play({VoidCallback? onFinished}) async {
+    if (!_inited) throw Exception('Player не инициализирован (init не вызван)');
+
+    await _player.startPlayer(
+      fromURI: _path,
+      whenFinished: onFinished,
+    );
   }
 
-  // Локальный метод остановки аудиофайла
-  Future _stop() async {
-    await _audioPlayer!.stopPlayer();
+  Future<void> stop() async {
+    if (!_inited) return;
+    await _player.stopPlayer();
   }
 
-  // Запустить/остановить аудиофайл
-  Future togglePlaying({required VoidCallback whenFinished}) async {
-    if (_audioPlayer!.isStopped) {
-      await _play(whenFinished);
+  Future<void> toggle({VoidCallback? onFinished}) async {
+    if (!_inited) throw Exception('Player не инициализирован (init не вызван)');
+
+    if (_player.isStopped) {
+      await play(onFinished: onFinished);
     } else {
-      await _stop();
+      await stop();
     }
   }
 }

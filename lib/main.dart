@@ -15,7 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 
+import 'package:media_store_plus/media_store_plus.dart';
+
 void main() async {
+  await MediaStore.ensureInitialized();
+
+  MediaStore.appFolder = 'AIApp';
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([
