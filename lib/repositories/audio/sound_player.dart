@@ -1,3 +1,6 @@
+import 'package:ai_app/etc/error_presentation/failures/audio_failure.dart';
+import 'package:ai_app/etc/error_presentation/result.dart';
+import 'package:ai_app/repositories/audio/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 
@@ -14,13 +17,13 @@ class SoundPlayerService {
 
   bool get isPlaying => _inited && _player.isPlaying;
 
-  Future<void> init() async {
-    if (_inited) return;
+  Future<Result> init() async {
+    if (_inited) return Ok(null);
 
-    _path = await storage.getPath();
-    await _player.openAudioSession();
-
-    _inited = true;
+    return storage.audioGuard(() async {
+      await _player.openAudioSession();
+      _inited = true;
+    });
   }
 
   Future<void> dispose() async {
@@ -29,8 +32,8 @@ class SoundPlayerService {
     _inited = false;
   }
 
-  Future<void> play({VoidCallback? onFinished}) async {
-    if (!_inited) throw Exception('Player не инициализирован (init не вызван)');
+  Future<void> _play({VoidCallback? onFinished}) async {
+    _path = await storage.getPath();
 
     await _player.startPlayer(
       fromURI: _path,
@@ -38,18 +41,19 @@ class SoundPlayerService {
     );
   }
 
-  Future<void> stop() async {
-    if (!_inited) return;
+  Future<void> _stop() async {
     await _player.stopPlayer();
   }
 
-  Future<void> toggle({VoidCallback? onFinished}) async {
-    if (!_inited) throw Exception('Player не инициализирован (init не вызван)');
+  Future<Result> toggle({VoidCallback? onFinished}) async {
+    if (!_inited) return Err(AudioFailure(AudioFailureType.unknown));
 
     if (_player.isStopped) {
-      await play(onFinished: onFinished);
+      return storage.audioGuard(() async {
+        await _play(onFinished: onFinished);
+      });
     } else {
-      await stop();
+      return storage.audioGuard(_stop);
     }
   }
 }

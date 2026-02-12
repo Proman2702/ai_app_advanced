@@ -1,4 +1,4 @@
-enum AudioFailure {
+enum AudioFailureType {
   notSupported,
   sourceFileMissing,
   permissionDenied,

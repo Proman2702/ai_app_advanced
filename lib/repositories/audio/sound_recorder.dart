@@ -1,3 +1,6 @@
+import 'package:ai_app/etc/error_presentation/failures/audio_failure.dart';
+import 'package:ai_app/etc/error_presentation/result.dart';
+import 'package:ai_app/repositories/audio/failure.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -14,18 +17,20 @@ class SoundRecorderService {
 
   bool get isRecording => _inited && _recorder.isRecording;
 
-  Future<void> init() async {
-    if (_inited) return;
+  Future<Result> init() async {
+    if (_inited) return Ok(null);
 
     final mic = await Permission.microphone.request();
-    if (!mic.isGranted) {
-      throw Exception('Нет доступа к микрофону');
+    final bool _micGranted = mic.isGranted;
+
+    if (!_micGranted) {
+      return Err(AudioFailure(AudioFailureType.permissionDenied));
     }
 
-    _path = await storage.getPath();
-    await _recorder.openAudioSession();
-
-    _inited = true;
+    return storage.audioGuard(() async {
+      await _recorder.openAudioSession();
+      _inited = true;
+    });
   }
 
   Future<void> dispose() async {
@@ -34,23 +39,21 @@ class SoundRecorderService {
     _inited = false;
   }
 
-  Future<void> start() async {
-    if (!_inited) throw Exception('Recorder не инициализирован (init не вызван)');
+  Future<void> _start() async {
+    _path = await storage.getPathWithCreating();
     await _recorder.startRecorder(toFile: _path);
   }
 
-  Future<void> stop() async {
-    if (!_inited) return;
-    if (_recorder.isRecording) {
-      await _recorder.stopRecorder();
-    }
+  Future<void> _stop() async {
+    await _recorder.stopRecorder();
   }
 
-  Future<void> toggle() async {
+  Future<Result> toggle() async {
+    if (!_inited) return Err(AudioFailure(AudioFailureType.unknown));
     if (isRecording) {
-      await stop();
+      return storage.audioGuard(_stop);
     } else {
-      await start();
+      return storage.audioGuard(_start);
     }
   }
 }

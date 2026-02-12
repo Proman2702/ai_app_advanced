@@ -1,4 +1,4 @@
-import 'package:ai_app/etc/error_presentation/failure.dart';
+import 'package:ai_app/etc/error_presentation/failures/auth_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/auth_user.dart';
