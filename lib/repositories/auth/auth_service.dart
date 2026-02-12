@@ -1,4 +1,4 @@
-import 'package:ai_app/repositories/auth/result_data.dart';
+import 'package:ai_app/etc/error_presentation/result.dart';
 import 'auth_user.dart';
 
 abstract interface class AuthService {

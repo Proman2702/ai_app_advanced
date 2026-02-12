@@ -1,7 +1,8 @@
+import 'package:ai_app/etc/error_presentation/failure.dart';
+import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/auth_user.dart';
 import 'package:ai_app/repositories/auth/failure.dart';
-import 'package:ai_app/repositories/auth/result_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService implements AuthService {
@@ -35,18 +36,18 @@ class FirebaseAuthService implements AuthService {
   }) async {
     final user = _auth.currentUser;
     if (user == null) {
-      return Result.err(AuthFailure.requiresLogin);
+      return Err(AuthFailure(AuthFailureType.requiresLogin));
     }
 
     try {
       await _reauthWithPassword(user, email, currentPassword);
       await user.updatePassword(newPassword);
 
-      return Result.ok(null);
+      return const Ok(null);
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
@@ -58,7 +59,7 @@ class FirebaseAuthService implements AuthService {
   }) async {
     final user = _auth.currentUser;
     if (user == null) {
-      return Result.err(AuthFailure.requiresLogin);
+      return Err(AuthFailure(AuthFailureType.requiresLogin));
     }
 
     try {
@@ -66,11 +67,11 @@ class FirebaseAuthService implements AuthService {
 
       await user.delete();
 
-      return Result.ok(null);
+      return const Ok(null);
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
@@ -79,11 +80,11 @@ class FirebaseAuthService implements AuthService {
   Future<Result<void>> resetPassword({required String email}) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      return Result.ok(null);
+      return const Ok(null);
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
@@ -101,14 +102,14 @@ class FirebaseAuthService implements AuthService {
 
       final user = cred.user;
       if (user == null) {
-        return Result.err(AuthFailure.unknown);
+        return Err(AuthFailure(AuthFailureType.unknown));
       }
 
-      return Result.ok(user.toAuthUser());
+      return Ok(user.toAuthUser());
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
@@ -117,9 +118,9 @@ class FirebaseAuthService implements AuthService {
   Future<Result<void>> signOut() async {
     try {
       await _auth.signOut();
-      return Result.ok(null);
+      return const Ok(null);
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
@@ -137,61 +138,62 @@ class FirebaseAuthService implements AuthService {
 
       final user = cred.user;
       if (user == null) {
-        return Result.err(AuthFailure.unknown);
+        return Err(AuthFailure(AuthFailureType.unknown));
       }
 
-      return Result.ok(user.toAuthUser());
+      return Ok(user.toAuthUser());
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 
+  // ВЕРИФИКАЦИЯ
   @override
   Future<Result<void>> sendEmailVerification() async {
     final user = _auth.currentUser;
     if (user == null) {
-      return Result.err(AuthFailure.requiresLogin);
+      return Err(AuthFailure(AuthFailureType.requiresLogin));
     }
 
     try {
       await user.sendEmailVerification();
-      return Result.ok(null);
+      return const Ok(null);
     } on FirebaseAuthException catch (e) {
-      return Result.err(_mapFirebaseError(e));
+      return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
-      return Result.err(AuthFailure.unknown);
+      return Err(AuthFailure(AuthFailureType.unknown));
     }
   }
 }
 
-AuthFailure _mapFirebaseError(FirebaseAuthException e) {
+AuthFailureType _mapFirebaseError(FirebaseAuthException e) {
   // Подстрой имена AuthFailureType под свои, если отличаются
   switch (e.code) {
     case 'invalid-email':
-      return AuthFailure.format;
+      return AuthFailureType.format;
 
     case 'email-already-in-use':
-      return AuthFailure.exists;
+      return AuthFailureType.exists;
 
     case 'weak-password':
-      return AuthFailure.weak;
+      return AuthFailureType.weak;
 
     case 'user-not-found':
-      return AuthFailure.notFound;
+      return AuthFailureType.notFound;
 
     case 'wrong-password':
-      return AuthFailure.wrong;
+      return AuthFailureType.wrong;
 
     case 'invalid-credential':
-      return AuthFailure.wrongOrNotFound;
+      return AuthFailureType.wrongOrNotFound;
 
     case 'requires-recent-login':
-      return AuthFailure.requiresLogin;
+      return AuthFailureType.requiresLogin;
 
     default:
-      return AuthFailure.unknown;
+      return AuthFailureType.unknown;
   }
 }
 

@@ -1,4 +1,4 @@
-enum AuthFailure {
+enum AuthFailureType {
   format,
   exists,
   weak,
