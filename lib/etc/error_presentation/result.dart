@@ -6,6 +6,10 @@ sealed class Result<T> {
   bool get isErr => this is Err<T>;
 }
 
+class Unit {
+  const Unit();
+}
+
 final class Ok<T> extends Result<T> {
   final T value;
   const Ok(this.value);

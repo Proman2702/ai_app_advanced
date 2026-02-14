@@ -18,12 +18,12 @@ class SoundRecorderService {
   bool get isRecording => _inited && _recorder.isRecording;
 
   Future<Result> init() async {
-    if (_inited) return Ok(null);
+    if (_inited) return const Ok(Unit());
 
     final mic = await Permission.microphone.request();
-    final bool _micGranted = mic.isGranted;
+    final bool micGranted = mic.isGranted;
 
-    if (!_micGranted) {
+    if (!micGranted) {
       return Err(AudioFailure(AudioFailureType.permissionDenied));
     }
 
@@ -39,13 +39,15 @@ class SoundRecorderService {
     _inited = false;
   }
 
-  Future<void> _start() async {
+  Future<Result<Unit>> _start() async {
     _path = await storage.getPathWithCreating();
     await _recorder.startRecorder(toFile: _path);
+    return const Ok(Unit());
   }
 
-  Future<void> _stop() async {
+  Future<Result<Unit>> _stop() async {
     await _recorder.stopRecorder();
+    return const Ok(Unit());
   }
 
   Future<Result> toggle() async {

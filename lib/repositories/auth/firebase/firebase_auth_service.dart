@@ -29,7 +29,7 @@ class FirebaseAuthService implements AuthService {
 
   // СМЕНА ПАРОЛЯ
   @override
-  Future<Result<void>> changePassword({
+  Future<Result<Unit>> changePassword({
     required String email,
     required String currentPassword,
     required String newPassword,
@@ -43,7 +43,7 @@ class FirebaseAuthService implements AuthService {
       await _reauthWithPassword(user, email, currentPassword);
       await user.updatePassword(newPassword);
 
-      return const Ok(null);
+      return const Ok(Unit());
     } on FirebaseAuthException catch (e) {
       return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
@@ -53,7 +53,7 @@ class FirebaseAuthService implements AuthService {
 
   // УДАЛЕНИЕ АККАУНТА
   @override
-  Future<Result<void>> deleteAccount({
+  Future<Result<Unit>> deleteAccount({
     required String email,
     required String password,
   }) async {
@@ -67,7 +67,7 @@ class FirebaseAuthService implements AuthService {
 
       await user.delete();
 
-      return const Ok(null);
+      return const Ok(Unit());
     } on FirebaseAuthException catch (e) {
       return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
@@ -77,10 +77,10 @@ class FirebaseAuthService implements AuthService {
 
   // СБРОС ПАРОЛЯ
   @override
-  Future<Result<void>> resetPassword({required String email}) async {
+  Future<Result<Unit>> resetPassword({required String email}) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      return const Ok(null);
+      return const Ok(Unit());
     } on FirebaseAuthException catch (e) {
       return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {
@@ -115,10 +115,10 @@ class FirebaseAuthService implements AuthService {
 
   // ВЫЙТИ
   @override
-  Future<Result<void>> signOut() async {
+  Future<Result<Unit>> signOut() async {
     try {
       await _auth.signOut();
-      return const Ok(null);
+      return const Ok(Unit());
     } catch (e) {
       return Err(AuthFailure(AuthFailureType.unknown));
     }
@@ -151,7 +151,7 @@ class FirebaseAuthService implements AuthService {
 
   // ВЕРИФИКАЦИЯ
   @override
-  Future<Result<void>> sendEmailVerification() async {
+  Future<Result<Unit>> sendEmailVerification() async {
     final user = _auth.currentUser;
     if (user == null) {
       return Err(AuthFailure(AuthFailureType.requiresLogin));
@@ -159,7 +159,7 @@ class FirebaseAuthService implements AuthService {
 
     try {
       await user.sendEmailVerification();
-      return const Ok(null);
+      return const Ok(Unit());
     } on FirebaseAuthException catch (e) {
       return Err(AuthFailure(_mapFirebaseError(e)));
     } catch (e) {

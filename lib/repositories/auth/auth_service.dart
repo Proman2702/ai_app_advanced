@@ -14,21 +14,21 @@ abstract interface class AuthService {
     required String password,
   });
 
-  Future<Result<void>> signOut();
+  Future<Result<Unit>> signOut();
 
-  Future<Result<void>> sendEmailVerification();
+  Future<Result<Unit>> sendEmailVerification();
 
-  Future<Result<void>> resetPassword({
+  Future<Result<Unit>> resetPassword({
     required String email,
   });
 
-  Future<Result<void>> changePassword({
+  Future<Result<Unit>> changePassword({
     required String email,
     required String currentPassword,
     required String newPassword,
   });
 
-  Future<Result<void>> deleteAccount({
+  Future<Result<Unit>> deleteAccount({
     required String email,
     required String password,
   });

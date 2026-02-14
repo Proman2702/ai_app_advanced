@@ -18,7 +18,7 @@ class SoundPlayerService {
   bool get isPlaying => _inited && _player.isPlaying;
 
   Future<Result> init() async {
-    if (_inited) return Ok(null);
+    if (_inited) return const Ok(Unit());
 
     return storage.audioGuard(() async {
       await _player.openAudioSession();
@@ -32,17 +32,19 @@ class SoundPlayerService {
     _inited = false;
   }
 
-  Future<void> _play({VoidCallback? onFinished}) async {
+  Future<Result<Unit>> _play({VoidCallback? onFinished}) async {
     _path = await storage.getPath();
 
     await _player.startPlayer(
       fromURI: _path,
       whenFinished: onFinished,
     );
+    return const Ok(Unit());
   }
 
-  Future<void> _stop() async {
+  Future<Result<Unit>> _stop() async {
     await _player.stopPlayer();
+    return const Ok(Unit());
   }
 
   Future<Result> toggle({VoidCallback? onFinished}) async {
@@ -50,7 +52,7 @@ class SoundPlayerService {
 
     if (_player.isStopped) {
       return storage.audioGuard(() async {
-        await _play(onFinished: onFinished);
+        return await _play(onFinished: onFinished);
       });
     } else {
       return storage.audioGuard(_stop);
