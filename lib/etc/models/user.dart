@@ -1,58 +1,19 @@
-class CustomUser {
-  String username;
-  String email;
-  Map<dynamic, dynamic> defects;
-  Map<dynamic, dynamic> lessons_passed;
-  Map<dynamic, dynamic> lessons_correct;
-  Map<dynamic, dynamic> current_level;
-  Map<dynamic, dynamic> current_combo;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  CustomUser(
-      {required this.username,
-      required this.email,
-      required this.defects,
-      required this.lessons_passed,
-      required this.lessons_correct,
-      required this.current_level,
-      required this.current_combo});
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-  CustomUser.fromJson(Map<String, Object?> json)
-      : this(
-            username: json['username']! as String,
-            email: json['email']! as String,
-            defects: json['defects']! as Map<dynamic, dynamic>,
-            lessons_passed: json['lessons_passed']! as Map<dynamic, dynamic>,
-            lessons_correct: json['lessons_correct']! as Map<dynamic, dynamic>,
-            current_level: json['current_level']! as Map<dynamic, dynamic>,
-            current_combo: json['current_combo']! as Map<dynamic, dynamic>);
+@freezed
+abstract class CustomUser with _$CustomUser {
+  const factory CustomUser({
+    required String username,
+    required String email,
+    @Default(<String, int>{}) Map<String, int> defects,
+    @JsonKey(name: 'lessons_passed') @Default(<String, int>{}) Map<String, int> lessonsPassed,
+    @JsonKey(name: 'lessons_correct') @Default(<String, int>{}) Map<String, int> lessonsCorrect,
+    @JsonKey(name: 'current_level') @Default(<String, int>{}) Map<String, int> currentLevel,
+    @JsonKey(name: 'current_combo') @Default(<String, int>{}) Map<String, int> currentCombo,
+  }) = _CustomUser;
 
-  CustomUser copyWith(
-      {String? username,
-      String? email,
-      Map<dynamic, dynamic>? defects,
-      Map<dynamic, dynamic>? lessons_passed,
-      Map<dynamic, dynamic>? lessons_correct,
-      Map<dynamic, dynamic>? current_level,
-      Map<dynamic, dynamic>? current_combo}) {
-    return CustomUser(
-        username: username ?? this.username,
-        email: email ?? this.email,
-        defects: defects ?? this.defects,
-        lessons_passed: lessons_passed ?? this.lessons_passed,
-        lessons_correct: lessons_correct ?? this.lessons_correct,
-        current_level: current_level ?? this.current_level,
-        current_combo: current_combo ?? this.current_combo);
-  }
-
-  Map<String, Object?> toJson() {
-    return {
-      "username": username,
-      "email": email,
-      "defects": defects,
-      "lessons_passed": lessons_passed,
-      "lessons_correct": lessons_correct,
-      "current_level": current_level,
-      "current_combo": current_combo,
-    };
-  }
+  factory CustomUser.fromJson(Map<String, dynamic> json) => _$CustomUserFromJson(json);
 }

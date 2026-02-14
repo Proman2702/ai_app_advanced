@@ -56,9 +56,9 @@ class _TaskPageState extends State<TaskPage> {
         // если уровень еще не пройден
         if (completed == 0) {
           CustomUser curUser = dbGetter!.getUser()!;
-          var curCombo = curUser.current_combo; // аолучение данных с БД
-          var curLevels = curUser.lessons_passed;
-          var curCorrectLevels = curUser.lessons_correct;
+          var curCombo = curUser.currentCombo; // аолучение данных с БД
+          var curLevels = curUser.lessonsPassed;
+          var curCorrectLevels = curUser.lessonsCorrect;
 
           curCombo['$defectType'] += 1; // к текущему комбо +1
           curLevels['$defectType'] += 1;
@@ -72,7 +72,7 @@ class _TaskPageState extends State<TaskPage> {
           if (curCombo['$defectType'] >= 5) {
             curCombo['$defectType'] = 0; //обнуляем его
 
-            var curLevel = curUser.current_level; // получаем текущий уровень из БД
+            var curLevel = curUser.currentLevel; // получаем текущий уровень из БД
 
             if (curLevel['$defectType'] == 0) {
               curLevel['$defectType'] += 1;
@@ -97,8 +97,8 @@ class _TaskPageState extends State<TaskPage> {
         if (completed == 0) {
           CustomUser curUser = dbGetter!.getUser()!;
 
-          var curCombo = curUser.current_combo; // получаем комбо из БД
-          var curLevels = curUser.lessons_passed;
+          var curCombo = curUser.currentCombo; // получаем комбо из БД
+          var curLevels = curUser.lessonsPassed;
 
           curCombo['$defectType'] = 0; // обнуляем комбо и записываем в БД
           curLevels['$defectType'] += 1;

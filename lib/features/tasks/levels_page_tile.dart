@@ -12,14 +12,14 @@ class LevelTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: dbGetter?.getUser()?.current_level == null
+      onTap: dbGetter?.getUser()?.currentLevel == null
           ? () {}
-          : dbGetter!.getUser()!.current_level['${defectType[0]}'] >= level
+          : dbGetter!.getUser()!.currentLevel['${defectType[0]}'] >= level
               ? () async {
                   Navigator.of(context).pushNamed('/tasks/levels/level', arguments: [
                     int.parse(defectType[0]),
                     level == 0 ? 1 : level,
-                    dbGetter!.getUser()!.current_level['${defectType[0]}'] == level ? 0 : 1
+                    dbGetter!.getUser()!.currentLevel['${defectType[0]}'] == level ? 0 : 1
                   ]);
 
                   // Проверка если текущий уровень больше этого
@@ -29,9 +29,9 @@ class LevelTile extends StatelessWidget {
         height: 105,
         width: 150,
         decoration: BoxDecoration(
-            color: dbGetter?.getUser()?.current_level == null
+            color: dbGetter?.getUser()?.currentLevel == null
                 ? Colors.grey
-                : dbGetter!.getUser()!.current_level['${defectType[0]}'] >= level
+                : dbGetter!.getUser()!.currentLevel['${defectType[0]}'] >= level
                     ? Colors.white
                     : Colors.grey,
             borderRadius: BorderRadius.circular(20),
@@ -45,11 +45,11 @@ class LevelTile extends StatelessWidget {
                     color: Color(CustomColors.main), fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'nunito')),
             const SizedBox(height: 10),
             Icon(
-              dbGetter?.getUser()?.current_level == null
+              dbGetter?.getUser()?.currentLevel == null
                   ? Icons.lock
-                  : dbGetter!.getUser()!.current_level['${defectType[0]}'] == level
+                  : dbGetter!.getUser()!.currentLevel['${defectType[0]}'] == level
                       ? Icons.timer_outlined
-                      : dbGetter!.getUser()!.current_level['${defectType[0]}'] > level
+                      : dbGetter!.getUser()!.currentLevel['${defectType[0]}'] > level
                           ? Icons.check
                           : Icons.lock,
               color: Color(CustomColors.main),

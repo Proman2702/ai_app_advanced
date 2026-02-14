@@ -95,10 +95,10 @@ class _InformationFieldState extends State<InformationField> {
                                 decoration: BoxDecoration(
                                     color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
                                 child: Text(
-                                  widget.user.current_level['${widget.defectType[0]}'] != null
-                                      ? widget.user.current_level['${widget.defectType[0]}'] == 7
+                                  widget.user.currentLevel['${widget.defectType[0]}'] != null
+                                      ? widget.user.currentLevel['${widget.defectType[0]}'] == 7
                                           ? '100%'
-                                          : '${widget.user.current_level['${widget.defectType[0]}'] * 15}%'
+                                          : '${widget.user.currentLevel['${widget.defectType[0]}']}%'
                                       : '?',
                                   style:
                                       const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -141,8 +141,8 @@ class _InformationFieldState extends State<InformationField> {
                                 decoration: BoxDecoration(
                                     color: Color(CustomColors.main), borderRadius: BorderRadius.circular(15)),
                                 child: Text(
-                                  widget.user.current_combo['${widget.defectType[0]}'] != null
-                                      ? '${widget.user.current_combo['${widget.defectType[0]}']}'
+                                  widget.user.currentCombo['${widget.defectType[0]}'] != null
+                                      ? '${widget.user.currentCombo['${widget.defectType[0]}']}'
                                       : '?', // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                   style:
                                       const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -159,7 +159,7 @@ class _InformationFieldState extends State<InformationField> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Всего правильных заданий: ${widget.user.lessons_correct['${widget.defectType[0]}'] ?? "?"}",
+                        "Всего правильных заданий: ${widget.user.lessonsCorrect['${widget.defectType[0]}'] ?? "?"}",
                         style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
                       ), // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                       const SizedBox(height: 2),
@@ -167,12 +167,12 @@ class _InformationFieldState extends State<InformationField> {
                         height: 15,
                         width: 320,
                         child: LinearProgressIndicator(
-                          value: (((widget.user.lessons_passed['${widget.defectType[0]}'] != null) &&
-                                      ((widget.user.lessons_correct['${widget.defectType[0]}']) != null)) &&
-                                  (widget.user.lessons_passed['${widget.defectType[0]}'] != 0) &&
-                                  (widget.user.lessons_correct['${widget.defectType[0]}'] != 0))
-                              ? widget.user.lessons_correct['${widget.defectType[0]}'] /
-                                  widget.user.lessons_passed['${widget.defectType[0]}']
+                          value: (((widget.user.lessonsPassed['${widget.defectType[0]}'] != null) &&
+                                      ((widget.user.lessonsCorrect['${widget.defectType[0]}']) != null)) &&
+                                  (widget.user.lessonsPassed['${widget.defectType[0]}'] != 0) &&
+                                  (widget.user.lessonsCorrect['${widget.defectType[0]}'] != 0))
+                              ? widget.user.lessonsCorrect['${widget.defectType[0]}'] /
+                                  widget.user.lessonsPassed['${widget.defectType[0]}']
                               : 0.0,
                           borderRadius: BorderRadius.circular(10),
                           color: Color(CustomColors.bright),
@@ -183,7 +183,7 @@ class _InformationFieldState extends State<InformationField> {
                         width: 320,
                         child: Text(
                           textAlign: TextAlign.end,
-                          "Всего заданий: ${widget.user.lessons_passed['${widget.defectType[0]}'] ?? "?"}",
+                          "Всего заданий: ${widget.user.lessonsPassed['${widget.defectType[0]}'] ?? "?"}",
                           style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ),

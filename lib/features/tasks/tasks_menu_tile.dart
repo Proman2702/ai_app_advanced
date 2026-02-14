@@ -47,7 +47,7 @@ class TasksMenuTile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('Задание ${dbGetter?.getUser()?.current_level[defectType[0]] ?? 0}/6',
+                      Text('Задание ${dbGetter?.getUser()?.currentLevel[defectType[0]] ?? 0}/6',
                           style: const TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600))
                     ],
                   )

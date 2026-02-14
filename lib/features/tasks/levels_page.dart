@@ -44,10 +44,10 @@ class _LevelsMenuState extends State<LevelsMenu> {
   void clearCourse() async {
     if (dbGetter?.getUser()?.username != null) {
       CustomUser curUser = dbGetter!.getUser()!;
-      var curCombo = curUser.current_combo;
-      var curLevel = curUser.current_level;
-      var curLevels = curUser.lessons_passed;
-      var curCorrectLevels = curUser.lessons_correct;
+      var curCombo = curUser.currentCombo;
+      var curLevel = curUser.currentLevel;
+      var curLevels = curUser.lessonsPassed;
+      var curCorrectLevels = curUser.lessonsCorrect;
 
       curLevel['${defectType[0]}'] = 0;
       curCombo['${defectType[0]}'] = 0;

@@ -229,9 +229,9 @@ class _HomePageState extends State<HomePage> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(height: 10),
-                                            dbGetter?.getUser()?.current_level == null
+                                            dbGetter?.getUser()?.currentLevel == null
                                                 ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator())
-                                                : dbGetter!.getUser()!.current_level.isEmpty
+                                                : dbGetter!.getUser()!.currentLevel.isEmpty
                                                     ? Icon(Icons.cancel_outlined, color: Colors.white)
                                                     : Icon(Icons.check, color: Colors.white)
                                           ],
@@ -245,11 +245,11 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             SizedBox(
                                               child: Text(
-                                                dbGetter?.getUser()?.current_level == null
+                                                dbGetter?.getUser()?.currentLevel == null
                                                     ? "Загрузка..."
-                                                    : dbGetter!.getUser()!.current_level.isEmpty
+                                                    : dbGetter!.getUser()!.currentLevel.isEmpty
                                                         ? "Прохождение не начато!"
-                                                        : "В процессе: ${dbGetter!.getUser()!.current_level.length} курса", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
+                                                        : "В процессе: ${dbGetter!.getUser()!.currentLevel.length} курса", // !!! СОЕДИНИТЬ С БАЗОЙ ДАННЫХ
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                     color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),

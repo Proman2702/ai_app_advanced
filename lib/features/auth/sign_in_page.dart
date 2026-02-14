@@ -60,14 +60,14 @@ class _FirstPageState extends State<FirstPage> {
       var pattern = buildAuth();
       log("PATTERN $pattern");
 
-      await database.addUser(CustomUser(
-          username: username!,
-          email: em,
-          defects: pattern, // 0 - не пройдено, 1 - нет дефекта, 2 - есть дефект
-          lessons_passed: pattern,
-          lessons_correct: pattern,
-          current_combo: pattern,
-          current_level: pattern));
+      // await database.addUser(CustomUser(
+      //     username: username!,
+      //     email: em,
+      //     defects: pattern, // 0 - не пройдено, 1 - нет дефекта, 2 - есть дефект
+      //     lessonsPassed: pattern,
+      //     lessonsCorrect: pattern,
+      //     currentCombo: pattern,
+      //     currentLevel: pattern));
 
       Navigator.of(context).pushNamed('/');
       await auth.sendVerification();
