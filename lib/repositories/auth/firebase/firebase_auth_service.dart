@@ -1,3 +1,4 @@
+import 'package:ai_app/etc/error_presentation/failures/auth_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/auth_user.dart';
@@ -33,9 +34,9 @@ class FirebaseAuthService implements AuthService {
     required String currentPassword,
     required String newPassword,
   }) async {
+    final user = _auth.currentUser;
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
-      final user = _auth.currentUser;
-      if (user == null) throw Exception("user is null");
       await _reauthWithPassword(user, email, currentPassword);
       await user.updatePassword(newPassword);
       return const Unit();
@@ -48,9 +49,9 @@ class FirebaseAuthService implements AuthService {
     required String email,
     required String password,
   }) async {
+    final user = _auth.currentUser;
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
-      final user = _auth.currentUser;
-      if (user == null) throw Exception("user is null");
       await _reauthWithPassword(user, email, password);
       await user.delete();
       return const Unit();
@@ -112,9 +113,9 @@ class FirebaseAuthService implements AuthService {
   // ВЕРИФИКАЦИЯ
   @override
   Future<Result<Unit>> sendEmailVerification() async {
+    final user = _auth.currentUser;
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
-      final user = _auth.currentUser;
-      if (user == null) throw Exception("user is null");
       await user.sendEmailVerification();
       return const Unit();
     });

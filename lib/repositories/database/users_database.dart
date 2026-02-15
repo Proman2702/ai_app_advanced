@@ -2,12 +2,12 @@ import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:ai_app/etc/models/user.dart';
 
 abstract interface class UsersDatabase {
-  Future<Result<CustomUser?>> getUserById(String id);
+  Future<Result<CustomUser?>> getUser();
   Future<Result<Unit>> upsertUser(CustomUser user);
-  Future<Result<Unit>> deleteUserById(String id);
+  Future<Result<Unit>> deleteUser();
 }
 
 abstract interface class UsersDatabaseWithStream {
   Stream<Result<List<CustomUser>>> watchUsers();
-  Stream<Result<CustomUser?>> watchUserById(String id);
+  Stream<Result<CustomUser?>> watchUser();
 }

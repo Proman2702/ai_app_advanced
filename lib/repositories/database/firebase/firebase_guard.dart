@@ -1,6 +1,7 @@
 import 'package:ai_app/etc/error_presentation/failures/db_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseException;
+import 'package:rxdart/rxdart.dart';
 
 class FirebaseDatabaseGuard {
   static Future<Result<T>> firebaseDatabaseGuard<T>(Future<T> Function() action) async {
@@ -12,6 +13,13 @@ class FirebaseDatabaseGuard {
     } catch (e) {
       return Err(DatabaseFailure(DatabaseFailureType.unknown, st: e.toString()));
     }
+  }
+
+  static Stream<Result<T>> firebaseStreamGuard<T>(Stream<T> source) {
+    return source.map<Result<T>>((v) => Ok(v)).onErrorReturnWith((e, st) {
+      if (e is FirebaseException) return Err(_mapDatabaseError(e));
+      return Err(DatabaseFailure(DatabaseFailureType.unknown, st: e.toString()));
+    });
   }
 
   static DatabaseFailure _mapDatabaseError(FirebaseException e) {

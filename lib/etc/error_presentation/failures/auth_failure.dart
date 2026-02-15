@@ -15,13 +15,4 @@ final class AuthFailure extends Failure {
   String? get st => _st;
 }
 
-enum AuthFailureType {
-  format,
-  exists,
-  weak,
-  notFound,
-  wrong,
-  wrongOrNotFound,
-  requiresLogin,
-  unknown,
-}
+enum AuthFailureType { format, exists, weak, notFound, wrong, wrongOrNotFound, requiresLogin, unknown, unauthorized }
