@@ -4,7 +4,7 @@ import 'package:ai_app/etc/colors/colors.dart';
 import 'dart:math' as math;
 import 'package:ai_app/etc/colors/gradients/drawer.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
-import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

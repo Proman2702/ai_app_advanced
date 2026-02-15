@@ -7,4 +7,7 @@ abstract interface class UsersDatabase {
   Future<Result<Unit>> deleteUserById(String id);
 }
 
-abstract interface class UsersDatabaseWithStream {}
+abstract interface class UsersDatabaseWithStream {
+  Stream<Result<List<CustomUser>>> watchUsers();
+  Stream<Result<CustomUser?>> watchUserById(String id);
+}

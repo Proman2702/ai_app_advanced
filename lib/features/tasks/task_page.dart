@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:ai_app/features/tasks/help.dart';
 import 'package:ai_app/etc/models/user.dart';
-import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 import 'package:ai_app/repositories/database/tasks/taskbase.dart';
 import 'package:ai_app/repositories/server/ip.dart';
 import 'package:ai_app/repositories/server/upload_to_server.dart';

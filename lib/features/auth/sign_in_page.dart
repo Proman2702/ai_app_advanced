@@ -8,7 +8,7 @@ import 'package:ai_app/features/auth/email_notificator.dart';
 import 'package:ai_app/etc/models/defects.dart';
 import 'package:ai_app/etc/models/user.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
-import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_app/features/auth/auth_formats.dart';
 

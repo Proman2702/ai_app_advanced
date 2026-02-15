@@ -4,7 +4,7 @@ import 'package:ai_app/etc/colors/gradients/tiles.dart';
 import 'package:ai_app/features/settings/confirmation_dialog.dart';
 import 'package:ai_app/features/tasks/levels_page_tile.dart';
 import 'package:ai_app/etc/models/user.dart';
-import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

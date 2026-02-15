@@ -1,5 +1,4 @@
 import 'package:ai_app/etc/error_presentation/failure.dart';
-import 'package:ai_app/repositories/auth/failure.dart';
 
 final class AuthFailure extends Failure {
   final AuthFailureType _type;
@@ -14,4 +13,15 @@ final class AuthFailure extends Failure {
 
   @override
   String? get st => _st;
+}
+
+enum AuthFailureType {
+  format,
+  exists,
+  weak,
+  notFound,
+  wrong,
+  wrongOrNotFound,
+  requiresLogin,
+  unknown,
 }

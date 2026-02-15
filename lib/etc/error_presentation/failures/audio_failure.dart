@@ -1,5 +1,4 @@
 import 'package:ai_app/etc/error_presentation/failure.dart';
-import 'package:ai_app/repositories/audio/failure.dart';
 
 final class AudioFailure extends Failure {
   final AudioFailureType _type;
@@ -14,4 +13,12 @@ final class AudioFailure extends Failure {
 
   @override
   String? get st => _st;
+}
+
+enum AudioFailureType {
+  notSupported,
+  sourceFileMissing,
+  permissionDenied,
+  io,
+  unknown,
 }

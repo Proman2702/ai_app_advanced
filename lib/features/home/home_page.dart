@@ -2,7 +2,7 @@
 import 'package:ai_app/features/named_appbar.dart';
 import 'package:ai_app/features/home/information_tile.dart';
 import 'package:ai_app/etc/models/defects.dart';
-import 'package:ai_app/repositories/database/database_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 import 'package:ai_app/repositories/database/get_values.dart';
 import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';

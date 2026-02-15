@@ -1,6 +1,6 @@
 import 'package:ai_app/etc/error_presentation/failures/audio_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
-import 'package:ai_app/repositories/audio/failure.dart';
+import 'package:ai_app/repositories/audio/audio_guard.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -27,7 +27,7 @@ class SoundRecorderService {
       return Err(AudioFailure(AudioFailureType.permissionDenied));
     }
 
-    return storage.audioGuard(() async {
+    return AudioGuard.audioGuard(() async {
       await _recorder.openAudioSession();
       _inited = true;
     });
@@ -39,23 +39,23 @@ class SoundRecorderService {
     _inited = false;
   }
 
-  Future<Result<Unit>> _start() async {
+  Future<Unit> _start() async {
     _path = await storage.getPathWithCreating();
     await _recorder.startRecorder(toFile: _path);
-    return const Ok(Unit());
+    return const Unit();
   }
 
-  Future<Result<Unit>> _stop() async {
+  Future<Unit> _stop() async {
     await _recorder.stopRecorder();
-    return const Ok(Unit());
+    return const Unit();
   }
 
   Future<Result> toggle() async {
     if (!_inited) return Err(AudioFailure(AudioFailureType.unknown));
     if (isRecording) {
-      return storage.audioGuard(_stop);
+      return AudioGuard.audioGuard(_stop);
     } else {
-      return storage.audioGuard(_start);
+      return AudioGuard.audioGuard(_start);
     }
   }
 }

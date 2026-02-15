@@ -1,8 +1,7 @@
-import 'package:ai_app/etc/error_presentation/failures/auth_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
 import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/auth_user.dart';
-import 'package:ai_app/repositories/auth/failure.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_guard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService implements AuthService {
@@ -34,21 +33,13 @@ class FirebaseAuthService implements AuthService {
     required String currentPassword,
     required String newPassword,
   }) async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      return Err(AuthFailure(AuthFailureType.requiresLogin));
-    }
-
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
+      final user = _auth.currentUser;
+      if (user == null) throw Exception("user is null");
       await _reauthWithPassword(user, email, currentPassword);
       await user.updatePassword(newPassword);
-
-      return const Ok(Unit());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      return const Unit();
+    });
   }
 
   // УДАЛЕНИЕ АККАУНТА
@@ -57,35 +48,22 @@ class FirebaseAuthService implements AuthService {
     required String email,
     required String password,
   }) async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      return Err(AuthFailure(AuthFailureType.requiresLogin));
-    }
-
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
+      final user = _auth.currentUser;
+      if (user == null) throw Exception("user is null");
       await _reauthWithPassword(user, email, password);
-
       await user.delete();
-
-      return const Ok(Unit());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      return const Unit();
+    });
   }
 
   // СБРОС ПАРОЛЯ
   @override
   Future<Result<Unit>> resetPassword({required String email}) async {
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
       await _auth.sendPasswordResetEmail(email: email);
-      return const Ok(Unit());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      return const Unit();
+    });
   }
 
   // ВОЙТИ
@@ -94,34 +72,24 @@ class FirebaseAuthService implements AuthService {
     required String email,
     required String password,
   }) async {
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
       final cred = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
       final user = cred.user;
-      if (user == null) {
-        return Err(AuthFailure(AuthFailureType.unknown));
-      }
-
-      return Ok(user.toAuthUser());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      if (user == null) throw Exception("user is null");
+      return user.toAuthUser();
+    });
   }
 
   // ВЫЙТИ
   @override
   Future<Result<Unit>> signOut() async {
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
       await _auth.signOut();
-      return const Ok(Unit());
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      return const Unit();
+    });
   }
 
   // ЗАРЕГИСТРИРОВАТЬСЯ
@@ -130,70 +98,26 @@ class FirebaseAuthService implements AuthService {
     required String email,
     required String password,
   }) async {
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
       final cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-
       final user = cred.user;
-      if (user == null) {
-        return Err(AuthFailure(AuthFailureType.unknown));
-      }
-
-      return Ok(user.toAuthUser());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
+      if (user == null) throw Exception("user is null");
+      return user.toAuthUser();
+    });
   }
 
   // ВЕРИФИКАЦИЯ
   @override
   Future<Result<Unit>> sendEmailVerification() async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      return Err(AuthFailure(AuthFailureType.requiresLogin));
-    }
-
-    try {
+    return FirebaseAuthGuard.firebaseAuthGuard(() async {
+      final user = _auth.currentUser;
+      if (user == null) throw Exception("user is null");
       await user.sendEmailVerification();
-      return const Ok(Unit());
-    } on FirebaseAuthException catch (e) {
-      return Err(AuthFailure(_mapFirebaseError(e)));
-    } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown));
-    }
-  }
-}
-
-AuthFailureType _mapFirebaseError(FirebaseAuthException e) {
-  // Подстрой имена AuthFailureType под свои, если отличаются
-  switch (e.code) {
-    case 'invalid-email':
-      return AuthFailureType.format;
-
-    case 'email-already-in-use':
-      return AuthFailureType.exists;
-
-    case 'weak-password':
-      return AuthFailureType.weak;
-
-    case 'user-not-found':
-      return AuthFailureType.notFound;
-
-    case 'wrong-password':
-      return AuthFailureType.wrong;
-
-    case 'invalid-credential':
-      return AuthFailureType.wrongOrNotFound;
-
-    case 'requires-recent-login':
-      return AuthFailureType.requiresLogin;
-
-    default:
-      return AuthFailureType.unknown;
+      return const Unit();
+    });
   }
 }
 
