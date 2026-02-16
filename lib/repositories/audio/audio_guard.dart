@@ -10,15 +10,15 @@ class AudioGuard {
       final v = await action();
       return Ok(v);
     } on FileSystemException catch (e) {
-      return Err(AudioFailure(AudioFailureType.io, st: e.toString()));
+      return Err(AudioFailure(AudioFailureType.io, message: e.toString()));
     } on PlatformException catch (e) {
       final type =
           e.code.toLowerCase().contains('permission') ? AudioFailureType.permissionDenied : AudioFailureType.unknown;
       return Err(AudioFailure(type));
     } on UnsupportedError catch (e) {
-      return Err(AudioFailure(AudioFailureType.notSupported, st: e.toString()));
+      return Err(AudioFailure(AudioFailureType.notSupported, message: e.toString()));
     } catch (e) {
-      return Err(AudioFailure(AudioFailureType.unknown, st: e.toString()));
+      return Err(AudioFailure(AudioFailureType.unknown, message: e.toString()));
     }
   }
 }

@@ -2,8 +2,8 @@ import 'package:ai_app/etc/error_presentation/failure.dart';
 
 final class DatabaseFailure extends Failure {
   final DatabaseFailureType _type;
-  final String? _st;
-  DatabaseFailure(this._type, {String? st}) : _st = st;
+  final String? _message;
+  DatabaseFailure(this._type, {String? message}) : _message = message;
 
   @override
   String get messageKey => switch (_type) {
@@ -12,7 +12,7 @@ final class DatabaseFailure extends Failure {
       };
 
   @override
-  String? get st => _st;
+  String? get st => _message;
 }
 
 enum DatabaseFailureType {

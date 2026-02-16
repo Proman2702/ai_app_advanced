@@ -35,7 +35,7 @@ class FirebaseAuthService implements AuthService {
     required String newPassword,
   }) async {
     final user = _auth.currentUser;
-    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, message: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
       await _reauthWithPassword(user, email, currentPassword);
       await user.updatePassword(newPassword);
@@ -50,7 +50,7 @@ class FirebaseAuthService implements AuthService {
     required String password,
   }) async {
     final user = _auth.currentUser;
-    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, message: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
       await _reauthWithPassword(user, email, password);
       await user.delete();
@@ -114,7 +114,7 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<Result<Unit>> sendEmailVerification() async {
     final user = _auth.currentUser;
-    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, st: "unauthorized"));
+    if (user == null) return Err(AuthFailure(AuthFailureType.unauthorized, message: "unauthorized"));
     return FirebaseAuthGuard.firebaseAuthGuard(() async {
       await user.sendEmailVerification();
       return const Unit();

@@ -10,35 +10,35 @@ class FirebaseAuthGuard {
     } on FirebaseAuthException catch (e) {
       return Err(_mapFirebaseError(e));
     } catch (e) {
-      return Err(AuthFailure(AuthFailureType.unknown, st: e.toString()));
+      return Err(AuthFailure(AuthFailureType.unknown, message: e.toString()));
     }
   }
 
   static AuthFailure _mapFirebaseError(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
-        return AuthFailure(AuthFailureType.format, st: e.message);
+        return AuthFailure(AuthFailureType.format, message: e.message);
 
       case 'email-already-in-use':
-        return AuthFailure(AuthFailureType.exists, st: e.message);
+        return AuthFailure(AuthFailureType.exists, message: e.message);
 
       case 'weak-password':
-        return AuthFailure(AuthFailureType.weak, st: e.message);
+        return AuthFailure(AuthFailureType.weak, message: e.message);
 
       case 'user-not-found':
-        return AuthFailure(AuthFailureType.notFound, st: e.message);
+        return AuthFailure(AuthFailureType.notFound, message: e.message);
 
       case 'wrong-password':
-        return AuthFailure(AuthFailureType.wrong, st: e.message);
+        return AuthFailure(AuthFailureType.wrong, message: e.message);
 
       case 'invalid-credential':
-        return AuthFailure(AuthFailureType.wrongOrNotFound, st: e.message);
+        return AuthFailure(AuthFailureType.wrongOrNotFound, message: e.message);
 
       case 'requires-recent-login':
-        return AuthFailure(AuthFailureType.requiresLogin, st: e.message);
+        return AuthFailure(AuthFailureType.requiresLogin, message: e.message);
 
       default:
-        return AuthFailure(AuthFailureType.unknown, st: e.message);
+        return AuthFailure(AuthFailureType.unknown, message: e.message);
     }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "types": [
+    {
+      "id": 0,
+      "slug": "zaikanie",
+      "title": "Заикание",
+      "levels": [1, 2, 3, 4, 5, 6]
+    },
+    {
+      "id": 1,
+      "slug": "kartavost",
+      "title": "Заикание",
+      "levels": [1, 2, 3, 4, 5, 6]
+    },
+    {
+      "id": 2,
+      "slug": "frikativnoeG",
+      "title": "Заикание",
+      "levels": [1, 2, 3, 4, 5, 6]
+    }
+  ]
+}
