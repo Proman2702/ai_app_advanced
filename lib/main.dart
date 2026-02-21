@@ -1,16 +1,16 @@
-import 'package:ai_app/features/auth/forgot_password_page.dart';
-import 'package:ai_app/features/diagnostics/diag_task_page.dart';
-import 'package:ai_app/features/info/info_page.dart';
-import 'package:ai_app/features/settings/settings_page.dart';
-import 'package:ai_app/features/diagnostics/diag_menu_page.dart';
-import 'package:ai_app/features/auth/sign_in_page.dart';
-import 'package:ai_app/features/tasks/tasks_menu_page.dart';
+import 'package:ai_app/ui/auth/forgot_password_page.dart';
+import 'package:ai_app/ui/diagnostics/diag_task_page.dart';
+import 'package:ai_app/ui/info/info_page.dart';
+import 'package:ai_app/ui/settings/settings_page.dart';
+import 'package:ai_app/ui/diagnostics/diag_menu_page.dart';
+import 'package:ai_app/ui/auth/register/screen.dart';
+import 'package:ai_app/ui/tasks/tasks_menu_page.dart';
 
-import 'package:ai_app/features/tasks/levels_page.dart';
-import 'package:ai_app/features/wrapper.dart';
+import 'package:ai_app/ui/tasks/levels_page.dart';
+import 'package:ai_app/ui/wrapper.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ai_app/features/tasks/task_page.dart';
+import 'package:ai_app/ui/tasks/task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';

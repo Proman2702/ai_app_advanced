@@ -12,7 +12,7 @@ final class NetworkFailure extends Failure {
       };
 
   @override
-  String? get st => _message;
+  String? get message => _message;
 }
 
 enum NetworkFailureType { notFound, forbidden, unknown, http }

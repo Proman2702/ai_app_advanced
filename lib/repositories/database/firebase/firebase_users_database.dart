@@ -1,7 +1,7 @@
 import 'package:ai_app/etc/error_presentation/failures/db_failure.dart';
 import 'package:ai_app/etc/error_presentation/result.dart';
-import 'package:ai_app/etc/models/user.dart';
-import 'package:ai_app/etc/models/user_firebase.dart';
+import 'package:ai_app/models/user.dart';
+import 'package:ai_app/models/user_firebase.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_gate.dart';
 import 'package:ai_app/repositories/database/firebase/firebase_guard.dart';
 import 'package:ai_app/repositories/database/users_database.dart';

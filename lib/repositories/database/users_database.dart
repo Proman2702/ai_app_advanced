@@ -1,5 +1,5 @@
 import 'package:ai_app/etc/error_presentation/result.dart';
-import 'package:ai_app/etc/models/user.dart';
+import 'package:ai_app/models/user.dart';
 
 abstract interface class UsersDatabase {
   Future<Result<CustomUser?>> getUser();

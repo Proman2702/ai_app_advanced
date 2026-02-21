@@ -1,26 +1,21 @@
+import 'dart:ui';
+
 class CustomColors {
-  final List<int> backgroundGrad = [0xFFCFB5D6, 0xFF4E0F69];
-  final List<int> drawerGrad = [0xFFCCAAD4, 0xFFB68FBF, 0xFF613974];
-  final List<int> tileGrad1 = [0xFF633D9D, 0xffD192BE];
-  final List<int> tileGrad2 = [0xFFD3B1D9, 0xFF5E1E8D];
-  final List<int> tileGrad3 = [0xFFF9B15F, 0xFFC29BD3];
-  final List<int> buttonGrad = [0xFF9951F8, 0xFF5B1587];
-  final List<int> greyTile = [0xFF725C77, 0xFFDBB1DA];
+  static const Color main = Color(0xff6B3C7A);
+  static const Color mainLight = Color(0xFF7B5488);
+  static const Color mainLight2 = Color(0xDDE9C1E9);
 
-  static int main = 0xff6B3C7A;
-  static int mainLight = 0xFF7B5488;
-  static int mainLightX2 = 0xDDE9C1E9;
-  static int bright = 0xff7021A7;
-  static int white = 0xffffffff;
-  static int shadow = 0xffd9d9d9;
-  static int dialogBack = 0xffefd8ec;
-  static int delete = 0xFFDB2A24;
+  static const Color bright = Color(0xff7021A7);
+  static const Color shadow = Color(0xffd9d9d9);
+  static const Color dialogBack = Color(0xffefd8ec);
+  static const Color delete = Color(0xFFDB2A24);
 
-  List<int> get getBackgroundGrad => backgroundGrad;
-  List<int> get getDrawerGrad => drawerGrad;
-  List<int> get getTileGrad1 => tileGrad1;
-  List<int> get getTileGrad2 => tileGrad2;
-  List<int> get getTileGrad3 => tileGrad3;
-  List<int> get getButtonGrad => buttonGrad;
-  List<int> get getGreyTile => greyTile;
+  static const Color mainText = Color(0xFFB9B9B9);
+
+  static const Color accent1 = Color(0xFF4C9AC4);
+  static const Color accent2 = Color(0xFFC38091);
+  static const Color inActive = Color(0xFF808080);
+  static const Color fill = Color(0xFFF0F0F0);
+  static const Color background1 = Color(0xff0d2336);
+  static const Color background2 = Color(0xff4c9ac4);
 }

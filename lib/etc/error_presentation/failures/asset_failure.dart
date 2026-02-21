@@ -12,7 +12,7 @@ final class AssetFailure extends Failure {
       };
 
   @override
-  String? get st => _message;
+  String? get message => _message;
 }
 
 enum AssetFailureType { unable, unknown }

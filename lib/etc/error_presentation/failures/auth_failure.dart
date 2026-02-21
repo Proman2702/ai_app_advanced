@@ -1,6 +1,6 @@
 import 'package:ai_app/etc/error_presentation/failure.dart';
 
-final class AuthFailure extends Failure {
+class AuthFailure extends Failure {
   final AuthFailureType _type;
   final String? _message;
   AuthFailure(this._type, {String? message}) : _message = message;
@@ -12,7 +12,7 @@ final class AuthFailure extends Failure {
       };
 
   @override
-  String? get st => _message;
+  String? get message => _message;
 }
 
 enum AuthFailureType { format, exists, weak, notFound, wrong, wrongOrNotFound, requiresLogin, unknown, unauthorized }

@@ -12,7 +12,7 @@ final class DatabaseFailure extends Failure {
       };
 
   @override
-  String? get st => _message;
+  String? get message => _message;
 }
 
 enum DatabaseFailureType {
