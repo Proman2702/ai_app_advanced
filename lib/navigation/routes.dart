@@ -64,8 +64,10 @@ class AppRouter {
         // ----- MAIN FLOW (общий Scaffold) -----
         ShellRoute(
           builder: (context, state, child) {
-            final title = _maptitleByPath(state.uri.path);
+            final path = state.uri.path;
+            final title = _maptitleByPath(path);
             return MainShellScaffold(
+              currentPath: path,
               title: title,
               child: child,
             );
