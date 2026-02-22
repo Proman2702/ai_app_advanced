@@ -2,14 +2,11 @@
 
 import 'dart:developer';
 
-import 'package:ai_app/etc/colors/gradients/tiles.dart';
-import 'package:ai_app/ui/auth/auth_error_hander.dart';
 import 'package:ai_app/ui/auth/auth_formats.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/ui/auth/main/view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_app/etc/colors/gradients/background.dart';
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:provider/provider.dart';
 

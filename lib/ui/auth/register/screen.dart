@@ -15,7 +15,7 @@ class RegisterScreen extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [CustomColors.background1, CustomColors.background2],
+          colors: [],
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
         ),
@@ -52,7 +52,7 @@ class RegisterScreen extends StatelessWidget {
                       text: "Вернуться",
                       width: 140,
                       height: 40,
-                      color: CustomColors.accent2,
+                      color: CustomColors.main,
                       fontSize: 18,
                     ),
                     SizedBox(width: 15),

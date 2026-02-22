@@ -1,6 +1,5 @@
 import 'package:ai_app/etc/colors/colors.dart';
 import 'package:ai_app/ui/additional/custom_button.dart';
-import 'package:ai_app/ui/additional/custom_text_field.dart';
 import 'package:ai_app/ui/async_helper.dart';
 import 'package:ai_app/ui/auth/recovery/view_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class RecoveryScreen extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [CustomColors.background1, CustomColors.background2],
+          colors: [],
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
         ),
@@ -73,7 +72,7 @@ class RecoveryScreen extends StatelessWidget {
                   text: "Восстановить",
                   width: 200,
                   height: 36,
-                  color: CustomColors.accent2,
+                  color: CustomColors.main,
                 ),
               ],
             ),

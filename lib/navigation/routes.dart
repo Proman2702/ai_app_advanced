@@ -1,9 +1,8 @@
 import 'package:ai_app/navigation/stream_to_listenable.dart';
-import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_gate.dart';
-import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/ui/auth/main/screen.dart';
 import 'package:ai_app/ui/auth/main/view_model.dart';
+import 'package:ai_app/ui/auth/recovery/screen.dart';
 import 'package:ai_app/ui/auth/recovery/view_model.dart';
 import 'package:ai_app/ui/auth/register/screen.dart';
 import 'package:ai_app/ui/auth/register/view_model.dart';
@@ -18,7 +17,6 @@ import 'package:ai_app/ui/settings/screen.dart';
 import 'package:ai_app/ui/settings/view_model.dart';
 import 'package:ai_app/ui/tasks/screen.dart';
 import 'package:ai_app/ui/tasks/view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +31,15 @@ class AppRouter {
       initialLocation: "/auth",
       refreshListenable: _refresh,
       redirect: (context, state) {
-        final uid = _gate.currentUid;
-        return uid == null ? "/auth" : "/main/home";
+        final loggedIn = _gate.currentUid != null;
+        final path = state.uri.path;
+
+        final inAuthFlow = path == '/auth' || path.startsWith('/auth/');
+
+        if (!loggedIn && !inAuthFlow) return '/auth';
+        if (loggedIn && inAuthFlow) return '/main/home';
+
+        return null;
       },
       routes: [
         GoRoute(
@@ -45,23 +50,21 @@ class AppRouter {
           ),
           routes: [
             GoRoute(
-              path: 'register', // /auth/register
+              path: 'register',
               builder: (_, __) => ChangeNotifierProvider(
                 create: (_) => RegisterScreenModel(),
                 child: const RegisterScreen(),
               ),
             ),
             GoRoute(
-              path: 'recovery', // /auth/recovery
+              path: 'recovery',
               builder: (_, __) => ChangeNotifierProvider(
                 create: (_) => RecoveryScreenModel(),
-                child: const RegisterScreen(),
+                child: const RecoveryScreen(),
               ),
             ),
           ],
         ),
-
-        // ----- MAIN FLOW (общий Scaffold) -----
         ShellRoute(
           builder: (context, state, child) {
             final path = state.uri.path;

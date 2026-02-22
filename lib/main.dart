@@ -1,18 +1,16 @@
-import 'package:ai_app/ui/auth/forgot_password_page.dart';
-import 'package:ai_app/ui/diagnostics/diag_task_page.dart';
-import 'package:ai_app/ui/info/info_page.dart';
-import 'package:ai_app/ui/settings/settings_page.dart';
-import 'package:ai_app/ui/diagnostics/diag_menu_page.dart';
-import 'package:ai_app/ui/auth/register/screen.dart';
-import 'package:ai_app/ui/tasks/tasks_menu_page.dart';
+import 'package:ai_app/navigation/routes.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_gate.dart';
+import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
+import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
 
-import 'package:ai_app/ui/tasks/levels_page.dart';
-import 'package:ai_app/ui/wrapper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ai_app/ui/tasks/task_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 import 'package:media_store_plus/media_store_plus.dart';
@@ -32,30 +30,30 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const Wrapper(),
-        '/auth/create': (context) => const FirstPage(),
-        '/auth/forgot': (context) => const ForgotPasswordPage(),
-        '/settings': (context) => const SettingsPage(),
-        '/diagnostics': (context) => const DiagnosticsPage(),
-        '/diagnostics/level': (context) => const DiagnosticsTaskPage(),
-        '/tasks': (context) => const TasksPage(),
-        '/tasks/levels': (context) => const LevelsMenu(),
-        '/tasks/levels/level': (context) => const TaskPage(),
-        '/info': (context) => const InfoPage(),
-      },
-      theme: ThemeData(fontFamily: "Jura"),
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => FirebaseAuthService(FirebaseAuth.instance)),
+        Provider(create: (_) => FirebaseUserSessionGate(FirebaseAuth.instance)),
+        Provider(
+            create: (context) =>
+                FirebaseUsersDatabase(FirebaseFirestore.instance, context.read<FirebaseUserSessionGate>())),
+        Provider<AppRouter>(
+          create: (ctx) => AppRouter(ctx.read<UserSessionGate>()),
+          dispose: (_, r) => r.dispose(),
+        ),
+      ],
+      child: Consumer(
+          builder: (context, _, __) => MaterialApp.router(
+                routerConfig: context.read<AppRouter>().router,
+              )),
     );
   }
 }
