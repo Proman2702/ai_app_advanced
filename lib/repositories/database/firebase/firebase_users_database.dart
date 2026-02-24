@@ -73,16 +73,6 @@ class FirebaseUsersDatabase implements UsersDatabase, UsersDatabaseWithStream {
     });
   }
 
-  @override
-  Stream<Result<List<CustomUser>>> watchUsers() {
-    return _gate.watchUid().startWith(_gate.currentUid).distinct().switchMap((uid) {
-      if (uid == null) return Stream.value(Err(DatabaseFailure(DatabaseFailureType.unauthenticated)));
-
-      final source = _usersRef.snapshots().map((q) => q.docs.map((d) => d.data()).toList());
-      return FirebaseDatabaseGuard.firebaseStreamGuard(source);
-    });
-  }
-
   //Stream<Result<CustomUser?>> watchUserById(String id) {
   //  final source = _usersRef.doc(id).snapshots().map((snap) => snap.data());
   //  return FirebaseDatabaseGuard.firebaseStreamGuard(source);

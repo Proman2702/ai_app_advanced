@@ -8,6 +8,5 @@ abstract interface class UsersDatabase {
 }
 
 abstract interface class UsersDatabaseWithStream {
-  Stream<Result<List<CustomUser>>> watchUsers();
   Stream<Result<CustomUser?>> watchUser();
 }

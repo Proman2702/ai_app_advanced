@@ -1,7 +1,9 @@
 import 'package:ai_app/navigation/routes.dart';
+import 'package:ai_app/repositories/auth/auth_service.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_gate.dart';
 import 'package:ai_app/repositories/auth/firebase/firebase_auth_service.dart';
 import 'package:ai_app/repositories/database/firebase/firebase_users_database.dart';
+import 'package:ai_app/repositories/database/users_database.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,8 +42,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (_) => FirebaseAuthService(FirebaseAuth.instance)),
-        Provider(create: (_) => FirebaseUserSessionGate(FirebaseAuth.instance)),
+        Provider<AuthService>(create: (_) => FirebaseAuthService(FirebaseAuth.instance)),
+        Provider<UserSessionGate>(create: (_) => FirebaseUserSessionGate(FirebaseAuth.instance)),
         Provider(
             create: (context) =>
                 FirebaseUsersDatabase(FirebaseFirestore.instance, context.read<FirebaseUserSessionGate>())),
